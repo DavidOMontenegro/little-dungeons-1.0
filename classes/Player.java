@@ -809,10 +809,12 @@ public abstract class Player {
         }
         if (left != null) {
             if (left.getName().equals("Viper Fang")) {
-                bruATK -= 2;
-                quiATK -= 2;
-                sacATK -= 2;
-                magATK -= 2;
+                damage(defender, 1);
+            }
+        }
+        if (right != null) {
+            if (right.getName().equals("Viper Fang")) {
+                damage(defender, 1);
             }
         }
         bruATK += freeze;
@@ -851,12 +853,12 @@ public abstract class Player {
                 return;
             }
         }
-        if (left != null && basic == 1) {
+        if (left != null && basic == 1 && counter) {
             if (left.getName().equals("Bear Trap")) {
                 damage(attacker, 2);
             }
         }
-        if (right != null && basic == 1) {
+        if (right != null && basic == 1 && counter) {
             if (right.getName().equals("Bear Trap")) {
                 damage(attacker, 2);
             }
