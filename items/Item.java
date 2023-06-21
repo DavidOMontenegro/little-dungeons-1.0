@@ -8,15 +8,17 @@ import classes.Player;
 public abstract class Item {
     int id;
     String name;
+    String desc;
     ArrayList<String> type;
     int price;
     int str, dex, wis, it;
     int bruATK, quiATK, sacATK, magATK;
     int bruDEF, quiDEF, sacDEF, magDEF;
 
-    public Item(String itemName, int itemId, String[] itemType, int itemPrice, int[] stats) {
+    public Item(String itemName, int itemId, String[] itemType, int itemPrice, int[] stats, String spellDesc) {
         id = itemId;
         name = itemName;
+        desc = spellDesc;
         price = itemPrice;
         str = stats[0];
         dex = stats[1];
@@ -61,8 +63,8 @@ public abstract class Item {
         String md = magDEF > 9 ? magDEF + " " : magDEF + "  ";
 
         System.out.printf("\n" + name + "     Price: " + price
-                + "\n" + String.join(", ", type) + "\n\nSTR: %s BRUATK: %s BRUDEF: %s\nDEX: %s QUIATK: %s QUIDEF: %s\nWIS: %s SACATK: %s SACDEF: %s\nINT: %s MAGATK: %s MAGDEF: %s\n\n",
-                s, ba, bd, d, qa, qd, w, sa, sd, i, ma, md);
+                + "\n\n( " + String.join(", ", type) + " )\n\nSTR: %s BRUATK: %s BRUDEF: %s\nDEX: %s QUIATK: %s QUIDEF: %s\nWIS: %s SACATK: %s SACDEF: %s\nINT: %s MAGATK: %s MAGDEF: %s\n\n%s\n\n",
+                s, ba, bd, d, qa, qd, w, sa, sd, i, ma, md, desc);
     }
 
     public void putOn(Player player) {
