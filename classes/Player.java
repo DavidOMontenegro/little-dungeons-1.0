@@ -828,7 +828,7 @@ public abstract class Player {
     public void preDefend(Player attacker, String type) {
         switch (type) {
             case "snow":
-                freeze(4);
+                freeze(2);
                 break;
             case "fire":
             default:
