@@ -5,7 +5,7 @@ import classes.Player;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public abstract class Spell {
+public class Spell {
     String name;
     String desc;
     String desc2;
@@ -18,7 +18,7 @@ public abstract class Spell {
     int baseCost;
     int mpCost = 0;
 
-    Spell(String spellName, String[] spellDesc, String[] spellType, int spellPrice, int spellCost) {
+    public Spell(String spellName, String[] spellDesc, String[] spellType, int spellPrice, int spellCost) {
         name = spellName;
         desc = spellDesc[0];
         desc2 = spellDesc[1];
@@ -70,7 +70,7 @@ public abstract class Spell {
                     break;
             }
         }
-        System.out.println("\n" + name + "(" + String.join(", ", type) + ")" + "  Price: " + price + "\nLVL: "
+        System.out.println("\n" + name + " (" + String.join(", ", type) + ")" + "  Price: " + price + "\nLVL: "
                 + (shop ? level + 1 : level)
                 + (type.get(0).equals("Active") ? "   MP: " + (mpCost + (shop ? baseCost : 0)
                         - (player.getClassName().equals("Priest") && level == 0 ? 15 : 0)) : "")
