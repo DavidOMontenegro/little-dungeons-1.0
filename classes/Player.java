@@ -1,10 +1,10 @@
 package classes;
 
-import items.Item;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import spells.Spell;
+import util.Item;
 
 public abstract class Player {
     String name;
@@ -269,6 +269,19 @@ public abstract class Player {
         hp = totalhp += 5;
         mp = totalmp += 5;
 
+        switch (level) {
+            case 3:
+                minRank = rank;
+                rank = 65;
+                break;
+            case 5:
+
+                break;
+            case 7:
+
+                break;
+        }
+
         System.out.println("You just leveled up!\n");
         while (!selected) {
             System.out.println(
@@ -350,7 +363,7 @@ public abstract class Player {
     public void getMoney(int gold) {
         int newGold = 0;
         if (feet != null) {
-            newGold += feet.getName().equals("WoodLeg") ? (gold + 0.5) / 20 : gold;
+            newGold += feet.getId() == 21 ? (gold + 0.5) / 20 : gold;
         }
         money += getClassName().equals("Thief") ? (gold + 0.5) / 4 + newGold : newGold;
     }
@@ -711,22 +724,25 @@ public abstract class Player {
                 switch (basic) {
                     case 0:
                         type = "Brute";
+                        break;
                     case 1:
                         type = "Quick";
+                        break;
                     case 2:
                         type = "Sacred";
+                        break;
                     case 3:
                         type = "Magic";
-                    default:
-                        if (itemType.contains(type)) {
-                            if (itemType.contains("Fire")) {
-                                return "fire";
-                            }
+                        break;
+                }
+                if (itemType.contains(type)) {
+                    if (itemType.contains("Fire")) {
+                        return "fire";
+                    }
 
-                            if (itemType.contains("Snow")) {
-                                return "snow";
-                            }
-                        }
+                    if (itemType.contains("Snow")) {
+                        return "snow";
+                    }
                 }
             }
 
@@ -754,15 +770,48 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (feet != null) {
-                    if (feet.getName().equals("Snow Rackets")) {
+                    if (feet.getId() == 29) {
                         bruATK += 2;
                         quiATK += 2;
                         sacATK += 2;
                         magATK += 2;
                     }
                 }
+                if (left != null) {
+                    if (left.getId() == 63) {
+                        bruATK += 6;
+                        quiATK += 6;
+                        sacATK += 6;
+                        magATK += 6;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 63) {
+                        bruATK += 6;
+                        quiATK += 6;
+                        sacATK += 6;
+                        magATK += 6;
+                    }
+                }
+                break;
             case "fire":
-            default:
+                if (left != null) {
+                    if (left.getId() == 46) {
+                        bruATK += 5;
+                        quiATK += 5;
+                        sacATK += 5;
+                        magATK += 5;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 46) {
+                        bruATK += 5;
+                        quiATK += 5;
+                        sacATK += 5;
+                        magATK += 5;
+                    }
+                }
+                break;
         }
         for (Spell spell : spells) {
             if (spell != null) {
@@ -774,7 +823,7 @@ public abstract class Player {
             }
         }
         if (left != null) {
-            if (left.getName().equals("Crossbow")) {
+            if (left.getId() == 123) {
                 return false;
             }
         }
@@ -786,18 +835,51 @@ public abstract class Player {
     }
 
     public int postAttack(Player defender, String type, boolean basic, int current) {
+        boolean poison = true;
         switch (type) {
             case "snow":
                 if (feet != null) {
-                    if (feet.getName().equals("Snow Rackets")) {
+                    if (feet.getId() == 29) {
                         bruATK -= 2;
                         quiATK -= 2;
                         sacATK -= 2;
                         magATK -= 2;
                     }
                 }
+                if (left != null) {
+                    if (left.getId() == 63) {
+                        bruATK -= 6;
+                        quiATK -= 6;
+                        sacATK -= 6;
+                        magATK -= 6;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 63) {
+                        bruATK -= 6;
+                        quiATK -= 6;
+                        sacATK -= 6;
+                        magATK -= 6;
+                    }
+                }
                 break;
             case "fire":
+                if (left != null) {
+                    if (left.getId() == 46) {
+                        bruATK -= 5;
+                        quiATK -= 5;
+                        sacATK -= 5;
+                        magATK -= 5;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 46) {
+                        bruATK -= 5;
+                        quiATK -= 5;
+                        sacATK -= 5;
+                        magATK -= 5;
+                    }
+                }
                 break;
         }
         for (Spell spell : spells) {
@@ -807,14 +889,26 @@ public abstract class Player {
                 }
             }
         }
-        if (left != null) {
-            if (left.getName().equals("Viper Fang")) {
+        if (defender.body != null) {
+            if (defender.body.getId() == 71) {
+                poison = false;
+            }
+        }
+        if (left != null && poison) {
+            if (left.getId() == 4) {
                 damage(defender, 1);
             }
         }
-        if (right != null) {
-            if (right.getName().equals("Viper Fang")) {
+        if (right != null && poison) {
+            if (right.getId() == 4) {
                 damage(defender, 1);
+            } else if (right.getId() == 66) {
+                damage(defender, 8);
+            }
+            if (body != null) {
+                if (body.getId() == 68 && right.getType().contains("Bow")) {
+                    damage(defender, 8);
+                }
             }
         }
         bruATK += freeze;
@@ -854,12 +948,12 @@ public abstract class Player {
             }
         }
         if (left != null && basic == 1 && counter) {
-            if (left.getName().equals("Bear Trap")) {
+            if (left.getId() == 24) {
                 damage(attacker, 2);
             }
         }
         if (right != null && basic == 1 && counter) {
-            if (right.getName().equals("Bear Trap")) {
+            if (right.getId() == 24) {
                 damage(attacker, 2);
             }
         }

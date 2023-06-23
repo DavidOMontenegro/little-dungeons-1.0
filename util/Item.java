@@ -1,11 +1,11 @@
-package items;
+package util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import classes.Player;
 
-public abstract class Item {
+public class Item {
     int id;
     String name;
     String desc;
@@ -38,6 +38,10 @@ public abstract class Item {
 
     public String getName() {
         return name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public ArrayList<String> getType() {
@@ -81,14 +85,19 @@ public abstract class Item {
         player.effect("sacDEF", sacDEF);
         player.effect("magDEF", magDEF);
         switch (id) {
-            case 23:
-                player.effect("mp", 20);
-                break;
+            case 5:
+                player.effect("heal", 4);
             case 10:
                 player.effect("hp", 20);
                 break;
-            case 5:
-                player.effect("heal", 4);
+            case 23:
+                player.effect("mp", 20);
+                break;
+            case 45:
+                player.effect("hp", 10);
+                break;
+            case 69:
+                player.effect("heal", 6);
             default:
                 break;
         }
@@ -108,14 +117,19 @@ public abstract class Item {
         player.effect("sacDEF", -sacDEF);
         player.effect("magDEF", -magDEF);
         switch (id) {
-            case 23:
-                player.effect("mp", -20);
-                break;
+            case 5:
+                player.effect("heal", -4);
             case 10:
                 player.effect("hp", -20);
                 break;
-            case 5:
-                player.effect("heal", -4);
+            case 23:
+                player.effect("mp", -20);
+                break;
+            case 45:
+                player.effect("hp", -10);
+                break;
+            case 69:
+                player.effect("heal", -6);
             default:
                 break;
         }
