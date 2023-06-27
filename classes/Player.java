@@ -275,7 +275,8 @@ public abstract class Player {
                 rank = 65;
                 break;
             case 5:
-
+                minRank = rank;
+                rank = 97;
                 break;
             case 7:
 
