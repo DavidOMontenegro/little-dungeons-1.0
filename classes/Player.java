@@ -750,11 +750,63 @@ public abstract class Player {
         }
     }
 
+    public void clover() {
+        if (left != null && !dead) {
+            if (left.getId() == 110) {
+                money += 5;
+            }
+        }
+        if (right != null && !dead) {
+            if (right.getId() == 110) {
+                money += 5;
+            }
+        }
+    }
+
+    public void alchemist(ArrayList<Player> fighters, boolean start) {
+        int boost = start ? -2 : 2;
+        if (left != null) {
+            if (left.getId() == 109) {
+                for (Player enemy : fighters) {
+                    if (enemy != this) {
+                        bruATK += 2 * boost;
+                        quiATK += 2 * boost;
+                        sacATK += 2 * boost;
+                        magATK += 2 * boost;
+                        bruDEF += boost;
+                        quiDEF += boost;
+                        sacDEF += boost;
+                        magDEF += boost;
+                    }
+                }
+            }
+        }
+        if (right != null) {
+            if (right.getId() == 109) {
+                for (Player enemy : fighters) {
+                    if (enemy != this) {
+                        bruATK += 2 * boost;
+                        quiATK += 2 * boost;
+                        sacATK += 2 * boost;
+                        magATK += 2 * boost;
+                        bruDEF += boost;
+                        quiDEF += boost;
+                        sacDEF += boost;
+                        magDEF += boost;
+                    }
+                }
+            }
+        }
+    }
+
     public void bruteAttack(Player defender, int power) {
         damage(defender, str + power + bruATK - defender.bruDEF);
     }
 
     public void quickAttack(Player defender, int power) {
+        if (feet != null) {
+            damage(defender, (int) (Math.random() * 8) + 1);
+        }
         damage(defender, dex + power + quiATK - defender.quiDEF);
     }
 
@@ -795,6 +847,14 @@ public abstract class Player {
                 }
                 break;
             case "fire":
+                if (head != null) {
+                    if (head.getId() == 105) {
+                        bruATK += 2;
+                        quiATK += 2;
+                        sacATK += 2;
+                        magATK += 2;
+                    }
+                }
                 if (left != null) {
                     if (left.getId() == 46) {
                         bruATK += 5;
@@ -864,6 +924,14 @@ public abstract class Player {
                 }
                 break;
             case "fire":
+                if (head != null) {
+                    if (head.getId() == 105) {
+                        bruATK -= 2;
+                        quiATK -= 2;
+                        sacATK -= 2;
+                        magATK -= 2;
+                    }
+                }
                 if (left != null) {
                     if (left.getId() == 46) {
                         bruATK -= 5;
@@ -923,17 +991,83 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 freeze(2);
+                if (body != null) {
+                    if (body.getId() == 97) {
+                        bruDEF += 2;
+                        quiDEF += 2;
+                        sacDEF += 2;
+                        magDEF += 2;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 99) {
+                        bruDEF += 10;
+                        quiDEF += 10;
+                        sacDEF += 10;
+                        magDEF += 10;
+                    }
+                }
                 break;
             case "fire":
-            default:
+                if (body != null) {
+                    if (body.getId() == 96) {
+                        bruDEF += 2;
+                        quiDEF += 2;
+                        sacDEF += 2;
+                        magDEF += 2;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 99) {
+                        bruDEF += 10;
+                        quiDEF += 10;
+                        sacDEF += 10;
+                        magDEF += 10;
+                    }
+                }
+                break;
         }
     }
 
     public void postDefend(Player attacker, int basic, String type, boolean counter) {
+        boolean poison = true;
         switch (type) {
             case "snow":
+                if (body != null) {
+                    if (body.getId() == 97) {
+                        bruDEF -= 2;
+                        quiDEF -= 2;
+                        sacDEF -= 2;
+                        magDEF -= 2;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 99) {
+                        bruDEF -= 10;
+                        quiDEF -= 10;
+                        sacDEF -= 10;
+                        magDEF -= 10;
+                    }
+                }
+                break;
             case "fire":
-            default:
+                if (body != null) {
+                    if (body.getId() == 96) {
+                        bruDEF -= 2;
+                        quiDEF -= 2;
+                        sacDEF -= 2;
+                        magDEF -= 2;
+                    }
+                }
+                if (right != null) {
+                    if (right.getId() == 99) {
+                        bruDEF -= 10;
+                        quiDEF -= 10;
+                        sacDEF -= 10;
+                        magDEF -= 10;
+                    }
+                }
+                break;
         }
         for (Spell spell : spells) {
             if (spell != null) {
@@ -947,14 +1081,22 @@ public abstract class Player {
                 return;
             }
         }
+        if (attacker.body != null) {
+            if (attacker.body.getId() == 71) {
+                poison = false;
+            }
+        }
         if (left != null && basic == 1 && counter) {
             if (left.getId() == 24) {
                 damage(attacker, 2);
             }
         }
-        if (right != null && basic == 1 && counter) {
-            if (right.getId() == 24) {
+        if (right != null && counter) {
+            if (basic == 1 && right.getId() == 24) {
                 damage(attacker, 2);
+            }
+            if (poison && right.getId() == 104) {
+                damage(attacker, 6);
             }
         }
     }

@@ -98,6 +98,10 @@ public class Item {
                 break;
             case 69:
                 player.effect("heal", 6);
+            case 106:
+                player.effect("hp", 20);
+                player.effect("mp", 20);
+                break;
             default:
                 break;
         }
@@ -130,6 +134,9 @@ public class Item {
                 break;
             case 69:
                 player.effect("heal", -6);
+            case 106:
+                player.effect("hp", -20);
+                player.effect("mp", -20);
             default:
                 break;
         }
