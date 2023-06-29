@@ -20,9 +20,9 @@ public class Knight extends Player {
     @Override
     public void postDefend(Player attacker, int basic, String type, boolean counter) {
         if (type.equals("snow")) {
-            int var3 = 10000 - hp;
+            int tmp = 10000 - hp;
             hp = snow;
-            healHP(var3);
+            healHP(tmp);
             snow = hp;
         }
 

@@ -40,8 +40,8 @@ public class Item {
         return name;
     }
 
-    public int getId() {
-        return id;
+    public boolean isItem(int itemId) {
+        return id == itemId;
     }
 
     public ArrayList<String> getType() {
@@ -97,7 +97,9 @@ public class Item {
                 player.effect("hp", 10);
                 break;
             case 69:
+            case 94:
                 player.effect("heal", 6);
+                break;
             case 106:
                 player.effect("hp", 20);
                 player.effect("mp", 20);
@@ -133,7 +135,9 @@ public class Item {
                 player.effect("hp", -10);
                 break;
             case 69:
+            case 94:
                 player.effect("heal", -6);
+                break;
             case 106:
                 player.effect("hp", -20);
                 player.effect("mp", -20);

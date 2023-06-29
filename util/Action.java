@@ -1483,19 +1483,19 @@ public class Action {
 
     public static void addItems(ArrayList<Item> items) {
         items.add(new Item("Leather Hood", 22, new String[] { "Head" }, 15,
-                new int[] { 0, 3, 0, 3, 0, 0, 0, 0, 3, 0, 0, 0 },
+                new int[] { 0, 3, 0, 3, 1, 1, 0, 0, 3, 0, 0, 0 },
                 "Offers some protection, mostly from the rain"));
 
         items.add(new Item("Clay Pot", 15, new String[] { "Head" }, 15,
-                new int[] { 3, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0 },
+                new int[] { 3, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 0 },
                 "You probably shouldn't put one of these on your head"));
 
         items.add(new Item("Wolf Head Hood", 18, new String[] { "Head" }, 20,
-                new int[] { 0, 0, 3, 2, 0, 0, 0, 0, 0, 0, 0, 3 },
+                new int[] { 0, 0, 3, 2, 0, 0, 1, 1, 0, 0, 0, 3 },
                 "Used by the guardians of the forest during their rituals"));
 
         items.add(new Item("Blindfold", 25, new String[] { "Head" }, 15,
-                new int[] { 0, -1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, -1, 4, 0, 0, 0, 0, 1, 0, 0, 0, 0 },
                 "A black band to cover your eyes and help your inner focus"));
 
         items.add(new Item("Dirty Rags", 1, new String[] { "Body" }, 10,
@@ -1507,36 +1507,36 @@ public class Action {
                 "Never feel cold again wrapped in these sheets"));
 
         items.add(new Item("Not-So-Maculine Cuirass", 20, new String[] { "Body" }, 15,
-                new int[] { 0, 2, 0, 0, 0, 0, 0, 0, 1, 2, 0, 0 },
+                new int[] { 0, 2, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 },
                 "If you don't mind the look, it's actually pretty decent armour"));
 
         items.add(new Item("Shrub", 17, new String[] { "Body" }, 25,
-                new int[] { 0, 4, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+                new int[] { 0, 4, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1 },
                 "Hide in plain sight with a shrub disguise"));
 
         items.add(new Item("Adventurer's Boots", 14, new String[] { "Feet" }, 20,
-                new int[] { 3, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2 },
+                new int[] { 3, 0, 2, 0, 0, 0, 1, 0, 2, 0, 0, 2 },
                 "Sturdy boots for anyone making a long and difficult journey"));
 
         items.add(new Item("Webbed Feet", 23, new String[] { "Feet" }, 20,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                new int[] { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
                 "Helps you swim faster and gives you 20 MP"));
 
         items.add(new Item("Pointy Shoes", 26, new String[] { "Feet" }, 10,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0 },
+                new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 4, 0, 0, 0 },
                 "If you put on a funny hat, you would look like a great fool"));
 
         items.add(new Item("Fluffy Slippers", 7, new String[] { "Feet" }, 20,
-                new int[] { 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1 },
+                new int[] { 0, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 1 },
                 "Feels like stepping on clouds"));
 
         items.add(new Item("Wooden Leg", 21, new String[] { "Feet" }, 25,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0 },
                 "If you still have both legs, there's no real reason why you would need this, aside from the fact it gives you +5% gold for every victory"));
 
         items.add(new Item("Snow Rackets", 29, new String[] { "Feet", "Snow" }, 10,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                "Rackets to help you walk in the snow"));
+                new int[] { 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0 },
+                "Rackets to help you walk in the snow, they give +2 snow attack"));
 
         items.add(new Item("Improvised Bow", 28, new String[] { "Weapon", "Quick", "Bow", "Double-Handed" }, 15,
                 new int[] { 0, 2, 0, 3, 0, 4, 0, 0, 0, 0, 0, 0 },
@@ -1591,7 +1591,7 @@ public class Action {
                 "Classic shield to cover your whole body"));
 
         items.add(new Item("Paper Shield", 3, new String[] { "Shield" }, 15,
-                new int[] { 0, 0, 0, 0, 0, 3, 0, 0, 4, 0, 0, 0 },
+                new int[] { 0, 0, 0, 0, 0, 3, 0, 0, 4, 0, 1, 0 },
                 "Believe it or not, paper is really strong"));
 
         items.add(new Item("Round Target", 11, new String[] { "Shield" }, 15,
@@ -1615,11 +1615,11 @@ public class Action {
                 "Anyone making a quick attack on you will have a nasty surprise: 2 damage"));
 
         items.add(new Item("Cracked Gladiator Helmet", 57, new String[] { "Head" }, 30,
-                new int[] { 3, 0, 1, 0, 0, 0, 0, 0, 5, 0, 0, 0 },
+                new int[] { 3, 0, 1, 0, 1, 1, 0, 0, 5, 0, 0, 0 },
                 "The last person who wore this died to the sound of applause"));
 
         items.add(new Item("Straw Hat", 73, new String[] { "Head" }, 30,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 7 },
+                new int[] { 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 7 },
                 "Keeps you safe from the sun and from MAG attacks"));
 
         items.add(new Item("Samurai Bun", 64, new String[] { "Head" }, 45,
@@ -1627,27 +1627,27 @@ public class Action {
                 "You don't have to be a samurai to wear one of these"));
 
         items.add(new Item("Monacle", 69, new String[] { "Head" }, 45,
-                new int[] { 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 0, 3, 0, 2, 0, 0, 0, 1, 0, 0 },
                 "Typically worn by physicians when doing surgery"));
 
         items.add(new Item("Quiver of Poisonous Arrows", 68, new String[] { "Body" }, 50,
-                new int[] { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0 },
                 "Will do 8 poison damage if you're using a bow"));
 
         items.add(new Item("Robust Plates", 53, new String[] { "Body" }, 30,
-                new int[] { 3, 0, 0, 0, 0, 0, 0, 0, 8, 0, 8, 0 },
+                new int[] { 3, 0, 0, 0, 0, 0, 0, 0, 8, 1, 8, 0 },
                 "The king had these made for his most important knights"));
 
         items.add(new Item("Grandmaster's Cape", 59, new String[] { "Body" }, 30,
-                new int[] { 0, 0, 5, 5, 0, 0, 0, 0, 0, 0, 0, 4 },
+                new int[] { 0, 0, 5, 5, 0, 1, 0, 1, 0, 0, 0, 4 },
                 "Gives off a majestic and royal image"));
 
         items.add(new Item("Dark Cloak", 49, new String[] { "Body" }, 30,
-                new int[] { 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0 },
+                new int[] { 0, 6, 0, 0, 0, 1, 0, 1, 0, 0, 3, 0 },
                 "Helps you hide in the darkness and look mysterious"));
 
         items.add(new Item("Mantle Covered in Weeds", 71, new String[] { "Body" }, 30,
-                new int[] { 0, 0, 0, 2, 0, 0, 0, 0, 0, 4, 0, 0 },
+                new int[] { 0, 0, 0, 2, 0, 0, 2, 0, 0, 4, 0, 1 },
                 "It's a little itchy, but it will make you immune to poison"));
 
         items.add(new Item("Light Sandals", 51, new String[] { "Feet" }, 30,
@@ -1667,11 +1667,11 @@ public class Action {
                 "Doesn't slide off your feet easily"));
 
         items.add(new Item("Boots with Hobnails", 60, new String[] { "Feet" }, 50,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 4, 4 },
+                new int[] { 0, 0, 0, 0, 2, 0, 0, 0, 4, 0, 4, 4 },
                 "A hobnail is a little nail at the sole of the boot that helps you not lose your footing on difficult terrain"));
 
         items.add(new Item("Flasks of Poison Gas", 66, new String[] { "Weapon", "Quick", "Magic" }, 50,
-                new int[] { 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0 },
                 "Throw one of these at an enemy and it will do 8 poison damage"));
 
         items.add(new Item("Arena Sword", 62, new String[] { "Weapon", "Brute" }, 30,
@@ -1683,7 +1683,7 @@ public class Action {
                 "Travelers from the whole world would make the trip to the top of the mountain, it's always been a bit of a mystery what it is they were after"));
 
         items.add(new Item("Bouquet of Tulips", 45, new String[] { "Weapon", "Sacred", "Magic" }, 50,
-                new int[] { 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 1, 0 },
                 "Not the most threatening weapon, but it will give you 10 HP"));
 
         items.add(new Item("Flail", 75, new String[] { "Weapon", "Brute" }, 25,
@@ -1707,15 +1707,15 @@ public class Action {
                 "A long and heavy sword, one of the favorites in the arena"));
 
         items.add(new Item("Native Shield", 56, new String[] { "Shield" }, 50,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 6, 8, 0, 0 },
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 1, 6, 8, 0, 2 },
                 "Carefully crafted from the toughest woods in the magic forest"));
 
         items.add(new Item("Bark Shield", 48, new String[] { "Shield" }, 50,
-                new int[] { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5 },
+                new int[] { 6, 0, 0, 0, 0, 2, 0, 0, 0, 1, 5, 5 },
                 "Tree bark might not be the best material for a shield"));
 
         items.add(new Item("Gate", 41, new String[] { "Shield" }, 50,
-                new int[] { 0, 0, 0, 4, 0, 0, 0, 0, 4, 4, 0, 0 },
+                new int[] { 0, 0, 0, 4, 1, 0, 0, 0, 4, 4, 0, 0 },
                 "In a moment of desperation, anything can be used as a shield"));
 
         items.add(new Item("Tablet with Ancient Symbols", 72, new String[] { "Shield" }, 45,
@@ -1739,7 +1739,7 @@ public class Action {
                 "Blessed"));
 
         items.add(new Item("Ice Shank", 63, new String[] { "Amulet" }, 50,
-                new int[] { 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0 },
                 "It might look like any other icicle, but this one gives you +6 snow damage"));
 
         items.add(new Item("Laurel", 114, new String[] { "Head" }, 40,
@@ -1751,39 +1751,39 @@ public class Action {
                 "Well-rounded and versatile"));
 
         items.add(new Item("Golden Helm", 84, new String[] { "Head" }, 40,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 6 },
+                new int[] { 0, 0, 0, 0, 2, 0, 0, 0, 6, 0, 0, 6 },
                 "Shining from the distance, only the greatest heroes can wear these"));
 
         items.add(new Item("Braided Beard", 113, new String[] { "Head" }, 150,
-                new int[] { 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 6, 0, 0, 1, 2, 0, 0, 0, 0, 0, 0, 0 },
                 "Goes all the way to the belly button"));
 
         items.add(new Item("Festive Dragon Mask", 105, new String[] { "Head" }, 80,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10 },
+                new int[] { 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 10 },
                 "Made for the religious festivals, gives you +2 fire damage"));
 
         items.add(new Item("Royal Cape", 85, new String[] { "Body" }, 50,
-                new int[] { 0, 0, 4, 0, 0, 0, 0, 0, 3, 0, 0, 5 },
+                new int[] { 0, 0, 4, 0, 0, 1, 0, 0, 3, 2, 0, 5 },
                 "The king always wears the finest, most expensive fabrics"));
 
         items.add(new Item("Artificial Wings", 103, new String[] { "Body" }, 50,
-                new int[] { 0, 0, 6, 1, 0, 0, 0, 0, 0, 0, 5, 0 },
+                new int[] { 0, 1, 6, 1, 0, 0, 0, 0, 1, 0, 5, 0 },
                 "Don't fly too close to the sun or too close to the ocean"));
 
         items.add(new Item("Oracle's Vestment", 89, new String[] { "Body" }, 50,
-                new int[] { 0, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2 },
+                new int[] { 0, 2, 2, 2, 0, 0, 3, 0, 0, 2, 2, 2 },
                 "The prophecy said you're stuck here"));
 
         items.add(new Item("Frozen Shirt", 96, new String[] { "Body" }, 80,
-                new int[] { 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0 },
+                new int[] { 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 0, 0 },
                 "Gives you 4 armour against fire attacks"));
 
         items.add(new Item("Chestplate With Burning Coals", 97, new String[] { "Body" }, 80,
-                new int[] { 2, 0, 2, 0, 0, 0, 0, 0, 3, 0, 0, 0 },
+                new int[] { 2, 0, 2, 0, 1, 0, 0, 1, 3, 2, 0, 0 },
                 "Gives you 4 armour against snow attacks"));
 
         items.add(new Item("Backwards Feet", 101, new String[] { "Feet" }, 50,
-                new int[] { 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                new int[] { 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1 },
                 "Does up to 8 extra damage on QUI attacks"));
 
         items.add(new Item("White Bandage", 105, new String[] { "Feet" }, 40,
@@ -1791,15 +1791,15 @@ public class Action {
                 "Wrap this around your foot and kick as hard as you can"));
 
         items.add(new Item("Boots With Many Precious Jewels", 91, new String[] { "Feet" }, 80,
-                new int[] { 0, 0, 4, 0, 0, 0, 0, 0, 6, 6, 0, 6 },
+                new int[] { 0, 0, 4, 0, 3, 0, 0, 0, 6, 6, 0, 6 },
                 "Decorated with all kinds of precious stones"));
 
         items.add(new Item("Flying Carpet", 93, new String[] { "Feet" }, 50,
-                new int[] { 0, 5, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0 },
+                new int[] { 0, 5, 0, 5, 0, 0, 1, 0, 5, 0, 0, 2 },
                 "The best sidekick when you need to travel fast"));
 
         items.add(new Item("Thick Iron Boots", 82, new String[] { "Feet" }, 50,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 10, 10, 0, 0 },
+                new int[] { 4, 0, 0, 0, 1, 0, 1, 1, 10, 10, 0, 0 },
                 "Heavy, but sturdy"));
 
         items.add(new Item("War Axe", 92, new String[] { "Weapon", "Brute", "Double-Handed" }, 150,
@@ -1835,32 +1835,32 @@ public class Action {
                 "The clerics in the snowy mountain peaks had strange powers no one understood"));
 
         items.add(new Item("Cursed Shield", 107, new String[] { "Shield" }, 150,
-                new int[] { -3, -3, -6, -3, 0, 0, 0, 0, 12, 12, 0, 12 },
+                new int[] { -3, -3, -6, -3, 0, 0, 0, 0, 12, 12, -1, 12 },
                 "Don't make deals with spirits, it's usually not worth the cost"));
 
         items.add(new Item("Spartan Shield", 108, new String[] { "Shield" }, 80,
-                new int[] { 6, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0 },
+                new int[] { 6, 0, 0, 0, 2, 2, 0, 0, 6, 3, 0, 0 },
                 "Doesn't cover your whole body, but it allows you to move faster"));
 
         items.add(new Item("Alchemist's Shield", 88, new String[] { "Shield" }, 80,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 12, 0 },
+                new int[] { 0, 0, 0, 1, 0, 1, 0, 1, 8, 0, 12, 1 },
                 "Made to protect mages during the inquisition"));
 
         items.add(new Item("Church Shield", 87, new String[] { "Shield" }, 80,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 10 },
+                new int[] { 0, 0, 2, 0, 1, 0, 1, 0, 6, 0, 1, 10 },
                 "Made to protect inquisitors from anyone who would fight back"));
 
         items.add(new Item("Shield Enchanted With Thorns", 104, new String[] { "Shield" }, 150,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3 },
+                new int[] { 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 3 },
                 "Anyone who hits you with a basic attack will take 6 poison damage"));
 
         items.add(new Item("Dragon Scale", 99, new String[] { "Shield" }, 50,
-                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 5, 0 },
+                new int[] { 0, 0, 0, 0, 3, 0, 0, 1, 0, 5, 5, 0 },
                 "Withstands lightnings, hail and volcanoes; impenetrable to everything but the claws of another dragon"));
 
         items.add(new Item("Holy Book", 94, new String[] { "Amulet" }, 80,
                 new int[] { 0, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
-                "Contains several teachings on how to live a good life; sadly, that's not what people use it for"));
+                "Contains several teachings on how to live a good life, sadly that's not what people use it for; gives you +6 heal"));
 
         items.add(new Item("Four Leaf Clover", 110, new String[] { "Amulet" }, 80,
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -1869,6 +1869,122 @@ public class Action {
         items.add(new Item("Alchemy Kit", 109, new String[] { "Amulet" }, 150,
                 new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
                 "All enemies have -2 of all DEF and -4 of all ATK"));
+
+        items.add(new Item("Helm of Hades", 131, new String[] { "Head" }, 300,
+                new int[] { 0, 8, 0, 0, 0, 1, 0, 0, 6, 1, 6, 0 },
+                "The king of the underworld wore this in the war against the titans"));
+
+        items.add(new Item("Pointy Hat", 128, new String[] { "Head" }, 80,
+                new int[] { 0, 0, 0, 9, 0, 0, 0, 0, 2, 0, 0, 1 },
+                "For witches and wizards who whish to look the part"));
+
+        items.add(new Item("Royal Crown", 142, new String[] { "Head" }, 250,
+                new int[] { 0, 0, 4, 2, 1, 0, 1, 0, 0, 0, 14, 0 },
+                "Made of gold and adorned with rubies and sapphires"));
+
+        items.add(new Item("Officer's Helmet", 129, new String[] { "Head" }, 80,
+                new int[] { 5, 0, 0, 0, 0, 1, 4, 0, 10, 10, 0, 0 },
+                "Protects the head from sword blows and arrows"));
+
+        items.add(new Item("Tonsure", 132, new String[] { "Head" }, 80,
+                new int[] { 0, 0, 8, 0, 1, 0, 0, 0, 0, 0, 2, 1 },
+                "Also known as the monk cut, the intentional baldness symbolizes humility"));
+
+        items.add(new Item("Dark Mask", 135, new String[] { "Head" }, 100,
+                new int[] { 0, 6, 1, 0, 0, 0, 0, 3, 0, 0, 6, 6 },
+                "Black as the night"));
+
+        items.add(new Item("Andromeda Cloak", 136, new String[] { "Body" }, 250,
+                new int[] { 0, 0, 0, 12, 0, 0, 2, 2, 1, 6, 0, 6 },
+                "Dark, but shining; black, but colourful; wizard's robes that look like the night sky"));
+
+        items.add(new Item("Ephod", 130, new String[] { "Body" }, 250,
+                new int[] { 1, 0, 8, 0, 0, 0, 0, 0, 0, 1, 2, 8 },
+                "Everything a priest needs to lead the people"));
+
+        items.add(new Item("Chestplate of Blood", 124, new String[] { "Body" }, 250,
+                new int[] { 6, 0, 0, 2, 0, 0, 3, 0, 10, 3, 10, 1 },
+                "No one's really sure what this is, all we know is it offers really good protection"));
+
+        items.add(new Item("Pilferer's Garb", 134, new String[] { "Body" }, 250,
+                new int[] { 0, 8, 0, 0, 0, 0, 0, 0, 0, 6, 2, 0 },
+                "Light and easy to move around in; covers your face and lets you get lost in the crowd"));
+
+        items.add(new Item("Ares' Greaves", 125, new String[] { "Feet" }, 300,
+                new int[] { 5, 0, 0, 0, 1, 1, 0, 0, 8, 8, 1, 0 },
+                "The god of war never loses a fight"));
+
+        items.add(new Item("Hermes' Winged Sandals", 123, new String[] { "Feet" }, 300,
+                new int[] { 0, 6, 0, 4, 0, 0, 2, 0, 0, 5, 5, 0 },
+                "Used by the messenger of the gods to fly to all the most distant corners of the world and beyond"));
+
+        items.add(new Item("Satyr Legs", 127, new String[] { "Feet" }, 300,
+                new int[] { 0, 0, 8, 8, 3, 0, 0, 0, 0, 0, 3, 2 },
+                "Goat legs"));
+
+        items.add(new Item("Two-Bladed Sword", 152, new String[] { "Weapon", "Quick" }, 80,
+                new int[] { 0, 2, 0, 0, 6, 0, 0, 0, 5, 0, 0, 0 },
+                "One sword to defend and attack; use blades on both sides"));
+
+        items.add(new Item("Greek Fire Cannon", 137, new String[] { "Weapon", "Magic", "Double-Handed", "Fire" }, 300,
+                new int[] { 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 0 },
+                "A giant ancient flamethrower; this actually exists, look it up"));
+
+        items.add(new Item("Head of a Sacrificed Goat", 150, new String[] { "Weapon", "Sacred" }, 300,
+                new int[] { 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                "The greater the sacrifice, the greater the favour"));
+
+        items.add(new Item("Dark Sword", 153, new String[] { "Weapon", "Brute", "Quick", "Sacred", "Magic" }, 300,
+                new int[] { 0, 0, 0, 0, 10, 10, 10, 10, 0, 0, 0, 0 },
+                "Absorbs all light that comes close, you can use it in any kind of basic attack"));
+
+        items.add(new Item("Poseidon's Trident", 127, new String[] { "Weapon", "Magic" }, 300,
+                new int[] { 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0 },
+                "Forged for the god of the sea"));
+
+        items.add(new Item("Prophet's Sword", 122, new String[] { "Weapon", "Brute" }, 100,
+                new int[] { 0, 0, 8, 0, 10, 0, 0, 0, 0, 0, 0, 0 },
+                "A great prophet long ago foretold of a curse that would come unto the land"));
+
+        items.add(new Item("Crossbow", 143, new String[] { "Weapon", "Quick", "Bow" }, 300,
+                new int[] { 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0 },
+                "Shoot from afar, avoiding counter attacks, thorns, spikes and such"));
+
+        items.add(new Item("Mirage Sword", 145, new String[] { "Weapon", "Sacred" }, 100,
+                new int[] { 0, 0, 5, 5, 0, 0, 11, 0, 0, 0, 0, 0 },
+                "Try to strike a tree with it and you'll see it has no physical blade"));
+
+        items.add(new Item("Zeus' Shield", 33, new String[] { "Shield" }, 300,
+                new int[] { 0, 0, 8, 0, 4, 1, 1, 0, 8, 2, 8, 0 },
+                "Magical shield used by the king of Olympus; few people have even seen it, let alone used it"));
+
+        items.add(new Item("Sai Dagger", 33, new String[] { "Shield" },300,
+                new int[] { 0, 0, 0, 0, 8, 8, 8, 8, 3, 0, 3, 0 },
+                "Special defensive daggers made to catch the enemy's sword"));
+
+        items.add(new Item("Dueling Shield", 121, new String[] { "Shield", "Double-Handed" }, 250,
+                new int[] { 0, 0, 0, 0, 8, 0, 0, 0, 12, 12, 12, 12 },
+                "Giant two-handed shield used to defend and attack"));
+
+        items.add(new Item("Dreamcatcher", 148, new String[] { "Amulet" }, 300,
+                new int[] { 0, 0, 0, 4, 0, 0, 1, 0, 0, 0, 0, 2 },
+                "Protects you from evil spirits and you heal 1 to 6 HP for every basic attack you do"));
+
+        items.add(new Item("Amulet of the Protective Spirit", 139, new String[] { "Amulet" }, 300,
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 1, 9, 9, 9, 9 },
+                "Some mystic being was trapped in this locket and now protects any who carries it"));
+
+        items.add(new Item("Cauldron", 147, new String[] { "Amulet" }, 100,
+                new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                "Brew some potions and do 6 poison damage for every MAG attack"));
+
+        items.add(new Item("Super Mega Powerful Item", 144, new String[] { "Amulet" }, 300,
+                new int[] { 3, 3, 3, 3, 5, 5, 5, 5, 0, 0, 0, 0 },
+                "It looks funky"));
+
+        items.add(new Item("Plate Scale", 154, new String[] { "Amulet" }, 300,
+                new int[] { 0, 0, 8, 8, 0, 0, 0, 0, 2, 2, 0, 0 },
+                "Justice is blind"));
     }
 
     public void addSpells(ArrayList<Spell> spells, Scanner scn) {

@@ -279,7 +279,8 @@ public abstract class Player {
                 rank = 97;
                 break;
             case 7:
-
+                minRank = rank;
+                rank = 128;
                 break;
         }
 
@@ -364,7 +365,7 @@ public abstract class Player {
     public void getMoney(int gold) {
         int newGold = 0;
         if (feet != null) {
-            newGold += feet.getId() == 21 ? (gold + 0.5) / 20 : gold;
+            newGold += feet.isItem(21) ? (gold + 0.5) / 20 : gold;
         }
         money += getClassName().equals("Thief") ? (gold + 0.5) / 4 + newGold : newGold;
     }
@@ -753,12 +754,12 @@ public abstract class Player {
 
     public void clover() {
         if (left != null && !dead) {
-            if (left.getId() == 110) {
+            if (left.isItem(110)) {
                 money += 5;
             }
         }
         if (right != null && !dead) {
-            if (right.getId() == 110) {
+            if (right.isItem(110)) {
                 money += 5;
             }
         }
@@ -767,7 +768,7 @@ public abstract class Player {
     public void alchemist(ArrayList<Player> fighters, boolean start) {
         int boost = start ? -2 : 2;
         if (left != null) {
-            if (left.getId() == 109) {
+            if (left.isItem(109)) {
                 for (Player enemy : fighters) {
                     if (enemy != this) {
                         bruATK += 2 * boost;
@@ -783,7 +784,7 @@ public abstract class Player {
             }
         }
         if (right != null) {
-            if (right.getId() == 109) {
+            if (right.isItem(109)) {
                 for (Player enemy : fighters) {
                     if (enemy != this) {
                         bruATK += 2 * boost;
@@ -808,6 +809,16 @@ public abstract class Player {
         if (feet != null) {
             damage(defender, (int) (Math.random() * 8) + 1);
         }
+        if (left != null) {
+            if (left.isItem(148)) {
+                healHP((int)(Math.random() * 6) + 1);
+            }
+        }
+        if (right != null) {
+            if (right.isItem(148)) {
+                healHP((int)(Math.random() * 6) + 1);
+            }
+        }
         damage(defender, dex + power + quiATK - defender.quiDEF);
     }
 
@@ -816,14 +827,30 @@ public abstract class Player {
     }
 
     public void magicAttack(Player defender, int power) {
+        boolean poison = true;
         damage(defender, it + power + magATK - defender.magDEF);
+        if (defender.body != null || defender.dead) {
+            if (defender.body.isItem(71)) {
+                poison = false;
+            }
+        }
+        if (left != null && poison) {
+            if (left.isItem(147)) {
+                damage(defender, 6);
+            }
+        }
+        if (right != null && poison) {
+            if (right.isItem(147)) {
+                damage(defender, 6);
+            }
+        }
     }
 
     public boolean preAttack(int d20, String type, boolean basic) {
         switch (type) {
             case "snow":
                 if (feet != null) {
-                    if (feet.getId() == 29) {
+                    if (feet.isItem(29)) {
                         bruATK += 2;
                         quiATK += 2;
                         sacATK += 2;
@@ -831,7 +858,7 @@ public abstract class Player {
                     }
                 }
                 if (left != null) {
-                    if (left.getId() == 63) {
+                    if (left.isItem(63)) {
                         bruATK += 6;
                         quiATK += 6;
                         sacATK += 6;
@@ -839,7 +866,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 63) {
+                    if (right.isItem(63)) {
                         bruATK += 6;
                         quiATK += 6;
                         sacATK += 6;
@@ -849,7 +876,7 @@ public abstract class Player {
                 break;
             case "fire":
                 if (head != null) {
-                    if (head.getId() == 105) {
+                    if (head.isItem(105)) {
                         bruATK += 2;
                         quiATK += 2;
                         sacATK += 2;
@@ -857,7 +884,7 @@ public abstract class Player {
                     }
                 }
                 if (left != null) {
-                    if (left.getId() == 46) {
+                    if (left.isItem(46)) {
                         bruATK += 5;
                         quiATK += 5;
                         sacATK += 5;
@@ -865,7 +892,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 46) {
+                    if (right.isItem(46)) {
                         bruATK += 5;
                         quiATK += 5;
                         sacATK += 5;
@@ -883,15 +910,15 @@ public abstract class Player {
                 }
             }
         }
-        if (left != null) {
-            if (left.getId() == 123) {
-                return false;
-            }
-        }
         bruATK -= freeze;
         quiATK -= freeze;
         sacATK -= freeze;
         magATK -= freeze;
+        if (left != null) {
+            if (left.isItem(143)) {
+                return false;
+            }
+        }
         return true;
     }
 
@@ -900,7 +927,7 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (feet != null) {
-                    if (feet.getId() == 29) {
+                    if (feet.isItem(29)) {
                         bruATK -= 2;
                         quiATK -= 2;
                         sacATK -= 2;
@@ -908,7 +935,7 @@ public abstract class Player {
                     }
                 }
                 if (left != null) {
-                    if (left.getId() == 63) {
+                    if (left.isItem(63)) {
                         bruATK -= 6;
                         quiATK -= 6;
                         sacATK -= 6;
@@ -916,7 +943,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 63) {
+                    if (right.isItem(63)) {
                         bruATK -= 6;
                         quiATK -= 6;
                         sacATK -= 6;
@@ -926,7 +953,7 @@ public abstract class Player {
                 break;
             case "fire":
                 if (head != null) {
-                    if (head.getId() == 105) {
+                    if (head.isItem(105)) {
                         bruATK -= 2;
                         quiATK -= 2;
                         sacATK -= 2;
@@ -934,7 +961,7 @@ public abstract class Player {
                     }
                 }
                 if (left != null) {
-                    if (left.getId() == 46) {
+                    if (left.isItem(46)) {
                         bruATK -= 5;
                         quiATK -= 5;
                         sacATK -= 5;
@@ -942,7 +969,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 46) {
+                    if (right.isItem(46)) {
                         bruATK -= 5;
                         quiATK -= 5;
                         sacATK -= 5;
@@ -959,23 +986,23 @@ public abstract class Player {
             }
         }
         if (defender.body != null) {
-            if (defender.body.getId() == 71) {
+            if (defender.body.isItem(71)) {
                 poison = false;
             }
         }
         if (left != null && poison) {
-            if (left.getId() == 4) {
+            if (left.isItem(4)) {
                 damage(defender, 1);
             }
         }
         if (right != null && poison) {
-            if (right.getId() == 4) {
+            if (right.isItem(4)) {
                 damage(defender, 1);
-            } else if (right.getId() == 66) {
+            } else if (right.isItem(66)) {
                 damage(defender, 8);
             }
             if (body != null) {
-                if (body.getId() == 68 && right.getType().contains("Bow")) {
+                if (body.isItem(68) && right.getType().contains("Bow")) {
                     damage(defender, 8);
                 }
             }
@@ -993,7 +1020,7 @@ public abstract class Player {
             case "snow":
                 freeze(2);
                 if (body != null) {
-                    if (body.getId() == 97) {
+                    if (body.isItem(97)) {
                         bruDEF += 2;
                         quiDEF += 2;
                         sacDEF += 2;
@@ -1001,7 +1028,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 99) {
+                    if (right.isItem(99)) {
                         bruDEF += 10;
                         quiDEF += 10;
                         sacDEF += 10;
@@ -1011,7 +1038,7 @@ public abstract class Player {
                 break;
             case "fire":
                 if (body != null) {
-                    if (body.getId() == 96) {
+                    if (body.isItem(96)) {
                         bruDEF += 2;
                         quiDEF += 2;
                         sacDEF += 2;
@@ -1019,7 +1046,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 99) {
+                    if (right.isItem(99)) {
                         bruDEF += 10;
                         quiDEF += 10;
                         sacDEF += 10;
@@ -1035,7 +1062,7 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (body != null) {
-                    if (body.getId() == 97) {
+                    if (body.isItem(97)) {
                         bruDEF -= 2;
                         quiDEF -= 2;
                         sacDEF -= 2;
@@ -1043,7 +1070,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 99) {
+                    if (right.isItem(99)) {
                         bruDEF -= 10;
                         quiDEF -= 10;
                         sacDEF -= 10;
@@ -1053,7 +1080,7 @@ public abstract class Player {
                 break;
             case "fire":
                 if (body != null) {
-                    if (body.getId() == 96) {
+                    if (body.isItem(96)) {
                         bruDEF -= 2;
                         quiDEF -= 2;
                         sacDEF -= 2;
@@ -1061,7 +1088,7 @@ public abstract class Player {
                     }
                 }
                 if (right != null) {
-                    if (right.getId() == 99) {
+                    if (right.isItem(99)) {
                         bruDEF -= 10;
                         quiDEF -= 10;
                         sacDEF -= 10;
@@ -1083,20 +1110,20 @@ public abstract class Player {
             }
         }
         if (attacker.body != null) {
-            if (attacker.body.getId() == 71) {
+            if (attacker.body.isItem(71)) {
                 poison = false;
             }
         }
         if (left != null && basic == 1 && counter) {
-            if (left.getId() == 24) {
+            if (left.isItem(24)) {
                 damage(attacker, 2);
             }
         }
         if (right != null && counter) {
-            if (basic == 1 && right.getId() == 24) {
+            if (basic == 1 && right.isItem(24)) {
                 damage(attacker, 2);
             }
-            if (poison && right.getId() == 104) {
+            if (poison && right.isItem(104)) {
                 damage(attacker, 6);
             }
         }
