@@ -316,8 +316,6 @@ public abstract class Player {
                     break;
                 } else if (spell.getLevel() != 5) {
                     break;
-                } else if (spell == spells[5]) {
-                    return;
                 }
             }
             if (spells[0] != null) {
@@ -364,9 +362,7 @@ public abstract class Player {
 
     public void getMoney(int gold) {
         int newGold = 0;
-        if (feet != null) {
-            newGold += feet.isItem(21) ? (gold + 0.5) / 20 : gold;
-        }
+        newGold += isItem(feet, 21) ? (gold + 0.5) / 20 : gold;
         money += getClassName().equals("Thief") ? (gold + 0.5) / 4 + newGold : newGold;
     }
 
@@ -753,13 +749,8 @@ public abstract class Player {
     }
 
     public void clover() {
-        if (left != null && !dead) {
-            if (left.isItem(110)) {
-                money += 5;
-            }
-        }
-        if (right != null && !dead) {
-            if (right.isItem(110)) {
+        if (!dead) {
+            if (isItem(left, 110) || isItem(right, 110)) {
                 money += 5;
             }
         }
@@ -767,35 +758,17 @@ public abstract class Player {
 
     public void alchemist(ArrayList<Player> fighters, boolean start) {
         int boost = start ? -2 : 2;
-        if (left != null) {
-            if (left.isItem(109)) {
-                for (Player enemy : fighters) {
-                    if (enemy != this) {
-                        bruATK += 2 * boost;
-                        quiATK += 2 * boost;
-                        sacATK += 2 * boost;
-                        magATK += 2 * boost;
-                        bruDEF += boost;
-                        quiDEF += boost;
-                        sacDEF += boost;
-                        magDEF += boost;
-                    }
-                }
-            }
-        }
-        if (right != null) {
-            if (right.isItem(109)) {
-                for (Player enemy : fighters) {
-                    if (enemy != this) {
-                        bruATK += 2 * boost;
-                        quiATK += 2 * boost;
-                        sacATK += 2 * boost;
-                        magATK += 2 * boost;
-                        bruDEF += boost;
-                        quiDEF += boost;
-                        sacDEF += boost;
-                        magDEF += boost;
-                    }
+        if (isItem(left, 109) || isItem(right, 109)) {
+            for (Player enemy : fighters) {
+                if (enemy != this) {
+                    bruATK += 2 * boost;
+                    quiATK += 2 * boost;
+                    sacATK += 2 * boost;
+                    magATK += 2 * boost;
+                    bruDEF += boost;
+                    quiDEF += boost;
+                    sacDEF += boost;
+                    magDEF += boost;
                 }
             }
         }
@@ -806,20 +779,13 @@ public abstract class Player {
     }
 
     public void quickAttack(Player defender, int power) {
-        if (feet != null) {
-            damage(defender, (int) (Math.random() * 8) + 1);
-        }
-        if (left != null) {
-            if (left.isItem(148)) {
-                healHP((int)(Math.random() * 6) + 1);
-            }
-        }
-        if (right != null) {
-            if (right.isItem(148)) {
-                healHP((int)(Math.random() * 6) + 1);
-            }
+        if (isItem(left, 148) || isItem(right, 148)) {
+            healHP((int) (Math.random() * 6) + 1);
         }
         damage(defender, dex + power + quiATK - defender.quiDEF);
+        if (isItem(feet, 111) && !defender.dead) {
+            damage(defender, (int) (Math.random() * 8) + 1);
+        }
     }
 
     public void sacredAttack(Player defender, int power) {
@@ -827,184 +793,105 @@ public abstract class Player {
     }
 
     public void magicAttack(Player defender, int power) {
-        boolean poison = true;
         damage(defender, it + power + magATK - defender.magDEF);
-        if (defender.body != null || defender.dead) {
-            if (defender.body.isItem(71)) {
-                poison = false;
-            }
-        }
-        if (left != null && poison) {
-            if (left.isItem(147)) {
-                damage(defender, 6);
-            }
-        }
-        if (right != null && poison) {
-            if (right.isItem(147)) {
-                damage(defender, 6);
-            }
+        if ((isItem(left, 147) || isItem(right, 147)) && !defender.isItem(body, 71) && !defender.dead) {
+            damage(defender, 6);
         }
     }
 
     public boolean preAttack(int d20, String type, boolean basic) {
         switch (type) {
             case "snow":
-                if (feet != null) {
-                    if (feet.isItem(29)) {
-                        bruATK += 2;
-                        quiATK += 2;
-                        sacATK += 2;
-                        magATK += 2;
-                    }
+                if (isItem(feet, 29)) {
+                    bruATK += 2;
+                    quiATK += 2;
+                    sacATK += 2;
+                    magATK += 2;
                 }
-                if (left != null) {
-                    if (left.isItem(63)) {
-                        bruATK += 6;
-                        quiATK += 6;
-                        sacATK += 6;
-                        magATK += 6;
-                    }
-                }
-                if (right != null) {
-                    if (right.isItem(63)) {
-                        bruATK += 6;
-                        quiATK += 6;
-                        sacATK += 6;
-                        magATK += 6;
-                    }
+                if (isItem(left, 63) || isItem(right, 63)) {
+                    bruATK += 6;
+                    quiATK += 6;
+                    sacATK += 6;
+                    magATK += 6;
                 }
                 break;
             case "fire":
-                if (head != null) {
-                    if (head.isItem(105)) {
-                        bruATK += 2;
-                        quiATK += 2;
-                        sacATK += 2;
-                        magATK += 2;
-                    }
+                if (isItem(head, 105)) {
+                    bruATK += 2;
+                    quiATK += 2;
+                    sacATK += 2;
+                    magATK += 2;
                 }
-                if (left != null) {
-                    if (left.isItem(46)) {
-                        bruATK += 5;
-                        quiATK += 5;
-                        sacATK += 5;
-                        magATK += 5;
-                    }
-                }
-                if (right != null) {
-                    if (right.isItem(46)) {
-                        bruATK += 5;
-                        quiATK += 5;
-                        sacATK += 5;
-                        magATK += 5;
-                    }
+                if (isItem(left, 46) || isItem(right, 46)) {
+                    bruATK += 5;
+                    quiATK += 5;
+                    sacATK += 5;
+                    magATK += 5;
                 }
                 break;
         }
         for (Spell spell : spells) {
-            if (spell != null) {
-                if (spell.getName().equals("Aura")) {
-                    healHP(spell.getLevel() * 6);
-                } else if (spell.getName().equals("Blessing")) {
-                    healMP(spell.getLevel() * 6);
-                }
+            if (isSpell(spell, "Aura")) {
+                healHP(spell.getLevel() * 6);
+            } else if (isSpell(spell, "Sorcerer's Blessing")) {
+                healMP(spell.getLevel() * 6);
             }
         }
         bruATK -= freeze;
         quiATK -= freeze;
         sacATK -= freeze;
         magATK -= freeze;
-        if (left != null) {
-            if (left.isItem(143)) {
-                return false;
-            }
+        if (isItem(left, 143)) {
+            return false;
         }
         return true;
     }
 
     public int postAttack(Player defender, String type, boolean basic, int current) {
-        boolean poison = true;
         switch (type) {
             case "snow":
-                if (feet != null) {
-                    if (feet.isItem(29)) {
-                        bruATK -= 2;
-                        quiATK -= 2;
-                        sacATK -= 2;
-                        magATK -= 2;
-                    }
+                if (isItem(feet, 29)) {
+                    bruATK -= 2;
+                    quiATK -= 2;
+                    sacATK -= 2;
+                    magATK -= 2;
                 }
-                if (left != null) {
-                    if (left.isItem(63)) {
-                        bruATK -= 6;
-                        quiATK -= 6;
-                        sacATK -= 6;
-                        magATK -= 6;
-                    }
-                }
-                if (right != null) {
-                    if (right.isItem(63)) {
-                        bruATK -= 6;
-                        quiATK -= 6;
-                        sacATK -= 6;
-                        magATK -= 6;
-                    }
+                if (isItem(left, 63) || isItem(right, 63)) {
+                    bruATK -= 6;
+                    quiATK -= 6;
+                    sacATK -= 6;
+                    magATK -= 6;
                 }
                 break;
             case "fire":
-                if (head != null) {
-                    if (head.isItem(105)) {
-                        bruATK -= 2;
-                        quiATK -= 2;
-                        sacATK -= 2;
-                        magATK -= 2;
-                    }
+                if (isItem(head, 105)) {
+                    bruATK -= 2;
+                    quiATK -= 2;
+                    sacATK -= 2;
+                    magATK -= 2;
                 }
-                if (left != null) {
-                    if (left.isItem(46)) {
-                        bruATK -= 5;
-                        quiATK -= 5;
-                        sacATK -= 5;
-                        magATK -= 5;
-                    }
-                }
-                if (right != null) {
-                    if (right.isItem(46)) {
-                        bruATK -= 5;
-                        quiATK -= 5;
-                        sacATK -= 5;
-                        magATK -= 5;
-                    }
+                if (isItem(left, 46) || isItem(right, 46)) {
+                    bruATK -= 5;
+                    quiATK -= 5;
+                    sacATK -= 5;
+                    magATK -= 5;
                 }
                 break;
         }
         for (Spell spell : spells) {
-            if (spell != null) {
-                if (spell.getName().equals("Freezing Attacks")) {
-                    defender.freeze(spell.getLevel() * 6);
-                }
+            if (isSpell(spell, "Freezing Attacks")) {
+                defender.freeze(spell.getLevel() * 6);
             }
         }
-        if (defender.body != null) {
-            if (defender.body.isItem(71)) {
-                poison = false;
-            }
-        }
-        if (left != null && poison) {
-            if (left.isItem(4)) {
+        if (!defender.isItem(body, 71) && !defender.dead) {
+            if (isItem(left, 4) || isItem(right, 4)) {
                 damage(defender, 1);
             }
-        }
-        if (right != null && poison) {
-            if (right.isItem(4)) {
-                damage(defender, 1);
-            } else if (right.isItem(66)) {
+            if (isItem(right, 66)) {
                 damage(defender, 8);
             }
-            if (body != null) {
-                if (body.isItem(68) && right.getType().contains("Bow")) {
-                    damage(defender, 8);
-                }
+            if (isItem(body, 68) && right.getType().contains("Bow")) {
+                damage(defender, 8);
             }
         }
         bruATK += freeze;
@@ -1019,113 +906,82 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 freeze(2);
-                if (body != null) {
-                    if (body.isItem(97)) {
-                        bruDEF += 2;
-                        quiDEF += 2;
-                        sacDEF += 2;
-                        magDEF += 2;
-                    }
+                if (isItem(body, 97)) {
+                    bruDEF += 4;
+                    quiDEF += 4;
+                    sacDEF += 4;
+                    magDEF += 4;
                 }
-                if (right != null) {
-                    if (right.isItem(99)) {
-                        bruDEF += 10;
-                        quiDEF += 10;
-                        sacDEF += 10;
-                        magDEF += 10;
-                    }
+                if (isItem(right, 99)) {
+                    bruDEF += 10;
+                    quiDEF += 10;
+                    sacDEF += 10;
+                    magDEF += 10;
                 }
                 break;
             case "fire":
-                if (body != null) {
-                    if (body.isItem(96)) {
-                        bruDEF += 2;
-                        quiDEF += 2;
-                        sacDEF += 2;
-                        magDEF += 2;
-                    }
+                if (isItem(body, 96)) {
+                    bruDEF += 4;
+                    quiDEF += 4;
+                    sacDEF += 4;
+                    magDEF += 4;
                 }
-                if (right != null) {
-                    if (right.isItem(99)) {
-                        bruDEF += 10;
-                        quiDEF += 10;
-                        sacDEF += 10;
-                        magDEF += 10;
-                    }
+                if (isItem(right, 99)) {
+                    bruDEF += 10;
+                    quiDEF += 10;
+                    sacDEF += 10;
+                    magDEF += 10;
                 }
                 break;
         }
     }
 
     public void postDefend(Player attacker, int basic, String type, boolean counter) {
-        boolean poison = true;
         switch (type) {
             case "snow":
-                if (body != null) {
-                    if (body.isItem(97)) {
-                        bruDEF -= 2;
-                        quiDEF -= 2;
-                        sacDEF -= 2;
-                        magDEF -= 2;
-                    }
+                if (isItem(body, 97)) {
+                    bruDEF -= 4;
+                    quiDEF -= 4;
+                    sacDEF -= 4;
+                    magDEF -= 4;
                 }
-                if (right != null) {
-                    if (right.isItem(99)) {
-                        bruDEF -= 10;
-                        quiDEF -= 10;
-                        sacDEF -= 10;
-                        magDEF -= 10;
-                    }
+                if (isItem(right, 99)) {
+                    bruDEF -= 10;
+                    quiDEF -= 10;
+                    sacDEF -= 10;
+                    magDEF -= 10;
                 }
                 break;
             case "fire":
-                if (body != null) {
-                    if (body.isItem(96)) {
-                        bruDEF -= 2;
-                        quiDEF -= 2;
-                        sacDEF -= 2;
-                        magDEF -= 2;
-                    }
+                if (isItem(body, 96)) {
+                    bruDEF -= 4;
+                    quiDEF -= 4;
+                    sacDEF -= 4;
+                    magDEF -= 4;
                 }
-                if (right != null) {
-                    if (right.isItem(99)) {
-                        bruDEF -= 10;
-                        quiDEF -= 10;
-                        sacDEF -= 10;
-                        magDEF -= 10;
-                    }
+                if (isItem(right, 99)) {
+                    bruDEF -= 10;
+                    quiDEF -= 10;
+                    sacDEF -= 10;
+                    magDEF -= 10;
                 }
                 break;
         }
         for (Spell spell : spells) {
-            if (spell != null) {
-                if (spell.getName().equals("Thorns") && (basic == 0 || basic == 1)) {
-                    damage(attacker, spell.getLevel() * 6);
-                } else if (spell.getName().equals("Reflective Skin") && (basic == 2 || basic == 3)) {
-                    damage(attacker, spell.getLevel() * 6);
-                }
+            if (isSpell(spell, "Thorns") && (basic == 0 || basic == 1)) {
+                damage(attacker, spell.getLevel() * 6);
+            } else if (isSpell(spell, "Reflective Skin") && (basic == 2 || basic == 3)) {
+                damage(attacker, spell.getLevel() * 6);
             }
             if (attacker.dead) {
                 return;
             }
         }
-        if (attacker.body != null) {
-            if (attacker.body.isItem(71)) {
-                poison = false;
-            }
+        if ((isItem(left, 24) || isItem(right, 24)) && basic == 1 && counter) {
+            damage(attacker, 2);
         }
-        if (left != null && basic == 1 && counter) {
-            if (left.isItem(24)) {
-                damage(attacker, 2);
-            }
-        }
-        if (right != null && counter) {
-            if (basic == 1 && right.isItem(24)) {
-                damage(attacker, 2);
-            }
-            if (poison && right.isItem(104)) {
-                damage(attacker, 6);
-            }
+        if (isItem(right, 104) && counter && !attacker.isItem(body, 71) && !attacker.dead) {
+            damage(attacker, 6);
         }
     }
 
@@ -1148,5 +1004,19 @@ public abstract class Player {
             bruATK = quiATK = sacATK = magATK = 5;
         }
 
+    }
+
+    private boolean isItem(Item item, int id) {
+        if (item == null) {
+            return false;
+        }
+        return item.isItem(id);
+    }
+
+    public boolean isSpell(Spell spell, String id) {
+        if (spell == null) {
+            return false;
+        }
+        return spell.getName().equals(id);
     }
 }

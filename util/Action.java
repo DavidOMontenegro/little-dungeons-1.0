@@ -23,7 +23,7 @@ public class Action {
         if (player.getClassName().equals("Wizard")) {
             player.healMP(25);
         }
-        
+
         player.clover();
     }
 
@@ -33,15 +33,13 @@ public class Action {
         System.out.println("Final Preparations");
         for (Player player : fighters) {
             for (Spell spell : player.getSpells()) {
-                if (spell != null) {
-                    if (spell.getName().equals("Intimidating Presence")) {
-                        for (Player enemy : fighters) {
-                            if (enemy != player) {
-                                enemy.effect("bruATK", -5);
-                                enemy.effect("quiATK", -5);
-                                enemy.effect("sacATK", -5);
-                                enemy.effect("magATK", -5);
-                            }
+                if (player.isSpell(spell, "Intimidating Presence")) {
+                    for (Player enemy : fighters) {
+                        if (enemy != player) {
+                            enemy.effect("bruATK", -5);
+                            enemy.effect("quiATK", -5);
+                            enemy.effect("sacATK", -5);
+                            enemy.effect("magATK", -5);
                         }
                     }
                 }
@@ -64,15 +62,13 @@ public class Action {
         for (Player player : fighters) {
             player.revive();
             for (Spell spell : player.getSpells()) {
-                if (spell != null) {
-                    if (spell.getName().equals("Intimidating Presence")) {
-                        for (Player enemy : fighters) {
-                            if (enemy != player) {
-                                enemy.effect("bruATK", 5);
-                                enemy.effect("quiATK", 5);
-                                enemy.effect("sacATK", 5);
-                                enemy.effect("magATK", 5);
-                            }
+                if (player.isSpell(spell, "Intimidating Presence")) {
+                    for (Player enemy : fighters) {
+                        if (enemy != player) {
+                            enemy.effect("bruATK", 5);
+                            enemy.effect("quiATK", 5);
+                            enemy.effect("sacATK", 5);
+                            enemy.effect("magATK", 5);
                         }
                     }
                 }
@@ -1958,7 +1954,7 @@ public class Action {
                 new int[] { 0, 0, 8, 0, 4, 1, 1, 0, 8, 2, 8, 0 },
                 "Magical shield used by the king of Olympus; few people have even seen it, let alone used it"));
 
-        items.add(new Item("Sai Dagger", 33, new String[] { "Shield" },300,
+        items.add(new Item("Sai Dagger", 33, new String[] { "Shield" }, 300,
                 new int[] { 0, 0, 0, 0, 8, 8, 8, 8, 3, 0, 3, 0 },
                 "Special defensive daggers made to catch the enemy's sword"));
 
