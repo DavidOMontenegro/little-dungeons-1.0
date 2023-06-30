@@ -87,7 +87,7 @@ public class LittleDungeons {
             System.out.println("What is player " + i + "'s name?");
             String name = myScanner.nextLine();
             System.out.println("And what is " + name
-                    + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizardn\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
+                    + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizard\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
             while (!selected) {
                 switch (myScanner.nextLine()) {
                     case "1":
