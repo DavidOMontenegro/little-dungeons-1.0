@@ -107,6 +107,9 @@ public class Item {
             default:
                 break;
         }
+        if (type.contains("Bow") && player.getClassName().equals("Archer")) {
+            player.effect("mp", 10);
+        }
     }
 
     public void takeOff(Player player) {

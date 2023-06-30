@@ -87,7 +87,7 @@ public class LittleDungeons {
             System.out.println("What is player " + i + "'s name?");
             String name = myScanner.nextLine();
             System.out.println("And what is " + name
-                    + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizard\n5- Monk\n6- Dark Knight\n7- Paladin\n8- Warlock\n9- Captain\n10- Inquisitor\n11- Ninja\n12- Pyromancer\n13- Thief");
+                    + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizardn\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
             while (!selected) {
                 switch (myScanner.nextLine()) {
                     case "1":
@@ -107,38 +107,42 @@ public class LittleDungeons {
                         selected = true;
                         break;
                     case "5":
-                        players.add(new Monk(name));
+                        players.add(new Archer(name));
                         selected = true;
                         break;
                     case "6":
-                        players.add(new Knight(name));
+                        players.add(new Monk(name));
                         selected = true;
                         break;
                     case "7":
-                        players.add(new Paladin(name));
+                        players.add(new Knight(name));
                         selected = true;
                         break;
                     case "8":
-                        players.add(new Warlock(name));
+                        players.add(new Paladin(name));
                         selected = true;
                         break;
                     case "9":
-                        players.add(new Captain(name));
+                        players.add(new Warlock(name));
                         selected = true;
                         break;
                     case "10":
-                        players.add(new Inquisitor(name));
+                        players.add(new Captain(name));
                         selected = true;
                         break;
                     case "11":
-                        players.add(new Ninja(name));
+                        players.add(new Inquisitor(name));
                         selected = true;
                         break;
                     case "12":
-                        players.add(new Pyromancer(name));
+                        players.add(new Ninja(name));
                         selected = true;
                         break;
                     case "13":
+                        players.add(new Pyromancer(name));
+                        selected = true;
+                        break;
+                    case "14":
                         players.add(new Thief(name));
                         selected = true;
                         break;
@@ -171,7 +175,7 @@ public class LittleDungeons {
                         name = myScanner.nextLine();
                         id--;
                         System.out.println("And what is " + name
-                                + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizard\n5- Dark Knight\n6- Paladin\n7- Warlock\n8- Captain\n9- Inquisitor\n10- Ninja\n11- Pyromancer");
+                                + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizardn\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
                         while (!selected) {
                             switch (myScanner.nextLine()) {
                                 case "1":
@@ -191,37 +195,41 @@ public class LittleDungeons {
                                     selected = true;
                                     break;
                                 case "5":
-                                    players.set(id, new Monk(name));
+                                    players.set(id, new Archer(name));
                                     selected = true;
                                     break;
                                 case "6":
-                                    players.set(id, new Knight(name));
+                                    players.set(id, new Monk(name));
                                     selected = true;
                                     break;
                                 case "7":
-                                    players.set(id, new Paladin(name));
+                                    players.set(id, new Knight(name));
                                     selected = true;
                                     break;
                                 case "8":
-                                    players.set(id, new Warlock(name));
+                                    players.set(id, new Paladin(name));
                                     selected = true;
                                     break;
                                 case "9":
-                                    players.set(id, new Captain(name));
+                                    players.set(id, new Warlock(name));
                                     selected = true;
                                     break;
                                 case "10":
+                                    players.set(id, new Captain(name));
+                                    selected = true;
+                                    break;
+                                case "11":
                                     players.set(id, new Inquisitor(name));
                                     selected = true;
-                                case "11":
+                                case "12":
                                     players.set(id, new Ninja(name));
                                     selected = true;
                                     break;
-                                case "12":
+                                case "13":
                                     players.set(id, new Pyromancer(name));
                                     selected = true;
                                     break;
-                                case "13":
+                                case "14":
                                     players.set(id, new Thief(name));
                                     selected = true;
                                     break;
