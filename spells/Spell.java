@@ -73,7 +73,7 @@ public class Spell {
         System.out.println("\n" + name + " (" + String.join(", ", type) + ")" + "  Price: " + price + "\nLVL: "
                 + (shop ? level + 1 : level)
                 + (type.get(0).equals("Active") ? "   MP: " + (mpCost + (shop ? baseCost : 0)
-                        - (player.getClassName().equals("Priest") && level == 0 ? 15 : 0)) : "")
+                        - (player.getClassName().equals("Priest") && level == 0 && type.contains("Heal") ? 15 : 0)) : "")
                 + "\n\n" + thisDesc + "\n");
     }
 
