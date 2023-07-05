@@ -36,10 +36,10 @@ public class Action {
                 if (player.isSpell(spell, "Intimidating Presence")) {
                     for (Player enemy : fighters) {
                         if (enemy != player) {
-                            enemy.effect("bruATK", -5);
-                            enemy.effect("quiATK", -5);
-                            enemy.effect("sacATK", -5);
-                            enemy.effect("magATK", -5);
+                            enemy.effect("bruATK", -5 * spell.getLevel());
+                            enemy.effect("quiATK", -5 * spell.getLevel());
+                            enemy.effect("sacATK", -5 * spell.getLevel());
+                            enemy.effect("magATK", -5 * spell.getLevel());
                         }
                     }
                 }
@@ -65,10 +65,10 @@ public class Action {
                 if (player.isSpell(spell, "Intimidating Presence")) {
                     for (Player enemy : fighters) {
                         if (enemy != player) {
-                            enemy.effect("bruATK", 5);
-                            enemy.effect("quiATK", 5);
-                            enemy.effect("sacATK", 5);
-                            enemy.effect("magATK", 5);
+                            enemy.effect("bruATK", 5 * spell.getLevel());
+                            enemy.effect("quiATK", 5 * spell.getLevel());
+                            enemy.effect("sacATK", 5 * spell.getLevel());
+                            enemy.effect("magATK", 5 * spell.getLevel());
                         }
                     }
                 }
