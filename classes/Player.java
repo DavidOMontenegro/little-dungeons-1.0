@@ -633,18 +633,18 @@ public abstract class Player {
             magATK += 8;
         }
 
-        String s = str > 9 ? str + " " : " " + str + " ";
-        String d = dex > 9 ? dex + " " : " " + dex + " ";
-        String w = wis > 9 ? wis + " " : " " + wis + " ";
-        String i = it > 9 ? it + " " : " " + it;
-        String ba = bruATK > 9 ? bruATK + " " : " " + bruATK + " ";
-        String qa = quiATK > 9 ? quiATK + " " : " " + quiATK + " ";
-        String sa = sacATK > 9 ? sacATK + " " : " " + sacATK + " ";
-        String ma = magATK > 9 ? magATK + " " : " " + magATK;
-        String bd = bruDEF > 9 ? bruDEF + " " : " " + bruDEF + " ";
-        String qd = quiDEF > 9 ? quiDEF + " " : " " + quiDEF + " ";
-        String sd = sacDEF > 9 ? sacDEF + " " : " " + sacDEF + " ";
-        String md = magDEF > 9 ? magDEF + " " : " " + magDEF;
+        String s = str > 9 || str < 0 ? str + (str < -9 ? "" : " ") : " " + str + " ";
+        String d = dex > 9 || dex < 0 ? dex + (dex < -9 ? "" : " ") : " " + dex + " ";
+        String w = wis > 9 || wis < 0 ? wis + (wis < -9 ? "" : " ") : " " + wis + " ";
+        String i = it > 9 || it < 0 ? it + (it < -9 ? "" : " ") : " " + it;
+        String ba = bruATK > 9 || bruATK < 0 ? bruATK + (bruATK < -9 ? "" : " ") : " " + bruATK + " ";
+        String qa = quiATK > 9 || quiATK < 0 ? quiATK + (quiATK < -9 ? "" : " ") : " " + quiATK + " ";
+        String sa = sacATK > 9 || sacATK < 0 ? sacATK + (sacATK < -9 ? "" : " ") : " " + sacATK + " ";
+        String ma = magATK > 9 || magATK < 0 ? magATK + (magATK < -9 ? "" : " ") : " " + magATK;
+        String bd = bruDEF > 9 || bruDEF < 0 ? bruDEF + (bruDEF < -9 ? "" : " ") : " " + bruDEF + " ";
+        String qd = quiDEF > 9 || quiDEF < 0 ? quiDEF + (quiDEF < -9 ? "" : " ") : " " + quiDEF + " ";
+        String sd = sacDEF > 9 || sacDEF < 0 ? sacDEF + (sacDEF < -9 ? "" : " ") : " " + sacDEF + " ";
+        String md = magDEF > 9 || magDEF < 0 ? magDEF + (magDEF < -9 ? "" : " ") : " " + magDEF;
         System.out.printf(
                 "\n%s (%s) - %d/%dHP  %d/%dMP\nLVL: %d   Trophies: %d\n STR | DEX | WIS | INT  Base Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Attack Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Defense Stats\n %s | %s | %s | %s\n\nGold: %d\n",
                 name, getClassName(), hp, totalhp, mp, totalmp, level, trophies, s, d, w, i, ba, qa, sa, ma, bd, qd, sd,
