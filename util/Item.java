@@ -8,17 +8,16 @@ import classes.Player;
 public class Item {
     int id;
     String name;
-    String desc;
+    ArrayList<String> desc;
     ArrayList<String> type;
     int price;
     int str, dex, wis, it;
     int bruATK, quiATK, sacATK, magATK;
     int bruDEF, quiDEF, sacDEF, magDEF;
 
-    public Item(String itemName, int itemId, String[] itemType, int itemPrice, int[] stats, String spellDesc) {
+    public Item(String itemName, int itemId, String[] itemType, int itemPrice, int[] stats, String[] spellDesc) {
         id = itemId;
         name = itemName;
-        desc = spellDesc;
         price = itemPrice;
         str = stats[0];
         dex = stats[1];
@@ -32,6 +31,8 @@ public class Item {
         quiDEF = stats[9];
         sacDEF = stats[10];
         magDEF = stats[11];
+        desc = new ArrayList<>();
+        desc.addAll(Arrays.asList(spellDesc));
         type = new ArrayList<>();
         type.addAll(Arrays.asList(itemType));
     }
@@ -68,7 +69,7 @@ public class Item {
 
         System.out.printf("\n" + name + "     Price: " + price
                 + "\n( " + String.join(", ", type) + " )\n\nSTR: %s BRUATK: %s BRUDEF: %s\nDEX: %s QUIATK: %s QUIDEF: %s\nWIS: %s SACATK: %s SACDEF: %s\nINT: %s MAGATK: %s MAGDEF: %s\n\n%s\n\n",
-                s, ba, bd, d, qa, qd, w, sa, sd, i, ma, md, desc);
+                s, ba, bd, d, qa, qd, w, sa, sd, i, ma, md, desc.get((int) (Math.random() * desc.size())));
     }
 
     public void putOn(Player player) {
