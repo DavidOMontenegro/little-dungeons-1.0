@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -16,6 +18,13 @@ public class Freeze extends Spell {
                         "75 MAG damage + INT and gives enemy 20 freeze" },
                 new String[] { "Active", "Magic", "Snow" }, 50, 30);
         scan = scanner;
+    }
+    public Freeze(JSONObject saved) {
+        super(saved,
+                new String[] { "15 MAG damage + INT and gives enemy 4 freeze", "30 MAG damage + INT and gives enemy 8 freeze",
+                        "45 MAG damage + INT and gives enemy 12 freeze", "60 MAG damage + INT and gives enemy 16 freeze",
+                        "75 MAG damage + INT and gives enemy 20 freeze" },
+                new String[] { "Active", "Magic", "Snow" }, 30);
     }
 
     @Override

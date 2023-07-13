@@ -1,8 +1,17 @@
 package classes;
 
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import util.Item;
+
 public class Inquisitor extends Player {
     public Inquisitor(String name) {
         super(name, 60, 50, 1, 0, 1, 0);
+    }
+    public Inquisitor(JSONObject saved, ArrayList<Item> items) {
+        super(saved, items);
     }
 
     @Override

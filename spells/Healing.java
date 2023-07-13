@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -15,6 +17,12 @@ public class Healing extends Spell {
                         "Heal someone 70 HP + WIS", "Heal someone 85 HP + WIS" },
                 new String[] { "Active", "Heal" }, 50, 25);
         scan = scanner;
+    }
+    public Healing(JSONObject saved) {
+        super(saved,
+                new String[] { "Heal someone 25 HP + WIS", "Heal someone 40 HP + WIS", "Heal someone 55 HP + WIS",
+                        "Heal someone 70 HP + WIS", "Heal someone 85 HP + WIS" },
+                new String[] { "Active", "Heal" }, 25);
     }
 
     @Override

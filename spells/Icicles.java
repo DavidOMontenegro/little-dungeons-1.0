@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -18,6 +20,15 @@ public class Icicles extends Spell {
                         "Shoots five icicles doing 10 MAG damage + INT and giving enemy 3 freeze each" },
                 new String[] { "Active", "Magic", "Snow" }, 50, 30);
         scan = scanner;
+    }
+    public Icicles(JSONObject saved) {
+        super(saved,
+                new String[] { "Shoots an icicle doing 10 MAG damage + INT and giving enemy 3 freeze",
+                        "Shoots two icicles doing 10 MAG damage + INT and giving enemy 3 freeze each",
+                        "Shoots three icicles doing 10 MAG damage + INT and giving enemy 3 freeze each",
+                        "Shoots four icicles doing 10 MAG damage + INT and giving enemy 3 freeze each",
+                        "Shoots five icicles doing 10 MAG damage + INT and giving enemy 3 freeze each" },
+                new String[] { "Active", "Magic", "Snow" }, 30);
     }
 
     @Override

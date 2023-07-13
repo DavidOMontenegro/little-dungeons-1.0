@@ -1,10 +1,13 @@
 package classes;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import spells.Spell;
-import util.Item;
+import spells.*;
+import util.*;
 
 public abstract class Player {
     String name;
@@ -47,7 +50,7 @@ public abstract class Player {
     Item left = null;
     Item right = null;
     Spell[] spells = new Spell[] { null, null, null, null, null, null };
-    ArrayList<Item> backpack = new ArrayList<Item>();
+    ArrayList<Item> backpack = new ArrayList<>();
     final String VOWELS = "AEIOU";
 
     public String getName() {
@@ -418,11 +421,12 @@ public abstract class Player {
         return (Item) items.get((int) (id * (double) (rank - minRank)) + minRank);
     }
 
-    public void getItem(ArrayList<Item> items, double id) {
+    public int getItem(ArrayList<Item> items, double id) {
         Item item = randomItem(items, id);
         getItem(item);
         System.out.println(
                 "You got a" + (VOWELS.indexOf(item.getName().charAt(0)) != -1 ? "n " : " ") + item.getName() + "!");
+        return item.getId();
     }
 
     private void getItem(Item item) {
@@ -1004,6 +1008,173 @@ public abstract class Player {
             bruATK = quiATK = sacATK = magATK = 5;
         }
 
+    }
+
+    public Player(JSONObject player, ArrayList<Item> items) {
+        ArrayList<Spell> allSpells = new ArrayList<>();
+
+        name = (String) player.get("name");
+        hp = totalhp = (int) player.get("hp");
+        mp = totalmp = (int) player.get("mp");
+        str = (int) player.get("str");
+        dex = (int) player.get("dex");
+        wis = (int) player.get("wis");
+        it = (int) player.get("int");
+        boostS = (int) player.get("boostS");
+        boostD = (int) player.get("boostD");
+        boostW = (int) player.get("boostW");
+        boostI = (int) player.get("boostI");
+        basicB = (int) player.get("basicB");
+        basicQ = (int) player.get("basicQ");
+        basicS = (int) player.get("basicS");
+        basicM = (int) player.get("basicM");
+        bruATK = (int) player.get("bruATK");
+        quiATK = (int) player.get("quiATK");
+        sacATK = (int) player.get("sacATK");
+        magATK = (int) player.get("magATK");
+        bruDEF = (int) player.get("bruDEF");
+        quiDEF = (int) player.get("quiDEF");
+        sacDEF = (int) player.get("sacDEF");
+        magDEF = (int) player.get("magDEF");
+        healBoost = (int) player.get("heal");
+        level = (int) player.get("level");
+        trophies = (int) player.get("trophies");
+        upgrades = (int) player.get("upgrades");
+        money = (int) player.get("money");
+
+        switch (level) {
+            case 6:
+            case 5:
+                minRank = 65;
+                rank = 97;
+                break;
+            case 4:
+            case 3:
+                minRank = 33;
+                rank = 65;
+            case 2:
+            case 1:
+                break;
+            default:
+                minRank = 97;
+                rank = 126;
+                break;
+        }
+
+        JSONArray bp = (JSONArray) player.get("backpack");
+        for (Object itemString : bp) {
+            int itemId = (int) itemString;
+            for (Item item : items) {
+                if (item.isItem(itemId)) {
+                    backpack.add(item);
+                    break;
+                }
+            }
+        }
+
+        Action.addSkills(allSpells);
+        JSONArray sb = (JSONArray) player.get("spells");
+        int i = 0;
+        for (Object spellString : sb) {
+            JSONObject spell = new JSONObject(spellString.toString());
+            if ((boolean) spell.get("active")) {
+                switch ((String) spell.get("name")) {
+                    case "Armageddon":
+                        spells[i] = new Armageddon(spell);
+                        break;
+                    case "Fireball":
+                        spells[i] = new Fireball(spell);
+                        break;
+                    case "Freeze":
+                        spells[i] = new Freeze(spell);
+                        break;
+                    case "Healing":
+                        spells[i] = new Healing(spell);
+                        break;
+                    case "Icicles":
+                        spells[i] = new Icicles(spell);
+                        break;
+                    case "Supernova":
+                        spells[i] = new Supernova(spell);
+                        break;
+                    case "Tackle":
+                        spells[i] = new Tackle(spell);
+                        break;
+                    case "Wrath":
+                        spells[i] = new Wrath(spell);
+                        break;
+                }
+            } else {
+                for (Spell skill : allSpells) {
+                    if (isSpell(skill, (String) spell.get("name"))) {
+                        ArrayList<String> spellType = skill.getType();
+                        int x = spellType.size();
+                        String[] types = new String[x];
+                        for (int j = 0; j < x; j++) {
+                            types[j] = spellType.get(j);
+                        }
+                        skill.levelUp(false, new Barbarian("Buffer"));
+                        spells[i] = new Spell(spell, skill.getDesc(), types,
+                                skill.getCost());
+                        break;
+                    }
+                }
+            }
+            i++;
+        }
+    }
+
+    public JSONObject save() {
+        JSONObject save = new JSONObject();
+        JSONArray bp = new JSONArray();
+        JSONArray spellbook = new JSONArray();
+
+        save.put("name", name);
+        save.put("class", getClassName());
+        save.put("hp", totalhp);
+        save.put("mp", totalmp);
+        save.put("str", str);
+        save.put("dex", dex);
+        save.put("wis", wis);
+        save.put("int", it);
+        save.put("boostS", boostS);
+        save.put("boostD", boostD);
+        save.put("boostW", boostW);
+        save.put("boostI", boostI);
+        save.put("basicB", basicB);
+        save.put("basicQ", basicQ);
+        save.put("basicS", basicS);
+        save.put("basicM", basicM);
+        save.put("bruATK", bruATK);
+        save.put("quiATK", quiATK);
+        save.put("sacATK", sacATK);
+        save.put("magATK", magATK);
+        save.put("bruDEF", bruDEF);
+        save.put("quiDEF", quiDEF);
+        save.put("sacDEF", sacDEF);
+        save.put("magDEF", magDEF);
+        save.put("heal", healBoost);
+        save.put("level", level);
+        save.put("trophies", trophies);
+        save.put("upgrades", upgrades);
+        save.put("money", money);
+        save.put("head", head == null ? null : head.getId());
+        save.put("body", body == null ? null : body.getId());
+        save.put("feet", feet == null ? null : feet.getId());
+        save.put("left", left == null ? null : left.getId());
+        save.put("right", right == null ? null : right.getId());
+        for (Spell spell : spells) {
+            if (spell == null) {
+                break;
+            }
+            spellbook.put(spell.save());
+        }
+        save.put("spells", spellbook);
+        for (Item item : backpack) {
+            bp.put(item.getId());
+        }
+        save.put("backpack", bp);
+        return save;
     }
 
     private boolean isItem(Item item, int id) {

@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -15,6 +17,12 @@ public class Fireball extends Spell {
                         "80 MAG damage + INT", "100 MAG damage + INT" },
                 new String[] { "Active", "Magic", "Fire" }, 50, 25);
         scan = scanner;
+    }
+    public Fireball(JSONObject saved) {
+        super(saved,
+                new String[] { "20 MAG damage + INT", "40 MAG damage + INT", "60 MAG damage + INT",
+                        "80 MAG damage + INT", "100 MAG damage + INT" },
+                new String[] { "Active", "Magic", "Fire" }, 25);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -16,6 +18,13 @@ public class Tackle extends Spell {
                         "40 BRU damage + BRU, SAC, or MAG DEF" },
                 new String[] { "Active", "Brute" }, 50, 25);
         scan = scanner;
+    }
+    public Tackle(JSONObject saved) {
+        super(saved,
+                new String[] { "8 BRU damage + BRU, SAC, or MAG DEF", "16 BRU damage + BRU, SAC, or MAG DEF",
+                        "24 BRU damage + BRU, SAC, or MAG DEF", "32 BRU damage + BRU, SAC, or MAG DEF",
+                        "40 BRU damage + BRU, SAC, or MAG DEF" },
+                new String[] { "Active", "Brute" }, 25);
     }
 
     @Override

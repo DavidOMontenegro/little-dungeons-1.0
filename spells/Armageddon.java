@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -18,6 +20,15 @@ public class Armageddon extends Spell {
                         "150 MAG damage + INT to all enemies" },
                 new String[] { "Active", "Magic", "Fire" }, 80, 60);
         scan = scanner;
+    }
+    public Armageddon(JSONObject saved) {
+        super(saved,
+                new String[] { "30 MAG damage + INT to all enemies",
+                        "60 MAG damage + INT to all enemies",
+                        "90 MAG damage + INT to all enemies",
+                        "120 MAG damage + INT to all enemies",
+                        "150 MAG damage + INT to all enemies" },
+                new String[] { "Active", "Magic", "Fire" }, 60);
     }
 
     @Override

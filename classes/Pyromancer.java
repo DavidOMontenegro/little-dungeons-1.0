@@ -1,8 +1,17 @@
 package classes;
 
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import util.Item;
+
 public class Pyromancer extends Player {
     public Pyromancer(String name) {
         super(name, 60, 50, 0, 0, 0, 1);
+    }
+    public Pyromancer(JSONObject saved, ArrayList<Item> items) {
+        super(saved, items);
     }
 
     @Override

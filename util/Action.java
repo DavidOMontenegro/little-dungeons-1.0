@@ -1474,6 +1474,7 @@ public class Action {
         }
         addItems(items);
         addSpells(spells, scn);
+        skills.clear();
         addSkills(skills);
     }
 
@@ -2120,7 +2121,7 @@ public class Action {
         spells.add(new Wrath(scn));
     }
 
-    public void addSkills(ArrayList<Spell> spells) {
+    public static void addSkills(ArrayList<Spell> skills) {
         skills.add(new Spell("Thorns",
                 new String[] { "When an enemy hits you with a BRU or QUI attack, they take 6 damage",
                         "When an enemy hits you with a BRU or QUI attack, they take 12 damage",

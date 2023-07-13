@@ -41,6 +41,10 @@ public class Item {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public boolean isItem(int itemId) {
         return id == itemId;
     }
@@ -68,7 +72,8 @@ public class Item {
         String md = magDEF > 9 ? magDEF + " " : magDEF + "  ";
 
         System.out.printf("\n" + name + "     Price: " + price
-                + "\n( " + String.join(", ", type) + " )\n\nSTR: %s BRUATK: %s BRUDEF: %s\nDEX: %s QUIATK: %s QUIDEF: %s\nWIS: %s SACATK: %s SACDEF: %s\nINT: %s MAGATK: %s MAGDEF: %s\n\n%s\n\n",
+                + "\n( " + String.join(", ", type)
+                + " )\n\nSTR: %s BRUATK: %s BRUDEF: %s\nDEX: %s QUIATK: %s QUIDEF: %s\nWIS: %s SACATK: %s SACDEF: %s\nINT: %s MAGATK: %s MAGDEF: %s\n\n%s\n\n",
                 s, ba, bd, d, qa, qd, w, sa, sd, i, ma, md, desc.get((int) (Math.random() * desc.size())));
     }
 

@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -15,6 +17,12 @@ public class Wrath extends Spell {
                         "80 SAC damage + WIS", "100 SAC damage + WIS" },
                 new String[] { "Active", "Sacred" }, 50, 20);
         scan = scanner;
+    }
+    public Wrath(JSONObject saved) {
+        super(saved,
+                new String[] { "20 SAC damage + WIS", "40 SAC damage + WIS", "60 SAC damage + WIS",
+                        "80 SAC damage + WIS", "100 SAC damage + WIS" },
+                new String[] { "Active", "Sacred" }, 20);
     }
 
     @Override

@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 
 import java.util.ArrayList;
@@ -31,8 +33,27 @@ public class Spell {
         type.addAll(Arrays.asList(spellType));
     }
 
+    public Spell(JSONObject spell, String[] spellDesc, String[] spellType, int spellCost) {
+        name = (String) spell.get("name");
+        level = (int) spell.get("level");
+        price = (int) spell.get("price");
+        mpCost = (int) spell.get("cost");
+        desc = spellDesc[0];
+        desc2 = spellDesc[1];
+        desc3 = spellDesc[2];
+        desc4 = spellDesc[3];
+        desc5 = spellDesc[4];
+        baseCost = spellCost;
+        type = new ArrayList<>();
+        type.addAll(Arrays.asList(spellType));
+    }
+
     public String getName() {
         return name;
+    }
+
+    public String[] getDesc() {
+        return new String[] { desc, desc2, desc3, desc4, desc5 };
     }
 
     public ArrayList<String> getType() {
@@ -73,7 +94,8 @@ public class Spell {
         System.out.println("\n" + name + " (" + String.join(", ", type) + ")" + "  Price: " + price + "\nLVL: "
                 + (shop ? level + 1 : level)
                 + (type.get(0).equals("Active") ? "   MP: " + (mpCost + (shop ? baseCost : 0)
-                        - (player.getClassName().equals("Priest") && level == 0 && type.contains("Heal") ? 15 : 0)) : "")
+                        - (player.getClassName().equals("Priest") && level == 0 && type.contains("Heal") ? 15 : 0))
+                        : "")
                 + "\n\n" + thisDesc + "\n");
     }
 
@@ -107,5 +129,15 @@ public class Spell {
     public int use(int current, ArrayList<Player> active) {
         active.get(current).useMP(mpCost);
         return current;
+    }
+
+    public JSONObject save() {
+        JSONObject save = new JSONObject();
+        save.put("active", type.contains("Active"));
+        save.put("name", name);
+        save.put("level", level);
+        save.put("price", price);
+        save.put("cost", mpCost);
+        return save;
     }
 }

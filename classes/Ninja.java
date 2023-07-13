@@ -1,8 +1,17 @@
 package classes;
 
+import java.util.ArrayList;
+
+import org.json.JSONObject;
+
+import util.Item;
+
 public class Ninja extends Player {
     public Ninja(String name) {
         super(name, 40, 50, 1, 1, 0, 0);
+    }
+    public Ninja(JSONObject saved, ArrayList<Item> items) {
+        super(saved, items);
     }
 
     @Override

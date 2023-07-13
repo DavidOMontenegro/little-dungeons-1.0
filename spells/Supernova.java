@@ -1,5 +1,7 @@
 package spells;
 
+import org.json.JSONObject;
+
 import classes.Player;
 import util.Action;
 
@@ -18,6 +20,15 @@ public class Supernova extends Spell {
                         "75 MAG damage + INT and gives all enemies 10 freeze" },
                 new String[] { "Active", "Magic", "Snow" }, 80, 55);
         scan = scanner;
+    }
+    public Supernova(JSONObject saved) {
+        super(saved,
+                new String[] { "15 MAG damage + INT and gives all enemies 2 freeze",
+                        "30 MAG damage + INT and gives all enemies 4 freeze",
+                        "45 MAG damage + INT and gives all enemies 6 freeze",
+                        "60 MAG damage + INT and gives all enemies 8 freeze",
+                        "75 MAG damage + INT and gives all enemies 10 freeze" },
+                new String[] { "Active", "Magic", "Snow" }, 55);
     }
 
     @Override
