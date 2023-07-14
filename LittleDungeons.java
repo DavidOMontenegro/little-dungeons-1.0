@@ -119,11 +119,12 @@ public class LittleDungeons {
         win = winners.size();
         System.out.println("\n\n");
         if (win == 1) {
-            System.out.println("The winner of this games was " + winners.get(0).getName() + ". Congratulations!");
+            System.out.println("The winner of this game was " + winners.get(0).getName() + ". Congratulations!");
         } else {
-            System.out.print("The winners of this games were ");
+            System.out.print("The winners of this game were ");
             for (int i = 0; i < win; i++) {
-                System.out.print(winners.get(i).getName() + (i < win - 1 ? ", " : ". Congratulations!\n"));
+                System.out.print(winners.get(i).getName()
+                        + (i < win - 1 ? (i < win - 2 ? ", " : " and ") : ". Congratulations!\n"));
             }
         }
         System.out.println("\n\nGame over.");
@@ -155,7 +156,8 @@ public class LittleDungeons {
 
         if (listOfFiles.length > 0) {
             int files = listOfFiles.length + 1;
-            System.out.println("Select a save file.\n");
+            System.out.println(
+                    "Select a save file. Type it's number to load it, or d plus it's number to delete it. (Example: d2)\n");
             for (int i = 0; i < files - 1; i++) {
                 String saveName = listOfFiles[i].getName();
                 if (listOfFiles[i].isFile()) {
@@ -165,71 +167,94 @@ public class LittleDungeons {
             System.out.println(files + "- New Game");
             while (!selected) {
                 String id = myScanner.nextLine();
-                int saveFile = Integer.parseInt(id);
-                if (saveFile > 0 && saveFile < files) {
-                    File loadFile = new File(listOfFiles[saveFile - 1].getPath());
-                    Scanner loader = new Scanner(loadFile);
-                    JSONObject load = new JSONObject(loader.nextLine());
-                    loader.close();
-
-                    current = (int) load.get("current");
-                    shop = (boolean) load.get("shop");
-                    duel = (boolean) load.get("duel");
-                    arena = (boolean) load.get("arena");
-                    item = (int) load.get("item");
-
-                    JSONArray jsonPlayers = (JSONArray) load.get("players");
-                    for (Object playerString : jsonPlayers) {
-                        JSONObject player = new JSONObject(playerString.toString());
-                        switch ((String) player.get("class")) {
-                            case "Barbarian":
-                                players.add(new Barbarian(player, items));
-                                break;
-                            case "Assassin":
-                                players.add(new Assassin(player, items));
-                                break;
-                            case "Priest":
-                                players.add(new Priest(player, items));
-                                break;
-                            case "Wizard":
-                                players.add(new Wizard(player, items));
-                                break;
-                            case "Archer":
-                                players.add(new Archer(player, items));
-                                break;
-                            case "Monk":
-                                players.add(new Monk(player, items));
-                                break;
-                            case "Dark Knight":
-                                players.add(new Knight(player, items));
-                                break;
-                            case "Paladin":
-                                players.add(new Paladin(player, items));
-                                break;
-                            case "Warlock":
-                                players.add(new Warlock(player, items));
-                                break;
-                            case "Captain":
-                                players.add(new Captain(player, items));
-                                break;
-                            case "Inquisitor":
-                                players.add(new Inquisitor(player, items));
-                                break;
-                            case "Ninja":
-                                players.add(new Ninja(player, items));
-                                break;
-                            case "Pyromancer":
-                                players.add(new Pyromancer(player, items));
-                                break;
-                            case "Thief":
-                                players.add(new Thief(player, items));
-                                break;
+                if (id.startsWith("d")) {
+                    try {
+                        int deleteFile = Integer.parseInt(id.substring(1));
+                        File df = new File(listOfFiles[deleteFile - 1].getPath());
+                        df.delete();
+                        listOfFiles = folder.listFiles();
+                        files = listOfFiles.length + 1;
+                        System.out.println(
+                                "\nSelect a save file. Type it's number to load it, or d plus it's number to delete it. (Example: d2)\n");
+                        for (int i = 0; i < files - 1; i++) {
+                            String saveName = listOfFiles[i].getName();
+                            if (listOfFiles[i].isFile()) {
+                                System.out.println((i + 1) + "- " + saveName.substring(0, saveName.length() - 5));
+                            }
                         }
+                        System.out.println(files + "- New Game");
+                    } catch (Exception ignored) {
                     }
-                    selected = true;
-                } else if (saveFile == files) {
-                    save = true;
-                    selected = true;
+                } else {
+                    try {
+                        int saveFile = Integer.parseInt(id);
+                        if (saveFile > 0 && saveFile < files) {
+                            File loadFile = new File(listOfFiles[saveFile - 1].getPath());
+                            Scanner loader = new Scanner(loadFile);
+                            JSONObject load = new JSONObject(loader.nextLine());
+                            loader.close();
+
+                            current = (int) load.get("current");
+                            shop = (boolean) load.get("shop");
+                            duel = (boolean) load.get("duel");
+                            arena = (boolean) load.get("arena");
+                            item = (int) load.get("item");
+
+                            JSONArray jsonPlayers = (JSONArray) load.get("players");
+                            for (Object playerString : jsonPlayers) {
+                                JSONObject player = new JSONObject(playerString.toString());
+                                switch ((String) player.get("class")) {
+                                    case "Barbarian":
+                                        players.add(new Barbarian(player, items));
+                                        break;
+                                    case "Assassin":
+                                        players.add(new Assassin(player, items));
+                                        break;
+                                    case "Priest":
+                                        players.add(new Priest(player, items));
+                                        break;
+                                    case "Wizard":
+                                        players.add(new Wizard(player, items));
+                                        break;
+                                    case "Archer":
+                                        players.add(new Archer(player, items));
+                                        break;
+                                    case "Monk":
+                                        players.add(new Monk(player, items));
+                                        break;
+                                    case "Dark Knight":
+                                        players.add(new Knight(player, items));
+                                        break;
+                                    case "Paladin":
+                                        players.add(new Paladin(player, items));
+                                        break;
+                                    case "Warlock":
+                                        players.add(new Warlock(player, items));
+                                        break;
+                                    case "Captain":
+                                        players.add(new Captain(player, items));
+                                        break;
+                                    case "Inquisitor":
+                                        players.add(new Inquisitor(player, items));
+                                        break;
+                                    case "Ninja":
+                                        players.add(new Ninja(player, items));
+                                        break;
+                                    case "Pyromancer":
+                                        players.add(new Pyromancer(player, items));
+                                        break;
+                                    case "Thief":
+                                        players.add(new Thief(player, items));
+                                        break;
+                                }
+                            }
+                            selected = true;
+                        } else if (saveFile == files) {
+                            save = true;
+                            selected = true;
+                        }
+                    } catch (Exception ignored) {
+                    }
                 }
             }
             selected = false;
