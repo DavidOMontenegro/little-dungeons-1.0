@@ -485,6 +485,8 @@ public class LittleDungeons {
             user = players.get(current);
             System.out.println("\n\n" + user.getName() + "'s turn");
             if (save) {
+                item = 0;
+                shop = duel = arena = false;
                 switch ((byte) (Math.random() * 4)) {
                     case 0:
                         item = user.getItem(items, Math.random());
