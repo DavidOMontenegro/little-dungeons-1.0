@@ -2,22 +2,20 @@ package spells;
 
 import org.json.JSONObject;
 
+import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Wrath extends Spell {
-    Scanner scan;
-
-    public Wrath(Scanner scanner) {
+    public Wrath() {
         super("Holy Wrath",
                 new String[] { "20 SAC damage + WIS", "40 SAC damage + WIS", "60 SAC damage + WIS",
                         "80 SAC damage + WIS", "100 SAC damage + WIS" },
                 new String[] { "Active", "Sacred" }, 50, 20);
-        scan = scanner;
     }
+
     public Wrath(JSONObject saved) {
         super(saved,
                 new String[] { "20 SAC damage + WIS", "40 SAC damage + WIS", "60 SAC damage + WIS",
@@ -49,7 +47,7 @@ public class Wrath extends Spell {
                     System.out.println(j + "- " + player.getName());
                 }
                 System.out.println((activeNumber) + "- Exit");
-                id = scan.nextLine();
+                id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);

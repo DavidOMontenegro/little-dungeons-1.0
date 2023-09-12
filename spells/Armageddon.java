@@ -6,12 +6,9 @@ import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Armageddon extends Spell {
-    Scanner scan;
-
-    public Armageddon(Scanner scanner) {
+    public Armageddon() {
         super("Armageddon",
                 new String[] { "30 MAG damage + INT to all enemies",
                         "60 MAG damage + INT to all enemies",
@@ -19,8 +16,8 @@ public class Armageddon extends Spell {
                         "120 MAG damage + INT to all enemies",
                         "150 MAG damage + INT to all enemies" },
                 new String[] { "Active", "Magic", "Fire" }, 80, 60);
-        scan = scanner;
     }
+
     public Armageddon(JSONObject saved) {
         super(saved,
                 new String[] { "30 MAG damage + INT to all enemies",

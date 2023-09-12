@@ -6,12 +6,9 @@ import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Supernova extends Spell {
-    Scanner scan;
-
-    public Supernova(Scanner scanner) {
+    public Supernova() {
         super("Supernova",
                 new String[] { "15 MAG damage + INT and gives all enemies 2 freeze",
                         "30 MAG damage + INT and gives all enemies 4 freeze",
@@ -19,7 +16,6 @@ public class Supernova extends Spell {
                         "60 MAG damage + INT and gives all enemies 8 freeze",
                         "75 MAG damage + INT and gives all enemies 10 freeze" },
                 new String[] { "Active", "Magic", "Snow" }, 80, 55);
-        scan = scanner;
     }
     public Supernova(JSONObject saved) {
         super(saved,

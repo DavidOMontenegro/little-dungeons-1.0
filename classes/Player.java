@@ -4,8 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
+import global.GlobalScanner;
 import spells.*;
 import util.*;
 
@@ -254,14 +254,14 @@ public abstract class Player {
 
     }
 
-    public void winTrophy(Scanner scan) {
+    public void winTrophy() {
         trophies++;
         if (trophies % 3 == 0) {
-            levelUp(scan);
+            levelUp();
         }
     }
 
-    private void levelUp(Scanner scan) {
+    private void levelUp() {
         boolean selected = false;
         level++;
         upgrades++;
@@ -291,7 +291,7 @@ public abstract class Player {
         while (!selected) {
             System.out.println(
                     "Which stat would you like to boost?\n1- Strength\n2- Dexterity\n3- Wisdom\n4- Intelligence");
-            switch (scan.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     str++;
                     selected = true;
@@ -324,7 +324,7 @@ public abstract class Player {
             if (spells[0] != null) {
                 for (; upgrades > 0; upgrades--) {
                     System.out.println("Which spell would you like to upgrade?");
-                    switch (scan.nextLine()) {
+                    switch (GlobalScanner.nextLine()) {
                         case "1":
                             selected = spells[0].levelUp(false, this);
                             break;

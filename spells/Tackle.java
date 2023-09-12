@@ -2,22 +2,19 @@ package spells;
 
 import org.json.JSONObject;
 
+import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Tackle extends Spell {
-    Scanner scan;
-
-    public Tackle(Scanner scanner) {
+    public Tackle() {
         super("Tackle",
                 new String[] { "8 BRU damage + BRU, SAC, or MAG DEF", "16 BRU damage + BRU, SAC, or MAG DEF",
                         "24 BRU damage + BRU, SAC, or MAG DEF", "32 BRU damage + BRU, SAC, or MAG DEF",
                         "40 BRU damage + BRU, SAC, or MAG DEF" },
                 new String[] { "Active", "Brute" }, 50, 25);
-        scan = scanner;
     }
     public Tackle(JSONObject saved) {
         super(saved,
@@ -53,7 +50,7 @@ public class Tackle extends Spell {
                     System.out.println(j + "- " + player.getName());
                 }
                 System.out.println((activeNumber) + "- Exit");
-                id = scan.nextLine();
+                id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);
@@ -64,7 +61,7 @@ public class Tackle extends Spell {
                         System.out.println(
                                 "Which armour type will you use?\n1- Brute (" + user.getBruDef() + " DEF)\n2- Sacred ("
                                         + user.getSacDef() + " DEF)\n3- Magic (" + user.getMagDef() + " DEF)");
-                        switch (scan.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 power = (20 * level) - defender.getBruDef() + user.getBruDef();
                                 selected = true;
@@ -94,7 +91,7 @@ public class Tackle extends Spell {
                         System.out.println(
                                 "Which armour type will you use?\n1- Brute (" + user.getBruDef() + " DEF)\n2- Sacred ("
                                         + user.getSacDef() + " DEF)\n3- Magic (" + user.getMagDef() + " DEF)");
-                        switch (scan.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 power = (20 * level) - defender.getBruDef() + user.getBruDef();
                                 selected = true;

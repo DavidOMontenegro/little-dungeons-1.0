@@ -1,4 +1,5 @@
 import classes.*;
+import global.GlobalScanner;
 import util.Action;
 import util.Item;
 
@@ -29,7 +30,7 @@ public class LittleDungeons {
         }
     }
 
-    private static void saveGame(Scanner scan, File[] listOfFiles, ArrayList<Player> players, int current,
+    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current,
             ArrayList<Item> items, boolean shop, boolean duel, boolean arena, int item) throws IOException {
         boolean selected = false;
         boolean newFile = false;
@@ -46,7 +47,7 @@ public class LittleDungeons {
             }
             System.out.println(files + "- New File");
             while (!selected) {
-                String id = scan.nextLine();
+                String id = GlobalScanner.nextLine();
                 try {
                     int saveFile = Integer.parseInt(id);
                     if (saveFile > 0 && saveFile < files) {
@@ -69,7 +70,7 @@ public class LittleDungeons {
             String fileName = "error";
             System.out.println("What will you name this new save file?");
             while (!selected) {
-                fileName = scan.nextLine();
+                fileName = GlobalScanner.nextLine();
                 if (fileName != null) {
                     if (!fileName.contains(" ") && !fileName.contains(".")) {
                         selected = true;
@@ -141,8 +142,6 @@ public class LittleDungeons {
         boolean arena = false;
         int item = 0;
 
-        Scanner myScanner = new Scanner(System.in);
-
         byte playerNumber = 3;
         boolean selected = false;
         boolean save = false;
@@ -166,7 +165,7 @@ public class LittleDungeons {
             }
             System.out.println(files + "- New Game");
             while (!selected) {
-                String id = myScanner.nextLine();
+                String id = GlobalScanner.nextLine();
                 if (id.startsWith("d")) {
                     try {
                         int deleteFile = Integer.parseInt(id.substring(1));
@@ -266,7 +265,7 @@ public class LittleDungeons {
             // Select number of players
             System.out.println("\nHow many players will be playing this session?");
             while (!selected)
-                switch (myScanner.nextLine()) {
+                switch (GlobalScanner.nextLine()) {
                     case "8":
                         playerNumber++;
                     case "7":
@@ -289,11 +288,11 @@ public class LittleDungeons {
             // Class Selection
             for (byte i = 1; i != playerNumber + 1; i++) {
                 System.out.println("What is player " + i + "'s name?");
-                String name = myScanner.nextLine();
+                String name = GlobalScanner.nextLine();
                 System.out.println("And what is " + name
                         + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizard\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
                 while (!selected) {
-                    switch (myScanner.nextLine()) {
+                    switch (GlobalScanner.nextLine()) {
                         case "1":
                             players.add(new Barbarian(name));
                             selected = true;
@@ -367,7 +366,7 @@ public class LittleDungeons {
                 System.out
                         .println(
                                 "If you would like to change one of the characters, type it's number. If not, type 'y'.");
-                String choice = myScanner.nextLine();
+                String choice = GlobalScanner.nextLine();
                 if (choice.equals("y")) {
                     selected = true;
                     break;
@@ -377,12 +376,12 @@ public class LittleDungeons {
                         String name;
                         if (id > 0 && id <= playerNumber) {
                             System.out.println("What is player " + id + "'s name?");
-                            name = myScanner.nextLine();
+                            name = GlobalScanner.nextLine();
                             id--;
                             System.out.println("And what is " + name
                                     + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizardn\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
                             while (!selected) {
-                                switch (myScanner.nextLine()) {
+                                switch (GlobalScanner.nextLine()) {
                                     case "1":
                                         players.set(id, new Barbarian(name));
                                         selected = true;
@@ -451,14 +450,14 @@ public class LittleDungeons {
             }
             selected = false;
         }
-        Action action = Action.getAction(players, myScanner);
+        Action action = Action.getAction(players);
 
         if (save) {
             for (Player player : players) {
                 System.out.println("\n\n" + player.getName() + "'s turn");
                 System.out.println("What would you like to do?\n1- Character Menu\n2- Enter Shop\n3- Next Player");
                 while (!selected) {
-                    switch (myScanner.nextLine()) {
+                    switch (GlobalScanner.nextLine()) {
                         case "1":
                             action.menu(player, false);
                             System.out.println(
@@ -528,7 +527,7 @@ public class LittleDungeons {
 
             startTurn(shop, duel, arena);
             while (!selected) {
-                switch (myScanner.nextLine()) {
+                switch (GlobalScanner.nextLine()) {
                     case "1":
                         action.menu(user, false);
                         startTurn(shop, duel, arena);
@@ -550,7 +549,7 @@ public class LittleDungeons {
                                     System.out.println(j + "- " + player.getName());
                                 }
                                 System.out.println((playerNumber) + "- Exit");
-                                String id = myScanner.nextLine();
+                                String id = GlobalScanner.nextLine();
                                 try {
                                     int playerId = Integer.parseInt(id);
                                     if (playerId <= players.indexOf(user) && playerId > 0) {
@@ -581,19 +580,19 @@ public class LittleDungeons {
                         if (shop) {
                             selected = true;
                         } else {
-                            saveGame(myScanner, listOfFiles, players, current, items, shop, duel, arena, item);
+                            saveGame(listOfFiles, players, current, items, shop, duel, arena, item);
                             listOfFiles = folder.listFiles();
                             startTurn(shop, duel, arena);
                         }
                         break;
                     case "4":
                         if (shop) {
-                            saveGame(myScanner, listOfFiles, players, current, items, shop, duel, arena, item);
+                            saveGame(listOfFiles, players, current, items, shop, duel, arena, item);
                             listOfFiles = folder.listFiles();
                             startTurn(shop, duel, arena);
                         } else {
                             System.out.println("Do all players agree to end the game now? If so, type 'agree'.");
-                            if (myScanner.nextLine().equals("agree")) {
+                            if (GlobalScanner.nextLine().equals("agree")) {
                                 gameOver(players);
                                 return;
                             }
@@ -603,7 +602,7 @@ public class LittleDungeons {
                     case "5":
                         if (shop) {
                             System.out.println("Do all players agree to end the game now? If so, type 'agree'.");
-                            if (myScanner.nextLine().equals("agree")) {
+                            if (GlobalScanner.nextLine().equals("agree")) {
                                 gameOver(players);
                                 return;
                             }
@@ -622,6 +621,6 @@ public class LittleDungeons {
             current = Action.next(current, playerNumber);
         }
 
-        myScanner.close();
+        GlobalScanner.close();
     }
 }

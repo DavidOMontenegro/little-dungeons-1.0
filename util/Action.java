@@ -1,10 +1,10 @@
 package util;
 
+import global.GlobalScanner;
 import classes.Player;
 import spells.*;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Action {
     private static Action action = null;
@@ -15,7 +15,6 @@ public class Action {
     ArrayList<Spell> skills = new ArrayList<>();
 
     int playerNumber;
-    Scanner scanner;
 
     public static int next(int current, int active) {
         return current == active - 1 ? 0 : ++current;
@@ -105,7 +104,7 @@ public class Action {
         int d20;
         while (!selected1) {
             System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     while (!selected2) {
                         System.out.println("Which player will you attack?");
@@ -118,7 +117,7 @@ public class Action {
                             System.out.println(j + "- " + player.getName());
                         }
                         System.out.println((activeNumber) + "- Exit");
-                        String id = scanner.nextLine();
+                        String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
                             if (playerId <= active.indexOf(user) && playerId > 0) {
@@ -167,7 +166,7 @@ public class Action {
                             System.out.println(j + "- " + player.getName());
                         }
                         System.out.println((activeNumber) + "- Back");
-                        String id = scanner.nextLine();
+                        String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
                             if (playerId <= active.indexOf(user) && playerId > 0) {
@@ -216,7 +215,7 @@ public class Action {
                             System.out.println(j + "- " + player.getName());
                         }
                         System.out.println((activeNumber) + "- Back");
-                        String id = scanner.nextLine();
+                        String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
                             if (playerId <= active.indexOf(user) && playerId > 0) {
@@ -265,7 +264,7 @@ public class Action {
                             System.out.println(j + "- " + player.getName());
                         }
                         System.out.println((activeNumber) + "- Back");
-                        String id = scanner.nextLine();
+                        String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
                             if (playerId <= active.indexOf(user) && playerId > 0) {
@@ -319,7 +318,7 @@ public class Action {
         boolean counter;
         while (!selected) {
             System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     d20 = ((int) (Math.random() * 20) + 1);
                     type = attacker.atkType(0);
@@ -387,7 +386,7 @@ public class Action {
             Spell[] userSpells = user.getSpells();
             user.seeSpells();
             System.out.println("7- Back");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     try {
                         Spell usedSpell = userSpells[0];
@@ -467,7 +466,7 @@ public class Action {
             Spell[] userSpells = attacker.getSpells();
             attacker.seeSpells();
             System.out.println("7- Back");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     try {
                         Spell usedSpell = userSpells[0];
@@ -546,7 +545,7 @@ public class Action {
             System.out.println(
                     "\nTo open item menu, type 'i'.\nTo open spellbook, type 's'.\nTo give someone gold, type 'g'.\nTo exit character menu, type 'y'."
                             + (isDuel ? "\nTo concede this match, type 'q'." : ""));
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "q":
                     if (isDuel) {
                         return true;
@@ -563,13 +562,13 @@ public class Action {
                             System.out.println(j + "- " + player.getName());
                         }
                         System.out.println(playerNumber + "- Exit");
-                        id = scanner.nextLine();
+                        id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
                             if (playerId <= players.indexOf(user) && playerId > 0) {
                                 while (!selected) {
                                     System.out.println("How much gold will you give?");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int gold = Integer.parseInt(id);
                                         if (gold > 0) {
@@ -585,7 +584,7 @@ public class Action {
                             } else if (playerId < playerNumber && playerId > 0) {
                                 while (!selected) {
                                     System.out.println("How much gold will you give?");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int gold = Integer.parseInt(id);
                                         if (gold > 0) {
@@ -614,12 +613,12 @@ public class Action {
                     while (!selected) {
                         user.seeItem(1);
                         System.out.println("1- Equip an item on head\n2- Unequip current item\n3- Deselect item");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 while (!selected) {
                                     int number = user.seeBackpack() + 1;
                                     System.out.println(number + "- Exit");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < number && itemId > 0) {
@@ -653,12 +652,12 @@ public class Action {
                     while (!selected) {
                         user.seeItem(2);
                         System.out.println("1- Equip an item on body\n2- Unequip current item\n3- Deselect item");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 while (!selected) {
                                     int number = user.seeBackpack() + 1;
                                     System.out.println(number + "- Exit");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < number && itemId > 0) {
@@ -692,12 +691,12 @@ public class Action {
                     while (!selected) {
                         user.seeItem(3);
                         System.out.println("1- Equip an item on feet\n2- Unequip current item\n3- Deselect item");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 while (!selected) {
                                     int number = user.seeBackpack() + 1;
                                     System.out.println(number + "- Exit");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < number && itemId > 0) {
@@ -731,12 +730,12 @@ public class Action {
                     while (!selected) {
                         user.seeItem(4);
                         System.out.println("1- Equip an item on main hand\n2- Unequip current item\n3- Deselect item");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 while (!selected) {
                                     int number = user.seeBackpack() + 1;
                                     System.out.println(number + "- Exit");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < number && itemId > 0) {
@@ -770,12 +769,12 @@ public class Action {
                     while (!selected) {
                         user.seeItem(5);
                         System.out.println("1- Equip an item on off hand\n2- Unequip current item\n3- Deselect item");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 while (!selected) {
                                     int number = user.seeBackpack() + 1;
                                     System.out.println(number + "- Exit");
-                                    id = scanner.nextLine();
+                                    id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < number && itemId > 0) {
@@ -809,14 +808,14 @@ public class Action {
                     int number = user.seeBackpack() + 1;
                     System.out.println(number + "- Back");
                     while (!selected) {
-                        id = scanner.nextLine();
+                        id = GlobalScanner.nextLine();
                         try {
                             int itemId = Integer.parseInt(id);
                             if (itemId > 0 && itemId < number) {
                                 user.seeItem(itemId + 5);
                                 while (!selected) {
                                     System.out.println("1- Give Item to Another Player\n2- Deselect item");
-                                    switch (scanner.nextLine()) {
+                                    switch (GlobalScanner.nextLine()) {
                                         case "1":
                                             while (!selected) {
                                                 for (int i = 0, j = 0; i < playerNumber; i++) {
@@ -828,7 +827,7 @@ public class Action {
                                                     System.out.println(j + "- " + player.getName());
                                                 }
                                                 System.out.println(playerNumber + "- Exit");
-                                                id = scanner.nextLine();
+                                                id = GlobalScanner.nextLine();
                                                 try {
                                                     int playerId = Integer.parseInt(id);
                                                     if (playerId <= players.indexOf(user) && playerId > 0) {
@@ -871,7 +870,7 @@ public class Action {
                     user.seeSpells();
                     System.out.println("7- Back");
                     while (!selected) {
-                        id = scanner.nextLine();
+                        id = GlobalScanner.nextLine();
                         try {
                             int spellId = Integer.parseInt(id);
                             if (spellId > 0 && spellId < 7) {
@@ -905,12 +904,12 @@ public class Action {
         while (!finished) {
             System.out.println(
                     "\nWhat would you like to do in the shop?\n1- Browse Items\n2- See Spells\n3- Sell Items\n4- Exit Shop");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     while (!selected1) {
                         System.out.println("\n1- Head\n2- Body\n3- Feet\n4- Weapon\n5- Shield\n6- Amulet\n7- Exit");
                         shopItems.clear();
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 for (int i = 0; i < player.getRank(); i++) {
                                     Item item = items.get(i);
@@ -922,7 +921,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -930,7 +929,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -963,7 +962,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -971,7 +970,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -1004,7 +1003,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -1012,7 +1011,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -1045,7 +1044,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -1053,7 +1052,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -1086,7 +1085,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -1094,7 +1093,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -1127,7 +1126,7 @@ public class Action {
                                 }
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int itemId = Integer.parseInt(id);
                                         if (itemId < j && itemId > 0) {
@@ -1135,7 +1134,7 @@ public class Action {
                                             selectedItem.seeItem();
                                             System.out.println("1- Buy\n2- Go Back");
                                             while (!selected2) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buyItem(selectedItem);
                                                         selected2 = true;
@@ -1170,7 +1169,7 @@ public class Action {
                     while (!selected1) {
                         shopSpells.clear();
                         System.out.println("\n1- Active\n2- Passive\n3- Exit");
-                        switch (scanner.nextLine()) {
+                        switch (GlobalScanner.nextLine()) {
                             case "1":
                                 for (int i = 0; i < spells.size(); i++) {
                                     Spell spell = spells.get(i);
@@ -1189,7 +1188,7 @@ public class Action {
 
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int spellId = Integer.parseInt(id);
                                         if (spellId < j && spellId > 0) {
@@ -1203,7 +1202,7 @@ public class Action {
                                                 case 5:
                                                     System.out.println(
                                                             "This spell is already max level.\n\nPress any key to go back.");
-                                                    scanner.nextLine();
+                                                    GlobalScanner.nextLine();
                                                     selected1 = true;
                                                     break;
                                                 case 1:
@@ -1214,11 +1213,11 @@ public class Action {
                                                     break;
                                             }
                                             while (!selected1) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buySpell(selectedSpell);
                                                         spells.clear();
-                                                        addSpells(spells, scanner);
+                                                        addSpells(spells);
                                                         selected1 = true;
                                                         selected2 = true;
                                                         break;
@@ -1259,7 +1258,7 @@ public class Action {
 
                                 System.out.println(j + "- Go Back");
                                 while (!selected2) {
-                                    String id = scanner.nextLine();
+                                    String id = GlobalScanner.nextLine();
                                     try {
                                         int spellId = Integer.parseInt(id);
                                         if (spellId < j && spellId > 0) {
@@ -1273,7 +1272,7 @@ public class Action {
                                                 case 5:
                                                     System.out.println(
                                                             "This spell is already max level.\n\nPress any key to go back.");
-                                                    scanner.nextLine();
+                                                    GlobalScanner.nextLine();
                                                     selected1 = true;
                                                     break;
                                                 case 1:
@@ -1284,7 +1283,7 @@ public class Action {
                                                     break;
                                             }
                                             while (!selected1) {
-                                                switch (scanner.nextLine()) {
+                                                switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buySpell(selectedSpell);
                                                         skills.clear();
@@ -1339,7 +1338,7 @@ public class Action {
                         while (!selected2) {
                             System.out.println(
                                     "Remember that when selling items, they go for half the above shown price.");
-                            String id = scanner.nextLine();
+                            String id = GlobalScanner.nextLine();
                             try {
                                 int itemId = Integer.parseInt(id);
                                 if (itemId < shopSize + 1 && itemId > 0) {
@@ -1347,7 +1346,7 @@ public class Action {
                                     selectedItem.seeItem();
                                     System.out.println("1- Sell\n2- Go Back");
                                     while (!selected2) {
-                                        switch (scanner.nextLine()) {
+                                        switch (GlobalScanner.nextLine()) {
                                             case "1":
                                                 player.sellItem(selectedItem);
                                                 selected2 = true;
@@ -1399,7 +1398,7 @@ public class Action {
         while (!gameOver) {
             System.out.println("\n\n" + (turn ? first.getName() : second.getName()) + "'s turn");
             System.out.println("1- Character Menu\n2- Basic Attack\n3- Use Spell");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     menu(turn ? first : second, false);
                     break;
@@ -1416,12 +1415,12 @@ public class Action {
 
             if (first.isDead()) {
                 winner(active, second, id);
-                second.winTrophy(scanner);
+                second.winTrophy();
                 gameOver = true;
             }
             if (second.isDead()) {
                 winner(active, first, id);
-                first.winTrophy(scanner);
+                first.winTrophy();
                 gameOver = true;
             }
         }
@@ -1440,14 +1439,14 @@ public class Action {
         while (!gameOver) {
             if (activeNumber == 1) {
                 winner(players, user, Math.random());
-                user.winTrophy(scanner);
+                user.winTrophy();
                 gameOver = true;
                 break;
             }
 
             System.out.println("\n\n" + user.getName() + "'s turn");
             System.out.println("1- Character Menu\n2- Basic Attack\n3- Use Spell");
-            switch (scanner.nextLine()) {
+            switch (GlobalScanner.nextLine()) {
                 case "1":
                     menu(user, false);
                     break;
@@ -1468,21 +1467,20 @@ public class Action {
         }
     }
 
-    private Action(ArrayList<Player> gamePlayers, Scanner scn) {
-        scanner = scn;
+    private Action(ArrayList<Player> gamePlayers) {
         playerNumber = gamePlayers.size();
         for (int i = 0; i < playerNumber; i++) {
             players.add(gamePlayers.get(i));
         }
         addItems(items);
-        addSpells(spells, scn);
+        addSpells(spells);
         skills.clear();
         addSkills(skills);
     }
 
-    public static Action getAction(ArrayList<Player> gamePlayers, Scanner scn) {
+    public static Action getAction(ArrayList<Player> gamePlayers) {
         if (action == null) {
-            action = new Action(gamePlayers, scn);
+            action = new Action(gamePlayers);
         }
         return action;
     }
@@ -2119,15 +2117,15 @@ public class Action {
                         "Justice is blind" }));
     }
 
-    public void addSpells(ArrayList<Spell> spells, Scanner scn) {
-        spells.add(new Fireball(scn));
-        spells.add(new Freeze(scn));
-        spells.add(new Healing(scn));
-        spells.add(new Tackle(scn));
-        spells.add(new Supernova(scn));
-        spells.add(new Armageddon(scn));
-        spells.add(new Icicles(scn));
-        spells.add(new Wrath(scn));
+    public void addSpells(ArrayList<Spell> spells) {
+        spells.add(new Fireball());
+        spells.add(new Freeze());
+        spells.add(new Healing());
+        spells.add(new Tackle());
+        spells.add(new Supernova());
+        spells.add(new Armageddon());
+        spells.add(new Icicles());
+        spells.add(new Wrath());
     }
 
     public static void addSkills(ArrayList<Spell> skills) {

@@ -2,23 +2,21 @@ package spells;
 
 import org.json.JSONObject;
 
+import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Freeze extends Spell {
-    Scanner scan;
-
-    public Freeze(Scanner scanner) {
+    public Freeze() {
         super("Freeze",
                 new String[] { "15 MAG damage + INT and gives enemy 4 freeze", "30 MAG damage + INT and gives enemy 8 freeze",
                         "45 MAG damage + INT and gives enemy 12 freeze", "60 MAG damage + INT and gives enemy 16 freeze",
                         "75 MAG damage + INT and gives enemy 20 freeze" },
                 new String[] { "Active", "Magic", "Snow" }, 50, 30);
-        scan = scanner;
     }
+
     public Freeze(JSONObject saved) {
         super(saved,
                 new String[] { "15 MAG damage + INT and gives enemy 4 freeze", "30 MAG damage + INT and gives enemy 8 freeze",
@@ -51,7 +49,7 @@ public class Freeze extends Spell {
                     System.out.println(j + "- " + player.getName());
                 }
                 System.out.println((activeNumber) + "- Exit");
-                id = scan.nextLine();
+                id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);

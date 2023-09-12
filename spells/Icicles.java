@@ -2,16 +2,14 @@ package spells;
 
 import org.json.JSONObject;
 
+import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Icicles extends Spell {
-    Scanner scan;
-
-    public Icicles(Scanner scanner) {
+    public Icicles() {
         super("Icicles",
                 new String[] { "Shoots an icicle doing 10 MAG damage + INT and giving enemy 3 freeze",
                         "Shoots two icicles doing 10 MAG damage + INT and giving enemy 3 freeze each",
@@ -19,7 +17,6 @@ public class Icicles extends Spell {
                         "Shoots four icicles doing 10 MAG damage + INT and giving enemy 3 freeze each",
                         "Shoots five icicles doing 10 MAG damage + INT and giving enemy 3 freeze each" },
                 new String[] { "Active", "Magic", "Snow" }, 50, 30);
-        scan = scanner;
     }
     public Icicles(JSONObject saved) {
         super(saved,
@@ -57,7 +54,7 @@ public class Icicles extends Spell {
                     System.out.println(j + "- " + player.getName());
                 }
                 System.out.println((activeNumber) + "- Exit");
-                id = scan.nextLine();
+                id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);

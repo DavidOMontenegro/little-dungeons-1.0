@@ -2,22 +2,20 @@ package spells;
 
 import org.json.JSONObject;
 
+import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Fireball extends Spell {
-    Scanner scan;
-
-    public Fireball(Scanner scanner) {
+    public Fireball() {
         super("Fireball",
                 new String[] { "20 MAG damage + INT", "40 MAG damage + INT", "60 MAG damage + INT",
                         "80 MAG damage + INT", "100 MAG damage + INT" },
                 new String[] { "Active", "Magic", "Fire" }, 50, 25);
-        scan = scanner;
     }
+
     public Fireball(JSONObject saved) {
         super(saved,
                 new String[] { "20 MAG damage + INT", "40 MAG damage + INT", "60 MAG damage + INT",
@@ -49,7 +47,7 @@ public class Fireball extends Spell {
                     System.out.println(j + "- " + player.getName());
                 }
                 System.out.println((activeNumber) + "- Exit");
-                id = scan.nextLine();
+                id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);

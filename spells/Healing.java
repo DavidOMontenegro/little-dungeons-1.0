@@ -3,20 +3,17 @@ package spells;
 import org.json.JSONObject;
 
 import classes.Player;
+import global.GlobalScanner;
 import util.Action;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Healing extends Spell {
-    Scanner scan;
-
-    public Healing(Scanner scanner) {
+    public Healing() {
         super("Divine Healing",
                 new String[] { "Heal someone 25 HP + WIS", "Heal someone 40 HP + WIS", "Heal someone 55 HP + WIS",
                         "Heal someone 70 HP + WIS", "Heal someone 85 HP + WIS" },
                 new String[] { "Active", "Heal" }, 50, 25);
-        scan = scanner;
     }
     public Healing(JSONObject saved) {
         super(saved,
@@ -43,7 +40,7 @@ public class Healing extends Spell {
                 System.out.println((i + 1) + "- " + player.getName());
             }
             System.out.println((activeNumber) + "- Exit");
-            id = scan.nextLine();
+            id = GlobalScanner.nextLine();
             try {
                 int playerId = Integer.parseInt(id);
                 if (playerId < activeNumber && playerId > 0) {
