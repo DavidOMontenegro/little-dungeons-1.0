@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Action {
+    private static Action action = null;
+
     ArrayList<Player> players = new ArrayList<>();
     ArrayList<Item> items = new ArrayList<>();
     ArrayList<Spell> spells = new ArrayList<>();
@@ -1466,7 +1468,7 @@ public class Action {
         }
     }
 
-    public Action(ArrayList<Player> gamePlayers, Scanner scn) {
+    private Action(ArrayList<Player> gamePlayers, Scanner scn) {
         scanner = scn;
         playerNumber = gamePlayers.size();
         for (int i = 0; i < playerNumber; i++) {
@@ -1476,6 +1478,13 @@ public class Action {
         addSpells(spells, scn);
         skills.clear();
         addSkills(skills);
+    }
+
+    public static Action getAction(ArrayList<Player> gamePlayers, Scanner scn) {
+        if (action == null) {
+            action = new Action(gamePlayers, scn);
+        }
+        return action;
     }
 
     public static void addItems(ArrayList<Item> items) {

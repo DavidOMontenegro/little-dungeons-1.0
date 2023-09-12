@@ -451,7 +451,7 @@ public class LittleDungeons {
             }
             selected = false;
         }
-        Action action = new Action(players, myScanner);
+        Action action = Action.getAction(players, myScanner);
 
         if (save) {
             for (Player player : players) {
