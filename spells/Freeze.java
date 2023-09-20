@@ -58,7 +58,7 @@ public class Freeze extends Spell {
                     defender = active.get(playerId - 1);
                     defender.preDefend(user, type);
                     user.preAttack(0, type, false);
-                    user.damage(defender, (15 * level) + user.getINT() - defender.getMagDef() + user.getMagAtk());
+                    user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
                     defender.freeze(level * 4);
                     defender.postDefend(user, 3, type, false);
                     current = user.postAttack(defender, type, false, current);
@@ -70,7 +70,7 @@ public class Freeze extends Spell {
                     defender = active.get(playerId);
                     defender.preDefend(user, type);
                     user.preAttack(0, type, false);
-                    user.damage(defender, (15 * level) + user.getINT() - defender.getMagDef() + user.getMagAtk());
+                    user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
                     defender.freeze(level * 4);
                     defender.postDefend(user, 3, type, false);
                     current = user.postAttack(defender, type, false, current);

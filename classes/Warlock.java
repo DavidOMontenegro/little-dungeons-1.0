@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import global.GlobalStats;
 import util.Item;
 
 public class Warlock extends Player {
     public Warlock(String name) {
-        super(name, 50, 75, 0, 1, 0, 1);
+        super(name, 50, 75, new GlobalStats(0, 1, 0, 1));
     }
     public Warlock(JSONObject saved, ArrayList<Item> items) {
         super(saved, items);

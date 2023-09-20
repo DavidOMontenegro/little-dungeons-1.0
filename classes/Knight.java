@@ -4,13 +4,14 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import global.GlobalStats;
 import util.Item;
 
 public class Knight extends Player {
     int snow = 65;
 
     public Knight(String name) {
-        super(name, 65, 15, 1, 0, 0, 1);
+        super(name, 65, 15, new GlobalStats(1, 0, 0, 1));
     }
     public Knight(JSONObject saved, ArrayList<Item> items) {
         super(saved, items);

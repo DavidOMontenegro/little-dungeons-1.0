@@ -46,7 +46,7 @@ public class Healing extends Spell {
                 if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
                     healed = active.get(playerId - 1);
-                    user.healHP(healed, (level * 15) + user.getWIS());
+                    user.healHP(healed, (level * 15) + user.getStat("basic", 'w'));
                     current = Action.next(current, activeNumber);
                     Action.wizard(active.get(current));
                     return current;

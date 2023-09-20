@@ -64,7 +64,7 @@ public class Icicles extends Spell {
                     while (!user.isDead() && !defender.isDead() && lvl != 0) {
                         defender.preDefend(user, type);
                         user.preAttack(0, type, false);
-                        user.damage(defender, 15 + user.getINT() - defender.getMagDef() + user.getMagAtk());
+                        user.damage(defender, 15 + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
                         defender.freeze(3);
                         defender.postDefend(user, 3, type, false);
                         current = user.postAttack(defender, type, false, current);
@@ -81,7 +81,7 @@ public class Icicles extends Spell {
                     while (!user.isDead() && !defender.isDead() && lvl != 0) {
                         defender.preDefend(user, type);
                         user.preAttack(0, type, false);
-                        user.damage(defender, 15 + user.getINT() - defender.getMagDef() + user.getMagAtk());
+                        user.damage(defender, 15 + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
                         defender.freeze(3);
                         defender.postDefend(user, 3, type, false);
                         current = user.postAttack(defender, type, false, current);

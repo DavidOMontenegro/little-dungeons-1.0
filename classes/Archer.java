@@ -4,11 +4,12 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 
+import global.GlobalStats;
 import util.Item;
 
 public class Archer extends Player {
     public Archer(String name) {
-        super(name, 50, 40, 0, 1, 0, 1);
+        super(name, 50, 40, new GlobalStats(0, 1, 0, 1));
     }
     public Archer(JSONObject saved, ArrayList<Item> items) {
         super(saved, items);

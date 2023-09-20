@@ -44,7 +44,7 @@ public class Armageddon extends Spell {
             }
             defender.preDefend(user, type);
             user.preAttack(0, type, false);
-            user.damage(defender, (30 * level) + user.getINT() - defender.getMagDef() + user.getMagAtk());
+            user.damage(defender, (30 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
             defender.postDefend(user, 3, type, false);
             current = user.postAttack(defender, type, false, current);
         }

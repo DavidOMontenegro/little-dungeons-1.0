@@ -59,19 +59,19 @@ public class Tackle extends Spell {
                     defender = active.get(playerId - 1);
                     while (!selected) {
                         System.out.println(
-                                "Which armour type will you use?\n1- Brute (" + user.getBruDef() + " DEF)\n2- Sacred ("
-                                        + user.getSacDef() + " DEF)\n3- Magic (" + user.getMagDef() + " DEF)");
+                                "Which armour type will you use?\n1- Brute (" + user.getStat("defense", 's') + " DEF)\n2- Sacred ("
+                                        + user.getStat("defense", 'w') + " DEF)\n3- Magic (" + user.getStat("defense", 'i') + " DEF)");
                         switch (GlobalScanner.nextLine()) {
                             case "1":
-                                power = (20 * level) - defender.getBruDef() + user.getBruDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
                                 selected = true;
                                 break;
                             case "2":
-                                power = (20 * level) - defender.getBruDef() + user.getSacDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
                                 selected = true;
                                 break;
                             case "3":
-                                power = (20 * level) - defender.getBruDef() + user.getMagDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
                                 selected = true;
                                 break;
                         }
@@ -89,19 +89,19 @@ public class Tackle extends Spell {
                     defender = active.get(playerId);
                     while (!selected) {
                         System.out.println(
-                                "Which armour type will you use?\n1- Brute (" + user.getBruDef() + " DEF)\n2- Sacred ("
-                                        + user.getSacDef() + " DEF)\n3- Magic (" + user.getMagDef() + " DEF)");
+                                "Which armour type will you use?\n1- Brute (" + user.getStat("defense", 's') + " DEF)\n2- Sacred ("
+                                        + user.getStat("defense", 'w') + " DEF)\n3- Magic (" + user.getStat("defense", 'i') + " DEF)");
                         switch (GlobalScanner.nextLine()) {
                             case "1":
-                                power = (20 * level) - defender.getBruDef() + user.getBruDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
                                 selected = true;
                                 break;
                             case "2":
-                                power = (20 * level) - defender.getBruDef() + user.getSacDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
                                 selected = true;
                                 break;
                             case "3":
-                                power = (20 * level) - defender.getBruDef() + user.getMagDef();
+                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
                                 selected = true;
                                 break;
                         }

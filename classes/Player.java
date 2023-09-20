@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import global.GlobalScanner;
+import global.GlobalStats;
 import spells.*;
 import util.*;
 
@@ -15,26 +16,11 @@ public abstract class Player {
     int totalhp = 0;
     int mp = 0;
     int totalmp = 0;
-    int str = 0;
-    int dex = 0;
-    int wis = 0;
-    int it = 0;
-    int boostS = 0;
-    int boostD = 0;
-    int boostW = 0;
-    int boostI = 0;
-    int basicB = 0;
-    int basicQ = 0;
-    int basicS = 0;
-    int basicM = 0;
-    int bruATK = 0;
-    int quiATK = 0;
-    int sacATK = 0;
-    int magATK = 0;
-    int bruDEF = 0;
-    int quiDEF = 0;
-    int sacDEF = 0;
-    int magDEF = 0;
+    GlobalStats baseStats = new GlobalStats(0, 0, 0, 0);
+    GlobalStats boostStats = new GlobalStats(0, 0, 0, 0);
+    GlobalStats basicStats = new GlobalStats(0, 0, 0, 0);
+    GlobalStats atkStats = new GlobalStats(0, 0, 0, 0);
+    GlobalStats defStats = new GlobalStats(0, 0, 0, 0);
     int healBoost = 0;
     int freeze = 0;
     int level = 1;
@@ -71,52 +57,37 @@ public abstract class Player {
         return Integer.toString(money);
     }
 
-    public int getSTR() {
-        return str;
-    }
+    public int getStat(String type, char stat) {
+        GlobalStats stats = basicStats;
 
-    public int getDEX() {
-        return dex;
-    }
+        switch (type) {
+            case "basic":
+                stats = baseStats;
+                break;
+            case "attack":
+                stats = new GlobalStats(
+                        atkStats.getSTR() - stats.getSTR(),
+                        atkStats.getDEX() - stats.getDEX(),
+                        atkStats.getWIS() - stats.getWIS(),
+                        atkStats.getINT() - stats.getINT());
+                break;
+            case "defense":
+                stats = defStats;
+                break;
+        }
 
-    public int getWIS() {
-        return wis;
-    }
+        switch (stat) {
+            case 's':
+                return stats.getSTR();
+            case 'd':
+                return stats.getDEX();
+            case 'w':
+                return stats.getWIS();
+            case 'i':
+                return stats.getINT();
+        }
 
-    public int getINT() {
-        return it;
-    }
-
-    public int getBruDef() {
-        return bruDEF;
-    }
-
-    public int getQuiDef() {
-        return quiDEF;
-    }
-
-    public int getSacDef() {
-        return sacDEF;
-    }
-
-    public int getMagDef() {
-        return magDEF;
-    }
-
-    public int getBruAtk() {
-        return bruATK - basicB;
-    }
-
-    public int getQuiAtk() {
-        return quiATK - basicQ;
-    }
-
-    public int getSacAtk() {
-        return sacATK - basicS;
-    }
-
-    public int getMagAtk() {
-        return magATK - basicM;
+        return 0;
     }
 
     public int getMP() {
@@ -210,44 +181,44 @@ public abstract class Player {
                 mp += boost;
                 break;
             case "str":
-                str += boost;
+                baseStats.boostSTR(boost);
                 break;
             case "dex":
-                dex += boost;
+                baseStats.boostDEX(boost);
                 break;
             case "wis":
-                wis += boost;
+                baseStats.boostWIS(boost);
                 break;
             case "int":
-                it += boost;
+                baseStats.boostINT(boost);
                 break;
             case "bruATK":
-                basicB += boost;
-                bruATK += boost;
+                basicStats.boostSTR(boost);
+                atkStats.boostSTR(boost);
                 break;
             case "quiATK":
-                basicQ += boost;
-                quiATK += boost;
+                basicStats.boostDEX(boost);
+                atkStats.boostDEX(boost);
                 break;
             case "sacATK":
-                basicS += boost;
-                sacATK += boost;
+                basicStats.boostWIS(boost);
+                atkStats.boostWIS(boost);
                 break;
             case "magATK":
-                basicM += boost;
-                magATK += boost;
+                basicStats.boostINT(boost);
+                atkStats.boostINT(boost);
                 break;
             case "bruDEF":
-                bruDEF += boost;
+                defStats.boostSTR(boost);
                 break;
             case "quiDEF":
-                quiDEF += boost;
+                defStats.boostDEX(boost);
                 break;
             case "sacDEF":
-                sacDEF += boost;
+                defStats.boostWIS(boost);
                 break;
             case "magDEF":
-                magDEF += boost;
+                defStats.boostINT(boost);
             case "heal":
                 healBoost += boost;
         }
@@ -265,10 +236,7 @@ public abstract class Player {
         boolean selected = false;
         level++;
         upgrades++;
-        str += boostS;
-        dex += boostD;
-        wis += boostW;
-        it += boostI;
+        baseStats.boostAll(boostStats);
         hp = totalhp += 5;
         mp = totalmp += 5;
 
@@ -293,19 +261,19 @@ public abstract class Player {
                     "Which stat would you like to boost?\n1- Strength\n2- Dexterity\n3- Wisdom\n4- Intelligence");
             switch (GlobalScanner.nextLine()) {
                 case "1":
-                    str++;
+                    baseStats.boostSTR(1);
                     selected = true;
                     break;
                 case "2":
-                    dex++;
+                    baseStats.boostDEX(1);
                     selected = true;
                     break;
                 case "3":
-                    wis++;
+                    baseStats.boostWIS(1);
                     selected = true;
                     break;
                 case "4":
-                    it++;
+                    baseStats.boostINT(1);
                     selected = true;
                     break;
                 default:
@@ -529,20 +497,14 @@ public abstract class Player {
                 left = item;
                 right = item;
                 if (getClassName().equals("Monk")) {
-                    bruATK--;
-                    quiATK--;
-                    sacATK--;
-                    magATK--;
+                    atkStats.boostAll(-1);
                 }
         }
 
         backpack.remove(id);
         item.putOn(this);
         if (getClassName().equals("Monk")) {
-            bruATK--;
-            quiATK--;
-            sacATK--;
-            magATK--;
+            atkStats.boostAll(-1);
         }
         return true;
     }
@@ -588,10 +550,7 @@ public abstract class Player {
         }
 
         if (getClassName().equals("Monk")) {
-            bruATK++;
-            quiATK++;
-            sacATK++;
-            magATK++;
+            atkStats.boostAll(1);
         }
         backpack.add(item);
     }
@@ -631,33 +590,54 @@ public abstract class Player {
 
     public void seeStats() {
         if (getClassName().equals("Barbarian") && hp < totalhp / 2) {
-            bruATK += 8;
-            quiATK += 8;
-            sacATK += 8;
-            magATK += 8;
+            atkStats.boostAll(8);
         }
 
-        String s = str > 9 || str < 0 ? str + (str < -9 ? "" : " ") : " " + str + " ";
-        String d = dex > 9 || dex < 0 ? dex + (dex < -9 ? "" : " ") : " " + dex + " ";
-        String w = wis > 9 || wis < 0 ? wis + (wis < -9 ? "" : " ") : " " + wis + " ";
-        String i = it > 9 || it < 0 ? it + (it < -9 ? "" : " ") : " " + it;
-        String ba = bruATK > 9 || bruATK < 0 ? bruATK + (bruATK < -9 ? "" : " ") : " " + bruATK + " ";
-        String qa = quiATK > 9 || quiATK < 0 ? quiATK + (quiATK < -9 ? "" : " ") : " " + quiATK + " ";
-        String sa = sacATK > 9 || sacATK < 0 ? sacATK + (sacATK < -9 ? "" : " ") : " " + sacATK + " ";
-        String ma = magATK > 9 || magATK < 0 ? magATK + (magATK < -9 ? "" : " ") : " " + magATK;
-        String bd = bruDEF > 9 || bruDEF < 0 ? bruDEF + (bruDEF < -9 ? "" : " ") : " " + bruDEF + " ";
-        String qd = quiDEF > 9 || quiDEF < 0 ? quiDEF + (quiDEF < -9 ? "" : " ") : " " + quiDEF + " ";
-        String sd = sacDEF > 9 || sacDEF < 0 ? sacDEF + (sacDEF < -9 ? "" : " ") : " " + sacDEF + " ";
-        String md = magDEF > 9 || magDEF < 0 ? magDEF + (magDEF < -9 ? "" : " ") : " " + magDEF;
+        // Looks scary but all it does is add spaces around the stats on the character menu
+        String s = baseStats.getSTR() > 9 || baseStats.getSTR() < 0
+                ? baseStats.getSTR() + (baseStats.getSTR() < -9 ? "" : " ")
+                : " " + baseStats.getSTR() + " ";
+        String d = baseStats.getDEX() > 9 || baseStats.getDEX() < 0
+                ? baseStats.getDEX() + (baseStats.getDEX() < -9 ? "" : " ")
+                : " " + baseStats.getDEX() + " ";
+        String w = baseStats.getWIS() > 9 || baseStats.getWIS() < 0
+                ? baseStats.getWIS() + (baseStats.getWIS() < -9 ? "" : " ")
+                : " " + baseStats.getWIS() + " ";
+        String i = baseStats.getINT() > 9 || baseStats.getINT() < 0
+                ? baseStats.getINT() + (baseStats.getINT() < -9 ? "" : " ")
+                : " " + baseStats.getINT();
+        String ba = atkStats.getSTR() > 9 || atkStats.getSTR() < 0
+                ? atkStats.getSTR() + (atkStats.getSTR() < -9 ? "" : " ")
+                : " " + atkStats.getSTR() + " ";
+        String qa = atkStats.getDEX() > 9 || atkStats.getDEX() < 0
+                ? atkStats.getDEX() + (atkStats.getDEX() < -9 ? "" : " ")
+                : " " + atkStats.getDEX() + " ";
+        String sa = atkStats.getWIS() > 9 || atkStats.getWIS() < 0
+                ? atkStats.getWIS() + (atkStats.getWIS() < -9 ? "" : " ")
+                : " " + atkStats.getWIS() + " ";
+        String ma = atkStats.getINT() > 9 || atkStats.getINT() < 0
+                ? atkStats.getINT() + (atkStats.getINT() < -9 ? "" : " ")
+                : " " + atkStats.getINT();
+        String bd = defStats.getSTR() > 9 || defStats.getSTR() < 0
+                ? defStats.getSTR() + (defStats.getSTR() < -9 ? "" : " ")
+                : " " + defStats.getSTR() + " ";
+        String qd = defStats.getDEX() > 9 || defStats.getDEX() < 0
+                ? defStats.getDEX() + (defStats.getDEX() < -9 ? "" : " ")
+                : " " + defStats.getDEX() + " ";
+        String sd = defStats.getWIS() > 9 || defStats.getWIS() < 0
+                ? defStats.getWIS() + (defStats.getWIS() < -9 ? "" : " ")
+                : " " + defStats.getWIS() + " ";
+        String md = defStats.getINT() > 9 || defStats.getINT() < 0
+                ? defStats.getINT() + (defStats.getINT() < -9 ? "" : " ")
+                : " " + defStats.getINT();
+
+
         System.out.printf(
                 "\n%s (%s) - %d/%dHP  %d/%dMP\nLVL: %d   Trophies: %d\n STR | DEX | WIS | INT  Base Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Attack Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Defense Stats\n %s | %s | %s | %s\n\nGold: %d\n",
                 name, getClassName(), hp, totalhp, mp, totalmp, level, trophies, s, d, w, i, ba, qa, sa, ma, bd, qd, sd,
                 md, money);
         if (getClassName().equals("Barbarian") && hp < totalhp / 2) {
-            bruATK -= 8;
-            quiATK -= 8;
-            sacATK -= 8;
-            magATK -= 8;
+            atkStats.boostAll(-8);
         }
 
         System.out.println("Head:  " + (head == null ? "Nothing" : head.getName()) + " (h)");
@@ -765,39 +745,33 @@ public abstract class Player {
         if (isItem(left, 109) || isItem(right, 109)) {
             for (Player enemy : fighters) {
                 if (enemy != this) {
-                    bruATK += 2 * boost;
-                    quiATK += 2 * boost;
-                    sacATK += 2 * boost;
-                    magATK += 2 * boost;
-                    bruDEF += boost;
-                    quiDEF += boost;
-                    sacDEF += boost;
-                    magDEF += boost;
+                    atkStats.boostAll(2 * boost);
+                    defStats.boostAll(boost);
                 }
             }
         }
     }
 
     public void bruteAttack(Player defender, int power) {
-        damage(defender, str + power + bruATK - defender.bruDEF);
+        damage(defender, baseStats.getSTR() + power + atkStats.getSTR() - defender.defStats.getSTR());
     }
 
     public void quickAttack(Player defender, int power) {
         if (isItem(left, 148) || isItem(right, 148)) {
             healHP((int) (Math.random() * 6) + 1);
         }
-        damage(defender, dex + power + quiATK - defender.quiDEF);
+        damage(defender, baseStats.getDEX() + power + atkStats.getDEX() - defender.defStats.getDEX());
         if (isItem(feet, 111) && !defender.dead) {
             damage(defender, (int) (Math.random() * 8) + 1);
         }
     }
 
     public void sacredAttack(Player defender, int power) {
-        damage(defender, wis + power + sacATK - defender.sacDEF);
+        damage(defender, baseStats.getWIS() + power + atkStats.getWIS() - defender.defStats.getWIS());
     }
 
     public void magicAttack(Player defender, int power) {
-        damage(defender, it + power + magATK - defender.magDEF);
+        damage(defender, baseStats.getINT() + power + atkStats.getINT() - defender.defStats.getINT());
         if ((isItem(left, 147) || isItem(right, 147)) && !defender.isItem(body, 71) && !defender.dead) {
             damage(defender, 6);
         }
@@ -807,30 +781,18 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (isItem(feet, 29)) {
-                    bruATK += 2;
-                    quiATK += 2;
-                    sacATK += 2;
-                    magATK += 2;
+                    atkStats.boostAll(2);
                 }
                 if (isItem(left, 63) || isItem(right, 63)) {
-                    bruATK += 6;
-                    quiATK += 6;
-                    sacATK += 6;
-                    magATK += 6;
+                    atkStats.boostAll(6);
                 }
                 break;
             case "fire":
                 if (isItem(head, 105)) {
-                    bruATK += 2;
-                    quiATK += 2;
-                    sacATK += 2;
-                    magATK += 2;
+                    atkStats.boostAll(2);
                 }
                 if (isItem(left, 46) || isItem(right, 46)) {
-                    bruATK += 5;
-                    quiATK += 5;
-                    sacATK += 5;
-                    magATK += 5;
+                    atkStats.boostAll(5);
                 }
                 break;
         }
@@ -841,10 +803,7 @@ public abstract class Player {
                 healMP(spell.getLevel() * 6);
             }
         }
-        bruATK -= freeze;
-        quiATK -= freeze;
-        sacATK -= freeze;
-        magATK -= freeze;
+        atkStats.boostAll(-freeze);
         if (isItem(left, 143)) {
             return false;
         }
@@ -855,30 +814,18 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (isItem(feet, 29)) {
-                    bruATK -= 2;
-                    quiATK -= 2;
-                    sacATK -= 2;
-                    magATK -= 2;
+                    atkStats.boostAll(-2);
                 }
                 if (isItem(left, 63) || isItem(right, 63)) {
-                    bruATK -= 6;
-                    quiATK -= 6;
-                    sacATK -= 6;
-                    magATK -= 6;
+                    atkStats.boostAll(-6);
                 }
                 break;
             case "fire":
                 if (isItem(head, 105)) {
-                    bruATK -= 2;
-                    quiATK -= 2;
-                    sacATK -= 2;
-                    magATK -= 2;
+                    atkStats.boostAll(-2);
                 }
                 if (isItem(left, 46) || isItem(right, 46)) {
-                    bruATK -= 5;
-                    quiATK -= 5;
-                    sacATK -= 5;
-                    magATK -= 5;
+                    atkStats.boostAll(-5);
                 }
                 break;
         }
@@ -898,10 +845,7 @@ public abstract class Player {
                 damage(defender, 8);
             }
         }
-        bruATK += freeze;
-        quiATK += freeze;
-        sacATK += freeze;
-        magATK += freeze;
+        atkStats.boostAll(freeze);
         freeze = 0;
         return current;
     }
@@ -911,30 +855,18 @@ public abstract class Player {
             case "snow":
                 freeze(2);
                 if (isItem(body, 97)) {
-                    bruDEF += 4;
-                    quiDEF += 4;
-                    sacDEF += 4;
-                    magDEF += 4;
+                    defStats.boostAll(4);
                 }
                 if (isItem(right, 99)) {
-                    bruDEF += 10;
-                    quiDEF += 10;
-                    sacDEF += 10;
-                    magDEF += 10;
+                    defStats.boostAll(10);
                 }
                 break;
             case "fire":
                 if (isItem(body, 96)) {
-                    bruDEF += 4;
-                    quiDEF += 4;
-                    sacDEF += 4;
-                    magDEF += 4;
+                    defStats.boostAll(4);
                 }
                 if (isItem(right, 99)) {
-                    bruDEF += 10;
-                    quiDEF += 10;
-                    sacDEF += 10;
-                    magDEF += 10;
+                    defStats.boostAll(10);
                 }
                 break;
         }
@@ -944,30 +876,18 @@ public abstract class Player {
         switch (type) {
             case "snow":
                 if (isItem(body, 97)) {
-                    bruDEF -= 4;
-                    quiDEF -= 4;
-                    sacDEF -= 4;
-                    magDEF -= 4;
+                    defStats.boostAll(-4);
                 }
                 if (isItem(right, 99)) {
-                    bruDEF -= 10;
-                    quiDEF -= 10;
-                    sacDEF -= 10;
-                    magDEF -= 10;
+                    defStats.boostAll(10);
                 }
                 break;
             case "fire":
                 if (isItem(body, 96)) {
-                    bruDEF -= 4;
-                    quiDEF -= 4;
-                    sacDEF -= 4;
-                    magDEF -= 4;
+                    defStats.boostAll(-4);
                 }
                 if (isItem(right, 99)) {
-                    bruDEF -= 10;
-                    quiDEF -= 10;
-                    sacDEF -= 10;
-                    magDEF -= 10;
+                    defStats.boostAll(10);
                 }
                 break;
         }
@@ -989,23 +909,24 @@ public abstract class Player {
         }
     }
 
-    public Player(String playerName, int playerHP, int playerMP, int playerSTR, int playerDEX, int playerWIS,
-            int playerINT) {
+    public Player(String playerName, int playerHP, int playerMP, GlobalStats playerStats) {
         name = playerName;
         hp = totalhp = playerHP;
         mp = totalmp = playerMP;
-        boostS = playerSTR;
-        boostD = playerDEX;
-        boostW = playerWIS;
-        boostI = playerINT;
-        str = boostS == 0 ? (int) (Math.random() * 4.0) + 1 : boostS * 5;
-        dex = boostD == 0 ? (int) (Math.random() * 4.0) + 1 : boostD * 5;
-        wis = boostW == 0 ? (int) (Math.random() * 4.0) + 1 : boostW * 5;
-        it = boostI == 0 ? (int) (Math.random() * 4.0) + 1 : boostI * 5;
+        boostStats.boostAll(playerStats);
+        baseStats.setSTR(boostStats.getSTR() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getSTR() * 5);
+        baseStats.setDEX(boostStats.getDEX() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getDEX() * 5);
+        baseStats.setWIS(boostStats.getWIS() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getWIS() * 5);
+        baseStats.setDEX(boostStats.getDEX() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getDEX() * 5);
         if (getClassName().equals("Paladin")) {
-            sacDEF = magDEF = 8;
+            defStats.setWIS(8);
+            defStats.setINT(8);
         } else if (getClassName().equals("Monk")) {
-            bruATK = quiATK = sacATK = magATK = 5;
+            atkStats.setSTR(5);
+            atkStats.setDEX(5);
+            atkStats.setWIS(5);
+            atkStats.setINT(5);
+        
         }
 
     }
@@ -1016,26 +937,26 @@ public abstract class Player {
         name = (String) player.get("name");
         hp = totalhp = (int) player.get("hp");
         mp = totalmp = (int) player.get("mp");
-        str = (int) player.get("str");
-        dex = (int) player.get("dex");
-        wis = (int) player.get("wis");
-        it = (int) player.get("int");
-        boostS = (int) player.get("boostS");
-        boostD = (int) player.get("boostD");
-        boostW = (int) player.get("boostW");
-        boostI = (int) player.get("boostI");
-        basicB = (int) player.get("basicB");
-        basicQ = (int) player.get("basicQ");
-        basicS = (int) player.get("basicS");
-        basicM = (int) player.get("basicM");
-        bruATK = (int) player.get("bruATK");
-        quiATK = (int) player.get("quiATK");
-        sacATK = (int) player.get("sacATK");
-        magATK = (int) player.get("magATK");
-        bruDEF = (int) player.get("bruDEF");
-        quiDEF = (int) player.get("quiDEF");
-        sacDEF = (int) player.get("sacDEF");
-        magDEF = (int) player.get("magDEF");
+        baseStats.setSTR((int) player.get("str"));
+        baseStats.setDEX((int) player.get("dex"));
+        baseStats.setWIS((int) player.get("wis"));
+        baseStats.setINT((int) player.get("int"));
+        boostStats.setSTR((int) player.get("boostS"));
+        boostStats.setDEX((int) player.get("boostD"));
+        boostStats.setWIS((int) player.get("boostW"));
+        boostStats.setINT((int) player.get("boostI"));
+        basicStats.setSTR((int) player.get("basicB"));
+        basicStats.setDEX((int) player.get("basicQ"));
+        basicStats.setWIS((int) player.get("basicS"));
+        basicStats.setINT((int) player.get("basicM"));
+        atkStats.setSTR((int) player.get("bruATK"));
+        atkStats.setDEX((int) player.get("quiATK"));
+        atkStats.setWIS((int) player.get("sacATK"));
+        atkStats.setINT((int) player.get("magATK"));
+        defStats.setSTR((int) player.get("bruDEF"));
+        defStats.setDEX((int) player.get("quiDEF"));
+        defStats.setWIS((int) player.get("sacDEF"));
+        defStats.setINT((int) player.get("magDEF"));
         healBoost = (int) player.get("heal");
         level = (int) player.get("level");
         trophies = (int) player.get("trophies");
@@ -1133,26 +1054,26 @@ public abstract class Player {
         save.put("class", getClassName());
         save.put("hp", totalhp);
         save.put("mp", totalmp);
-        save.put("str", str);
-        save.put("dex", dex);
-        save.put("wis", wis);
-        save.put("int", it);
-        save.put("boostS", boostS);
-        save.put("boostD", boostD);
-        save.put("boostW", boostW);
-        save.put("boostI", boostI);
-        save.put("basicB", basicB);
-        save.put("basicQ", basicQ);
-        save.put("basicS", basicS);
-        save.put("basicM", basicM);
-        save.put("bruATK", bruATK);
-        save.put("quiATK", quiATK);
-        save.put("sacATK", sacATK);
-        save.put("magATK", magATK);
-        save.put("bruDEF", bruDEF);
-        save.put("quiDEF", quiDEF);
-        save.put("sacDEF", sacDEF);
-        save.put("magDEF", magDEF);
+        save.put("str", baseStats.getSTR());
+        save.put("dex", baseStats.getDEX());
+        save.put("wis", baseStats.getWIS());
+        save.put("int", baseStats.getINT());
+        save.put("boostS", boostStats.getSTR());
+        save.put("boostD", boostStats.getDEX());
+        save.put("boostW", boostStats.getWIS());
+        save.put("boostI", boostStats.getINT());
+        save.put("basicB", basicStats.getSTR());
+        save.put("basicQ", basicStats.getDEX());
+        save.put("basicS", basicStats.getWIS());
+        save.put("basicM", basicStats.getINT());
+        save.put("bruATK", atkStats.getSTR());
+        save.put("quiATK", atkStats.getDEX());
+        save.put("sacATK", atkStats.getWIS());
+        save.put("magATK", atkStats.getINT());
+        save.put("bruDEF", defStats.getSTR());
+        save.put("quiDEF", defStats.getDEX());
+        save.put("sacDEF", defStats.getWIS());
+        save.put("magDEF", defStats.getINT());
         save.put("heal", healBoost);
         save.put("level", level);
         save.put("trophies", trophies);
