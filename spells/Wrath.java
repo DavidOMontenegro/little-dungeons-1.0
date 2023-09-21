@@ -51,20 +51,9 @@ public class Wrath extends Spell {
             }
             try {
                 int playerId = Integer.parseInt(id);
-                if (playerId <= active.indexOf(user) && playerId > 0) {
+                if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
-                    defender = active.get(playerId - 1);
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, (20 * level) + user.getStat("basic", 'w') - defender.getStat("defense", 'w') + user.getStat("attack", 'w'));
-                    defender.postDefend(user, 2, type, false);
-                    current = user.postAttack(defender, type, false, current);
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
-                } else if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = active.get(playerId);
+                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                     defender.preDefend(user, type);
                     user.preAttack(0, type, false);
                     user.damage(defender, (20 * level) + user.getStat("basic", 'w') - defender.getStat("defense", 'w') + user.getStat("attack", 'w'));

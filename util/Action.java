@@ -120,9 +120,9 @@ public class Action {
                         String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
-                            if (playerId <= active.indexOf(user) && playerId > 0) {
+                            if (playerId < activeNumber && playerId > 0) {
                                 type = user.atkType(0);
-                                defender = active.get(playerId - 1);
+                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                                 d20 = ((int) (Math.random() * 20) + 1);
                                 defender.preDefend(user, type);
                                 counter = user.preAttack(d20, type, true);
@@ -131,21 +131,7 @@ public class Action {
                                 current = user.postAttack(defender, type, true, current);
                                 current = next(current, activeNumber);
                                 wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
-                            } else if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(0);
-                                defender = active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.bruteAttack(defender, d20);
-                                defender.postDefend(user, 0, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
+                                selected2 = selected1 = true;
                             } else if (playerId == activeNumber) {
                                 selected2 = true;
                             }
@@ -169,9 +155,9 @@ public class Action {
                         String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
-                            if (playerId <= active.indexOf(user) && playerId > 0) {
+                            if (playerId < activeNumber && playerId > 0) {
                                 type = user.atkType(1);
-                                defender = active.get(playerId - 1);
+                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                                 d20 = ((int) (Math.random() * 20) + 1);
                                 defender.preDefend(user, type);
                                 counter = user.preAttack(d20, type, true);
@@ -180,21 +166,7 @@ public class Action {
                                 current = user.postAttack(defender, type, true, current);
                                 current = next(current, activeNumber);
                                 wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
-                            } else if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(1);
-                                defender = active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.quickAttack(defender, d20);
-                                defender.postDefend(user, 1, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
+                                selected2 = selected1 = true;
                             } else if (playerId == activeNumber) {
                                 selected2 = true;
                             }
@@ -218,9 +190,9 @@ public class Action {
                         String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
-                            if (playerId <= active.indexOf(user) && playerId > 0) {
+                            if (playerId < activeNumber && playerId > 0) {
                                 type = user.atkType(2);
-                                defender = active.get(playerId - 1);
+                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                                 d20 = ((int) (Math.random() * 20) + 1);
                                 defender.preDefend(user, type);
                                 counter = user.preAttack(d20, type, true);
@@ -229,21 +201,7 @@ public class Action {
                                 current = user.postAttack(defender, type, true, current);
                                 current = next(current, activeNumber);
                                 wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
-                            } else if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(2);
-                                defender = active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.sacredAttack(defender, d20);
-                                defender.postDefend(user, 2, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
+                                selected2 = selected1 = true;
                             } else if (playerId == activeNumber) {
                                 selected2 = true;
                             }
@@ -267,9 +225,9 @@ public class Action {
                         String id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
-                            if (playerId <= active.indexOf(user) && playerId > 0) {
+                            if (playerId < activeNumber && playerId > 0) {
                                 type = user.atkType(3);
-                                defender = active.get(playerId - 1);
+                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                                 d20 = ((int) (Math.random() * 20) + 1);
                                 defender.preDefend(user, type);
                                 counter = user.preAttack(d20, type, true);
@@ -278,21 +236,7 @@ public class Action {
                                 current = user.postAttack(defender, type, true, current);
                                 current = next(current, activeNumber);
                                 wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
-                            } else if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(3);
-                                defender = active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.magicAttack(defender, d20);
-                                defender.postDefend(user, 3, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = true;
-                                selected1 = true;
+                                selected2 = selected1 = true;
                             } else if (playerId == activeNumber) {
                                 selected2 = true;
                             }

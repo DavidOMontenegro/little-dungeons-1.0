@@ -58,26 +58,9 @@ public class Icicles extends Spell {
             }
             try {
                 int playerId = Integer.parseInt(id);
-                if (playerId <= active.indexOf(user) && playerId > 0) {
+                if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
-                    defender = active.get(playerId - 1);
-                    while (!user.isDead() && !defender.isDead() && lvl != 0) {
-                        defender.preDefend(user, type);
-                        user.preAttack(0, type, false);
-                        user.damage(defender, 15 + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
-                        defender.freeze(3);
-                        defender.postDefend(user, 3, type, false);
-                        current = user.postAttack(defender, type, false, current);
-                        user.freeze(freeze);
-                        lvl--;
-                    }
-                    user.freeze(-freeze);
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
-                } else if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = active.get(playerId);
+                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                     while (!user.isDead() && !defender.isDead() && lvl != 0) {
                         defender.preDefend(user, type);
                         user.preAttack(0, type, false);

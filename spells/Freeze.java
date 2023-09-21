@@ -53,21 +53,9 @@ public class Freeze extends Spell {
             }
             try {
                 int playerId = Integer.parseInt(id);
-                if (playerId <= active.indexOf(user) && playerId > 0) {
+                if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
-                    defender = active.get(playerId - 1);
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
-                    defender.freeze(level * 4);
-                    defender.postDefend(user, 3, type, false);
-                    current = user.postAttack(defender, type, false, current);
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
-                } else if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = active.get(playerId);
+                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                     defender.preDefend(user, type);
                     user.preAttack(0, type, false);
                     user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));

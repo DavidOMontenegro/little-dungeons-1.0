@@ -54,39 +54,9 @@ public class Tackle extends Spell {
             }
             try {
                 int playerId = Integer.parseInt(id);
-                if (playerId <= active.indexOf(user) && playerId > 0) {
+                if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
-                    defender = active.get(playerId - 1);
-                    while (!selected) {
-                        System.out.println(
-                                "Which armour type will you use?\n1- Brute (" + user.getStat("defense", 's') + " DEF)\n2- Sacred ("
-                                        + user.getStat("defense", 'w') + " DEF)\n3- Magic (" + user.getStat("defense", 'i') + " DEF)");
-                        switch (GlobalScanner.nextLine()) {
-                            case "1":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
-                                selected = true;
-                                break;
-                            case "2":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
-                                selected = true;
-                                break;
-                            case "3":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
-                                selected = true;
-                                break;
-                        }
-                    }
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, power);
-                    defender.postDefend(user, 0, type, false);
-                    current = user.postAttack(defender, type, false, current);
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
-                } else if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = active.get(playerId);
+                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
                     while (!selected) {
                         System.out.println(
                                 "Which armour type will you use?\n1- Brute (" + user.getStat("defense", 's') + " DEF)\n2- Sacred ("
