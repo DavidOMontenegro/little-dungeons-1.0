@@ -1,4 +1,5 @@
 import classes.*;
+import global.GlobalItems;
 import global.GlobalScanner;
 import util.Action;
 import util.Item;
@@ -113,9 +114,9 @@ public class LittleDungeons {
             if (player.getTrophies() > winners.get(0).getTrophies()) {
                 winners.clear();
                 winners.add(player);
-            } else if (player.getTrophies() == winners.get(0).getTrophies()) {
+            } else if (player.getTrophies() == winners.get(0).getTrophies()) 
                 winners.add(player);
-            }
+            
         }
         win = winners.size();
         System.out.println("\n\n");
@@ -133,7 +134,7 @@ public class LittleDungeons {
 
     public static void main(String[] args) throws IOException {
         ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Item> items = new ArrayList<>();
+        ArrayList<Item> items;
         int current = 0;
         Player user;
         boolean gameOver = false;
@@ -146,7 +147,7 @@ public class LittleDungeons {
         boolean selected = false;
         boolean save = false;
 
-        Action.addItems(items);
+        items = GlobalItems.addItems();
 
         // Start "Screen"
         System.out.println("\n\nWelcome to Little Terminal!");
