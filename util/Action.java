@@ -4,6 +4,7 @@ import global.GlobalItems;
 import global.GlobalScanner;
 import classes.Player;
 import spells.*;
+import util.encounter.State;
 
 import java.util.ArrayList;
 
@@ -56,11 +57,11 @@ public class Action {
         return quit;
     }
 
-    private void winner(ArrayList<Player> fighters, Player victor, double id) {
+    private void winner(ArrayList<Player> fighters, Player victor, Item item) {
         System.out.println(
                 "\n--------------------------\n" + victor.getName() + " won the game!\n--------------------------");
         victor.getMoney(50);
-        victor.getItem(items, id);
+        victor.getItem(item);
         for (Player player : fighters) {
             player.revive();
             for (Spell spell : player.getSpells()) {
@@ -1328,15 +1329,15 @@ public class Action {
         boolean gameOver = false;
         boolean turn = true;
         ArrayList<Player> active = new ArrayList<>();
-        double id = Math.random();
+        Item prize = first.randomItem();
         active.add(first);
         active.add(second);
 
-        System.out.println("\n\n! The prize is a " + first.randomItem(items, id).getName() + " !\n\n");
+        System.out.println("\n\n! The prize is a " + prize.getName() + " !\n\n");
         gameOver = getReady(active, true);
 
         if (gameOver) {
-            winner(active, first, id);
+            winner(active, first, prize);
             return;
         }
 
@@ -1359,12 +1360,12 @@ public class Action {
             }
 
             if (first.isDead()) {
-                winner(active, second, id);
+                winner(active, second, prize);
                 second.winTrophy();
                 gameOver = true;
             }
             if (second.isDead()) {
-                winner(active, first, id);
+                winner(active, first, prize);
                 first.winTrophy();
                 gameOver = true;
             }
@@ -1383,7 +1384,7 @@ public class Action {
 
         while (!gameOver) {
             if (activeNumber == 1) {
-                winner(players, user, Math.random());
+                winner(players, user, user.randomItem());
                 user.winTrophy();
                 gameOver = true;
                 break;

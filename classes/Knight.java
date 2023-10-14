@@ -13,8 +13,8 @@ public class Knight extends Player {
     public Knight(String name) {
         super(name, 65, 15, new GlobalStats(1, 0, 0, 1));
     }
-    public Knight(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Knight(JSONObject saved) {
+        super(saved);
     }
 
     @Override

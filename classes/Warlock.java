@@ -11,8 +11,8 @@ public class Warlock extends Player {
     public Warlock(String name) {
         super(name, 50, 75, new GlobalStats(0, 1, 0, 1));
     }
-    public Warlock(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Warlock(JSONObject saved) {
+        super(saved);
     }
 
     @Override

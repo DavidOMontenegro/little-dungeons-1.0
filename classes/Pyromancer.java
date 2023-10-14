@@ -11,8 +11,8 @@ public class Pyromancer extends Player {
     public Pyromancer(String name) {
         super(name, 60, 50, new GlobalStats(0, 0, 0, 1));
     }
-    public Pyromancer(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Pyromancer(JSONObject saved) {
+        super(saved);
     }
 
     @Override

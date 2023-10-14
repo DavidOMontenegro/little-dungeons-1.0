@@ -11,8 +11,8 @@ public class Archer extends Player {
     public Archer(String name) {
         super(name, 50, 40, new GlobalStats(0, 1, 0, 1));
     }
-    public Archer(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Archer(JSONObject saved) {
+        super(saved);
     }
 
     @Override

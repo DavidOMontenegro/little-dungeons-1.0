@@ -11,8 +11,8 @@ public class Barbarian extends Player {
     public Barbarian(String name) {
         super(name, 60, 15, new GlobalStats(2, 0, 0, 0));
     }
-    public Barbarian(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Barbarian(JSONObject saved) {
+        super(saved);
     }
 
     @Override

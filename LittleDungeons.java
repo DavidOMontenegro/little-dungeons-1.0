@@ -3,6 +3,7 @@ import global.GlobalItems;
 import global.GlobalScanner;
 import util.Action;
 import util.Item;
+import util.encounter.RandomEncounter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -15,24 +16,7 @@ import java.util.Scanner;
 
 public class LittleDungeons {
 
-    private static void startTurn(boolean shop, boolean duel, boolean arena) {
-        if (shop) {
-            System.out.println(
-                    "What would you like to do?\n1- Character Menu\n2- Enter Shop\n3- Next Player\n4- Save Game\n5- End Game");
-        } else if (duel) {
-            System.out.println(
-                    "What would you like to do?\n1- Character Menu\n2- Fight Player\n3- Save Game\n4- End Game");
-        } else if (arena) {
-            System.out.println(
-                    "What would you like to do?\n1- Character Menu\n2- Enter Arena\n3- Save Game\n4- End Game");
-        } else {
-            System.out.println(
-                    "What would you like to do?\n1- Character Menu\n2- Next Player\n3- Save Game\n4- End Game");
-        }
-    }
-
-    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current,
-            ArrayList<Item> items, boolean shop, boolean duel, boolean arena, int item) throws IOException {
+    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current, RandomEncounter state) throws IOException {
         boolean selected = false;
         boolean newFile = false;
         File saved = new File("saved/error.json");
@@ -94,11 +78,9 @@ public class LittleDungeons {
             pcs.put(player.save());
         }
         game.put("current", current);
-        game.put("shop", shop);
-        game.put("duel", duel);
-        game.put("arena", arena);
+        game.put("state", state.saveState());
+        game.put("item", state.saveItem());
         game.put("players", pcs);
-        game.put("item", item);
 
         FileWriter file = new FileWriter(saved);
         file.write(game.toString());
@@ -114,9 +96,9 @@ public class LittleDungeons {
             if (player.getTrophies() > winners.get(0).getTrophies()) {
                 winners.clear();
                 winners.add(player);
-            } else if (player.getTrophies() == winners.get(0).getTrophies()) 
+            } else if (player.getTrophies() == winners.get(0).getTrophies())
                 winners.add(player);
-            
+
         }
         win = winners.size();
         System.out.println("\n\n");
@@ -138,10 +120,7 @@ public class LittleDungeons {
         int current = 0;
         Player user;
         boolean gameOver = false;
-        boolean shop = false;
-        boolean duel = false;
-        boolean arena = false;
-        int item = 0;
+        RandomEncounter state = RandomEncounter.getRandomEncounter();
 
         byte playerNumber = 3;
         boolean selected = false;
@@ -195,56 +174,54 @@ public class LittleDungeons {
                             loader.close();
 
                             current = (int) load.get("current");
-                            shop = (boolean) load.get("shop");
-                            duel = (boolean) load.get("duel");
-                            arena = (boolean) load.get("arena");
-                            item = (int) load.get("item");
+                            state.setState((byte) load.get("state"));
+                            state.setItem((int) load.get("item"));
 
                             JSONArray jsonPlayers = (JSONArray) load.get("players");
                             for (Object playerString : jsonPlayers) {
                                 JSONObject player = new JSONObject(playerString.toString());
                                 switch ((String) player.get("class")) {
                                     case "Barbarian":
-                                        players.add(new Barbarian(player, items));
+                                        players.add(new Barbarian(player));
                                         break;
                                     case "Assassin":
-                                        players.add(new Assassin(player, items));
+                                        players.add(new Assassin(player));
                                         break;
                                     case "Priest":
-                                        players.add(new Priest(player, items));
+                                        players.add(new Priest(player));
                                         break;
                                     case "Wizard":
-                                        players.add(new Wizard(player, items));
+                                        players.add(new Wizard(player));
                                         break;
                                     case "Archer":
-                                        players.add(new Archer(player, items));
+                                        players.add(new Archer(player));
                                         break;
                                     case "Monk":
-                                        players.add(new Monk(player, items));
+                                        players.add(new Monk(player));
                                         break;
                                     case "Dark Knight":
-                                        players.add(new Knight(player, items));
+                                        players.add(new Knight(player));
                                         break;
                                     case "Paladin":
-                                        players.add(new Paladin(player, items));
+                                        players.add(new Paladin(player));
                                         break;
                                     case "Warlock":
-                                        players.add(new Warlock(player, items));
+                                        players.add(new Warlock(player));
                                         break;
                                     case "Captain":
-                                        players.add(new Captain(player, items));
+                                        players.add(new Captain(player));
                                         break;
                                     case "Inquisitor":
-                                        players.add(new Inquisitor(player, items));
+                                        players.add(new Inquisitor(player));
                                         break;
                                     case "Ninja":
-                                        players.add(new Ninja(player, items));
+                                        players.add(new Ninja(player));
                                         break;
                                     case "Pyromancer":
-                                        players.add(new Pyromancer(player, items));
+                                        players.add(new Pyromancer(player));
                                         break;
                                     case "Thief":
-                                        players.add(new Thief(player, items));
+                                        players.add(new Thief(player));
                                         break;
                                 }
                             }
@@ -485,129 +462,95 @@ public class LittleDungeons {
             user = players.get(current);
             System.out.println("\n\n" + user.getName() + "'s turn");
             if (save) {
-                item = 0;
-                shop = duel = arena = false;
-                switch ((byte) (Math.random() * 4)) {
-                    case 0:
-                        item = user.getItem(items, Math.random());
-                        break;
-                    case 1:
-                        shop = true;
-                        System.out.println("You have found a small shop.");
-                        break;
-                    case 2:
-                        duel = true;
-                        System.out.println("You must challenge another player to a duel.");
-                        break;
-                    case 3:
-                        arena = true;
-                        System.out.println("You have found an arena.");
-                        break;
-                }
+                state.random(user);
             } else {
-                if (shop) {
-                    System.out.println("You have found a small shop.");
-                } else if (duel) {
-                    System.out.println("You must challenge another player to a duel.");
-                } else if (arena) {
-                    System.out.println("You have found an arena.");
-                } else {
-                    Item found = null;
-                    for (Item tmp : items) {
-                        if (tmp.isItem(item)) {
-                            found = tmp;
-                            break;
-                        }
-                    }
-                    System.out.println("You got a" + ("AEIOU".indexOf(found.getName().charAt(0)) != -1 ? "n " : " ")
-                            + found.getName() + "!");
-                }
-                item = 0;
                 save = true;
             }
+            state.encounter();
 
-            startTurn(shop, duel, arena);
             while (!selected) {
                 switch (GlobalScanner.nextLine()) {
                     case "1":
                         action.menu(user, false);
-                        startTurn(shop, duel, arena);
+                        state.startTurn();
                         break;
                     case "2":
-                        if (shop) {
-                            action.shop(user);
-                            startTurn(shop, duel, arena);
-                            break;
-                        } else if (duel) {
-                            Player second;
-                            while (!selected) {
-                                for (int i = 0, j = 0; i < playerNumber; i++) {
-                                    Player player = players.get(i);
-                                    if (player == user) {
-                                        continue;
+                        switch (state.getState()) {
+                            case "shop":
+                                action.shop(user);
+                                state.startTurn();
+                                break;
+                            case "duel":
+                                Player second;
+                                while (!selected) {
+                                    for (int i = 0, j = 0; i < playerNumber; i++) {
+                                        Player player = players.get(i);
+                                        if (player == user) {
+                                            continue;
+                                        }
+                                        j++;
+                                        System.out.println(j + "- " + player.getName());
                                     }
-                                    j++;
-                                    System.out.println(j + "- " + player.getName());
-                                }
-                                System.out.println((playerNumber) + "- Exit");
-                                String id = GlobalScanner.nextLine();
-                                try {
-                                    int playerId = Integer.parseInt(id);
-                                    if (playerId <= players.indexOf(user) && playerId > 0) {
-                                        second = players.get(playerId - 1);
-                                        action.duel(user, second);
-                                        selected = true;
-                                    } else if (playerId < playerNumber && playerId > 0) {
-                                        second = players.get(playerId);
-                                        action.duel(user, second);
-                                        selected = true;
-                                    } else if (playerId == playerNumber) {
-                                        selected = true;
-                                        startTurn(shop, duel, arena);
+                                    System.out.println((playerNumber) + "- Exit");
+                                    String id = GlobalScanner.nextLine();
+                                    try {
+                                        int playerId = Integer.parseInt(id);
+                                        if (playerId <= players.indexOf(user) && playerId > 0) {
+                                            second = players.get(playerId - 1);
+                                            action.duel(user, second);
+                                            selected = true;
+                                        } else if (playerId < playerNumber && playerId > 0) {
+                                            second = players.get(playerId);
+                                            action.duel(user, second);
+                                            selected = true;
+                                        } else if (playerId == playerNumber) {
+                                            selected = true;
+                                            state.startTurn();
+                                        }
+                                    } catch (Exception ignored) {
                                     }
-                                } catch (Exception ignored) {
                                 }
-                            }
-                            break;
-                        } else if (arena) {
-                            action.arena(players, current);
-                            selected = true;
-                        } else {
-                            selected = true;
-                            break;
+                                break;
+                            case "arena":
+                                action.arena(players, current);
+                                selected = true;
+                                break;
+                            default:
+                                selected = true;
+                                break;
                         }
                         break;
                     case "3":
-                        if (shop) {
+                        if (state.getState().equals("shop")) {
                             selected = true;
                         } else {
-                            saveGame(listOfFiles, players, current, items, shop, duel, arena, item);
+                            saveGame(listOfFiles, players, current, state);
                             listOfFiles = folder.listFiles();
-                            startTurn(shop, duel, arena);
+                            state.startTurn();
                         }
                         break;
                     case "4":
-                        if (shop) {
-                            saveGame(listOfFiles, players, current, items, shop, duel, arena, item);
+                        if (state.getState().equals("shop")) {
+                            saveGame(listOfFiles, players, current, state);
                             listOfFiles = folder.listFiles();
-                            startTurn(shop, duel, arena);
+                            state.startTurn();
                         } else {
                             System.out.println("Do all players agree to end the game now? If so, type 'agree'.");
                             if (GlobalScanner.nextLine().equals("agree")) {
                                 gameOver(players);
                                 return;
                             }
-                            startTurn(shop, duel, arena);
+                            state.startTurn();
                         }
                         break;
                     case "5":
-                        if (shop) {
+                        if (state.getState().equals("shop")) {
                             System.out.println("Do all players agree to end the game now? If so, type 'agree'.");
                             if (GlobalScanner.nextLine().equals("agree")) {
                                 gameOver(players);
                                 return;
                             }
-                            startTurn(shop, duel, arena);
+                            state.startTurn();
                         } else {
                             System.out.println("Please select an action.");
                         }
@@ -622,6 +565,5 @@ public class LittleDungeons {
             current = Action.next(current, playerNumber);
         }
 
-        GlobalScanner.close();
-    }
-}
+    GlobalScanner.close();
+}}

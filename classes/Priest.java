@@ -11,8 +11,8 @@ public class Priest extends Player {
     public Priest(String name) {
         super(name, 55, 65, new GlobalStats(0, 0, 2, 0));
     }
-    public Priest(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Priest(JSONObject saved) {
+        super(saved);
     }
 
     public String getClassName() {

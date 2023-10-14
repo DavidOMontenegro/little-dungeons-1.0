@@ -5,12 +5,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import global.GlobalItems;
 import global.GlobalScanner;
 import global.GlobalStats;
 import spells.*;
 import util.*;
+import util.tools.Plural;
 
 public abstract class Player {
+    ArrayList<Item> items = GlobalItems.addItems();
     String name;
     int hp = 0;
     int totalhp = 0;
@@ -37,7 +40,6 @@ public abstract class Player {
     Item right = null;
     Spell[] spells = new Spell[] { null, null, null, null, null, null };
     ArrayList<Item> backpack = new ArrayList<>();
-    final String VOWELS = "AEIOU";
 
     public String getName() {
         return name;
@@ -369,8 +371,7 @@ public abstract class Player {
         if (money >= price) {
             money -= price;
             getItem(item);
-            System.out.println("You bought a" + (VOWELS.indexOf(item.getName().charAt(0)) != -1 ? "n " : " ")
-                    + item.getName() + " for " + price + " gold.");
+            System.out.println("You bought a" + Plural.plural(item) + item.getName() + " for " + price + " gold.");
         } else {
             System.out.println("Too expensive.");
         }
@@ -381,23 +382,21 @@ public abstract class Player {
         int price = (int) ((Integer.parseInt(priceText.substring(3, priceText.length() - 6)) + 0.5) / 2);
         money += price;
         backpack.remove(item);
-        System.out.println("You sold a" + (VOWELS.indexOf(item.getName().charAt(0)) != -1 ? "n " : " ") + item.getName()
-                + " for " + price + " gold.");
+        System.out.println("You sold a" + Plural.plural(item) + " for " + price + " gold.");
     }
 
-    public Item randomItem(ArrayList<Item> items, double id) {
-        return (Item) items.get((int) (id * (double) (rank - minRank)) + minRank);
+    public Item randomItem() {
+        int id = (int) (Math.random() * (double) (rank - minRank)) + minRank;
+        return (Item) items.get(id);
     }
 
-    public int getItem(ArrayList<Item> items, double id) {
-        Item item = randomItem(items, id);
+    public int getItem() {
+        Item item = randomItem();
         getItem(item);
-        System.out.println(
-                "You got a" + (VOWELS.indexOf(item.getName().charAt(0)) != -1 ? "n " : " ") + item.getName() + "!");
         return item.getId();
     }
 
-    private void getItem(Item item) {
+    public void getItem(Item item) {
         backpack.add(item);
     }
 
@@ -910,6 +909,7 @@ public abstract class Player {
     }
 
     public Player(String playerName, int playerHP, int playerMP, GlobalStats playerStats) {
+        items  = GlobalItems.addItems();
         name = playerName;
         hp = totalhp = playerHP;
         mp = totalmp = playerMP;
@@ -931,8 +931,9 @@ public abstract class Player {
 
     }
 
-    public Player(JSONObject player, ArrayList<Item> items) {
+    public Player(JSONObject player) {
         ArrayList<Spell> allSpells = new ArrayList<>();
+        items  = GlobalItems.addItems();
 
         name = (String) player.get("name");
         hp = totalhp = (int) player.get("hp");

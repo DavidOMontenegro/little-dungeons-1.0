@@ -645,4 +645,13 @@ public class GlobalItems {
     public static ArrayList<Item> addItems() {
         return items;
     }
+
+    public static Item getItem(int id) {
+        for (Item tmp : items) {
+            if (tmp.isItem(id)) {
+                return tmp;
+            }
+        }
+        return null;
+    }
 }

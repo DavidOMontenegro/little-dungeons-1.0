@@ -11,8 +11,8 @@ public class Inquisitor extends Player {
     public Inquisitor(String name) {
         super(name, 60, 50, new GlobalStats(1, 0, 1, 0));
     }
-    public Inquisitor(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Inquisitor(JSONObject saved) {
+        super(saved);
     }
 
     @Override

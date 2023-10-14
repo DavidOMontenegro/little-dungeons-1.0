@@ -11,8 +11,8 @@ public class Captain extends Player {
     public Captain(String name) {
         super(name, 50, 5, new GlobalStats(1, 0, 0, 1));
     }
-    public Captain(JSONObject saved, ArrayList<Item> items) {
-        super(saved, items);
+    public Captain(JSONObject saved) {
+        super(saved);
     }
 
     @Override
