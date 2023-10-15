@@ -8,6 +8,8 @@ import java.util.List;
 
 import global.GlobalItems;
 import global.GlobalScanner;
+import global.GlobalSkills;
+import global.GlobalSpells;
 import global.GlobalStats;
 import spells.*;
 import util.*;
@@ -933,7 +935,8 @@ public abstract class Player {
     }
 
     public Player(JSONObject player) {
-        List<Spell> allSpells = new ArrayList<>();
+        List<Spell> allSpells = GlobalSpells.addSpells();
+        GlobalSkills.addSkills().forEach(allSpells::add);
         items  = GlobalItems.addItems();
 
         name = (String) player.get("name");
@@ -995,7 +998,6 @@ public abstract class Player {
             }
         }
 
-        Action.addSkills(allSpells);
         JSONArray sb = (JSONArray) player.get("spells");
         int i = 0;
         for (Object spellString : sb) {

@@ -2,9 +2,10 @@ package util;
 
 import global.GlobalItems;
 import global.GlobalScanner;
+import global.GlobalSkills;
+import global.GlobalSpells;
 import classes.Player;
 import spells.*;
-import util.encounter.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -1163,8 +1164,7 @@ public class Action {
                                                 switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buySpell(selectedSpell);
-                                                        spells.clear();
-                                                        addSpells(spells);
+                                                        spells = GlobalSpells.addSpells();
                                                         selected1 = true;
                                                         selected2 = true;
                                                         break;
@@ -1233,8 +1233,7 @@ public class Action {
                                                 switch (GlobalScanner.nextLine()) {
                                                     case "1":
                                                         player.buySpell(selectedSpell);
-                                                        skills.clear();
-                                                        addSkills(skills);
+                                                        skills = GlobalSkills.addSkills();
                                                         selected1 = true;
                                                         selected2 = true;
                                                         break;
@@ -1420,9 +1419,9 @@ public class Action {
             players.add(gamePlayers.get(i));
         }
         items = GlobalItems.addItems();
-        addSpells(spells);
+        spells = GlobalSpells.addSpells();
         skills.clear();
-        addSkills(skills);
+        skills = GlobalSkills.addSkills();
     }
 
     public static Action getAction(List<Player> gamePlayers) {
@@ -1430,82 +1429,5 @@ public class Action {
             action = new Action(gamePlayers);
         }
         return action;
-    }
-
-    public void addSpells(List<Spell> spells) {
-        spells.add(new Fireball());
-        spells.add(new Freeze());
-        spells.add(new Healing());
-        spells.add(new Tackle());
-        spells.add(new Supernova());
-        spells.add(new Armageddon());
-        spells.add(new Icicles());
-        spells.add(new Wrath());
-    }
-
-    public static void addSkills(List<Spell> skills) {
-        skills.add(new Spell("Thorns",
-                new String[] { "When an enemy hits you with a BRU or QUI attack, they take 6 damage",
-                        "When an enemy hits you with a BRU or QUI attack, they take 12 damage",
-                        "When an enemy hits you with a BRU or QUI attack, they take 18 damage",
-                        "When an enemy hits you with a BRU or QUI attack, they take 24 damage",
-                        "When an enemy hits you with a BRU or QUI attack, they take 30 damage" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Reflective Skin",
-                new String[] { "When an enemy hits you with a SAC or MAG attack, they take 6 damage",
-                        "When an enemy hits you with a SAC or MAG attack, they take 12 damage",
-                        "When an enemy hits you with a SAC or MAG attack, they take 18 damage",
-                        "When an enemy hits you with a SAC or MAG attack, they take 24 damage",
-                        "When an enemy hits you with a SAC or MAG attack, they take 30 damage" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Vampiric Aura",
-                new String[] { "When you attack, heal 6 HP",
-                        "When you attack, heal 12 HP",
-                        "When you attack, heal 18 HP",
-                        "When you attack, heal 24 HP",
-                        "When you attack, heal 30 HP" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Sorcerer's Blessing",
-                new String[] { "When you attack, recover 6 MP",
-                        "When you attack, recover 12 MP",
-                        "When you attack, recover 18 MP",
-                        "When you attack, recover 24 MP",
-                        "When you attack, recover 30 MP" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Heart of Stone",
-                new String[] { "Receive 6 less damage",
-                        "Receive 12 less damage",
-                        "Receive 18 less damage",
-                        "Receive 24 less damage",
-                        "Receive 30 less damage" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Intimidating Presence",
-                new String[] { "Other players have -5 attack",
-                        "Other players have -10 attack",
-                        "Other players have -15 attack",
-                        "Other players have -20 attack",
-                        "Other players have -25 attack" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Plunder",
-                new String[] { "Get 10 times your level in gold for every player you kill",
-                        "Get 20 times your level in gold for every player you kill",
-                        "Get 30 times your level in gold for every player you kill",
-                        "Get 40 times your level in gold for every player you kill",
-                        "Get 50 times your level in gold for every player you kill" },
-                new String[] { "Passive" }, 50, 0));
-
-        skills.add(new Spell("Freezing Attacks",
-                new String[] { "When you use a basic attack, give your enemy 6 freeze",
-                        "When you use a basic attack, give your enemy 12 freeze",
-                        "When you use a basic attack, give your enemy 18 freeze",
-                        "When you use a basic attack, give your enemy 24 freeze",
-                        "When you use a basic attack, give your enemy 30 freeze" },
-                new String[] { "Passive" }, 50, 0));
     }
 }
