@@ -2,14 +2,15 @@ package util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import classes.Player;
 
 public class Item {
     int id;
     String name;
-    ArrayList<String> desc;
-    ArrayList<String> type;
+    List<String> desc;
+    List<String> type;
     int price;
     int str, dex, wis, it;
     int bruATK, quiATK, sacATK, magATK;
@@ -49,7 +50,7 @@ public class Item {
         return id == itemId;
     }
 
-    public ArrayList<String> getType() {
+    public List<String> getType() {
         return type;
     }
 

@@ -6,6 +6,7 @@ import classes.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Spell {
     String name;
@@ -15,7 +16,7 @@ public class Spell {
     String desc4;
     String desc5;
     int level = 0;
-    ArrayList<String> type;
+    List<String> type;
     int price;
     int baseCost;
     int mpCost = 0;
@@ -56,7 +57,7 @@ public class Spell {
         return new String[] { desc, desc2, desc3, desc4, desc5 };
     }
 
-    public ArrayList<String> getType() {
+    public List<String> getType() {
         return type;
     }
 
@@ -126,7 +127,7 @@ public class Spell {
         return true;
     }
 
-    public int use(int current, ArrayList<Player> active) {
+    public int use(int current, List<Player> active) {
         active.get(current).useMP(mpCost);
         return current;
     }

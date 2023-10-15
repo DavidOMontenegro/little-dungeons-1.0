@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import global.GlobalItems;
 import global.GlobalScanner;
@@ -13,7 +14,7 @@ import util.*;
 import util.tools.Plural;
 
 public abstract class Player {
-    ArrayList<Item> items = GlobalItems.addItems();
+    List<Item> items = GlobalItems.addItems();
     String name;
     int hp = 0;
     int totalhp = 0;
@@ -39,7 +40,7 @@ public abstract class Player {
     Item left = null;
     Item right = null;
     Spell[] spells = new Spell[] { null, null, null, null, null, null };
-    ArrayList<Item> backpack = new ArrayList<>();
+    List<Item> backpack = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -408,7 +409,7 @@ public abstract class Player {
 
     public boolean putOn(int id, int place) {
         Item item = (Item) backpack.get(id);
-        ArrayList<String> itemType = item.getType();
+        List<String> itemType = item.getType();
         String type = (String) itemType.get(0);
         String doubleMessage = "You cannot hold two " + type.substring(0, 1).toLowerCase() + type.substring(1) + "s.";
         boolean doubleAssassin = !getClassName().equals("Assassin") || !itemType.contains("Weapon");
@@ -554,7 +555,7 @@ public abstract class Player {
         backpack.add(item);
     }
 
-    public ArrayList<Item> getBackpack() {
+    public List<Item> getBackpack() {
         return backpack;
     }
 
@@ -699,7 +700,7 @@ public abstract class Player {
         if (left == null) {
             return "basic";
         } else {
-            ArrayList<String> itemType = left.getType();
+            List<String> itemType = left.getType();
             String type = "error";
             if (itemType.contains("Weapon")) {
                 switch (basic) {
@@ -739,7 +740,7 @@ public abstract class Player {
         }
     }
 
-    public void alchemist(ArrayList<Player> fighters, boolean start) {
+    public void alchemist(List<Player> fighters, boolean start) {
         int boost = start ? -2 : 2;
         if (isItem(left, 109) || isItem(right, 109)) {
             for (Player enemy : fighters) {
@@ -932,7 +933,7 @@ public abstract class Player {
     }
 
     public Player(JSONObject player) {
-        ArrayList<Spell> allSpells = new ArrayList<>();
+        List<Spell> allSpells = new ArrayList<>();
         items  = GlobalItems.addItems();
 
         name = (String) player.get("name");
@@ -1029,7 +1030,7 @@ public abstract class Player {
             } else {
                 for (Spell skill : allSpells) {
                     if (isSpell(skill, (String) spell.get("name"))) {
-                        ArrayList<String> spellType = skill.getType();
+                        List<String> spellType = skill.getType();
                         int x = spellType.size();
                         String[] types = new String[x];
                         for (int j = 0; j < x; j++) {

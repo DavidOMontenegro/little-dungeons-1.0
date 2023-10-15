@@ -13,11 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONTokener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class LittleDungeons {
 
-    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current, RandomEncounter state)
+    private static void saveGame(File[] listOfFiles, List<Player> players, int current, RandomEncounter state)
             throws IOException {
         boolean selected = false;
         boolean newFile = false;
@@ -90,8 +91,8 @@ public class LittleDungeons {
         System.out.println();
     }
 
-    private static void gameOver(ArrayList<Player> players) {
-        ArrayList<Player> winners = new ArrayList<>();
+    private static void gameOver(List<Player> players) {
+        List<Player> winners = new ArrayList<>();
         int win = 1;
         winners.add(players.get(0));
         for (Player player : players) {
@@ -117,8 +118,8 @@ public class LittleDungeons {
     }
 
     public static void main(String[] args) throws IOException {
-        ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Item> items;
+        List<Player> players = new ArrayList<>();
+        List<Item> items;
         int current = 0;
         Player user;
         boolean gameOver = false;

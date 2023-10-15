@@ -1,7 +1,5 @@
 package classes;
 
-import java.util.ArrayList;
-
 import org.json.JSONObject;
 
 import global.GlobalStats;

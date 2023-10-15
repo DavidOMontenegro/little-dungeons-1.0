@@ -6,6 +6,7 @@ import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Supernova extends Spell {
     public Supernova() {
@@ -28,7 +29,7 @@ public class Supernova extends Spell {
     }
 
     @Override
-    public int use(int current, ArrayList<Player> active) {
+    public int use(int current, List<Player> active) {
         int activeNumber = active.size();
         Player user = active.get(current);
         String type = "snow";

@@ -1,11 +1,12 @@
 package global;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import util.Item;
 
 public class GlobalItems {
-    private static ArrayList<Item> items = new ArrayList<Item>() {
+    private static List<Item> items = new ArrayList<Item>() {
         {
             add(new Item("Leather Hood", 22,
                     new String[] { "Head" }, 15,
@@ -642,7 +643,7 @@ public class GlobalItems {
     private GlobalItems() {
     }
 
-    public static ArrayList<Item> addItems() {
+    public static List<Item> addItems() {
         return items;
     }
 

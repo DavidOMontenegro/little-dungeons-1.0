@@ -7,14 +7,15 @@ import spells.*;
 import util.encounter.State;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Action {
     private static Action action = null;
 
-    ArrayList<Player> players = new ArrayList<>();
-    ArrayList<Item> items;
-    ArrayList<Spell> spells = new ArrayList<>();
-    ArrayList<Spell> skills = new ArrayList<>();
+    List<Player> players = new ArrayList<>();
+    List<Item> items;
+    List<Spell> spells = new ArrayList<>();
+    List<Spell> skills = new ArrayList<>();
 
     int playerNumber;
 
@@ -30,7 +31,7 @@ public class Action {
         player.clover();
     }
 
-    private boolean getReady(ArrayList<Player> fighters, boolean isDuel) {
+    private boolean getReady(List<Player> fighters, boolean isDuel) {
         boolean quit = false;
 
         System.out.println("Final Preparations");
@@ -57,7 +58,7 @@ public class Action {
         return quit;
     }
 
-    private void winner(ArrayList<Player> fighters, Player victor, Item item) {
+    private void winner(List<Player> fighters, Player victor, Item item) {
         System.out.println(
                 "\n--------------------------\n" + victor.getName() + " won the game!\n--------------------------");
         victor.getMoney(50);
@@ -80,8 +81,8 @@ public class Action {
         }
     }
 
-    private int endTurn(ArrayList<Player> active, int current) {
-        ArrayList<Player> begin = new ArrayList<>(active);
+    private int endTurn(List<Player> active, int current) {
+        List<Player> begin = new ArrayList<>(active);
         for (Player player : begin) {
             if (player.isDead()) {
                 player.revive();
@@ -95,7 +96,7 @@ public class Action {
         return current == active.size() ? 0 : current;
     }
 
-    private int basicAttack(ArrayList<Player> active, int current) {
+    private int basicAttack(List<Player> active, int current) {
         boolean selected1 = false;
         boolean selected2 = false;
         int activeNumber = active.size();
@@ -324,7 +325,7 @@ public class Action {
         return turn;
     }
 
-    private int useSpell(ArrayList<Player> active, int current) {
+    private int useSpell(List<Player> active, int current) {
         boolean selected = false;
         Player user = active.get(current);
 
@@ -405,7 +406,7 @@ public class Action {
     private boolean useSpell(Player attacker, Player defender, boolean turn) {
         boolean selected = false;
 
-        ArrayList<Player> active = new ArrayList<Player>();
+        List<Player> active = new ArrayList<Player>();
         active.add(attacker);
         active.add(defender);
         while (!selected) {
@@ -842,9 +843,9 @@ public class Action {
         boolean selected1 = false;
         boolean selected2 = false;
         int j = 1;
-        ArrayList<Spell> shopSpells = new ArrayList<>();
-        ArrayList<Item> shopItems = new ArrayList<>();
-        ArrayList<Item> backpack;
+        List<Spell> shopSpells = new ArrayList<>();
+        List<Item> shopItems = new ArrayList<>();
+        List<Item> backpack;
         int shopSize;
 
         while (!finished) {
@@ -1328,7 +1329,7 @@ public class Action {
     public void duel(Player first, Player second) {
         boolean gameOver = false;
         boolean turn = true;
-        ArrayList<Player> active = new ArrayList<>();
+        List<Player> active = new ArrayList<>();
         Item prize = first.randomItem();
         active.add(first);
         active.add(second);
@@ -1372,12 +1373,12 @@ public class Action {
         }
     }
 
-    public void arena(ArrayList<Player> players, int current) {
+    public void arena(List<Player> players, int current) {
         boolean gameOver = false;
         Player user = players.get(current);
         int activeNumber;
 
-        ArrayList<Player> active = new ArrayList<>(players);
+        List<Player> active = new ArrayList<>(players);
         activeNumber = active.size();
 
         getReady(active, false);
@@ -1413,7 +1414,7 @@ public class Action {
         }
     }
 
-    private Action(ArrayList<Player> gamePlayers) {
+    private Action(List<Player> gamePlayers) {
         playerNumber = gamePlayers.size();
         for (int i = 0; i < playerNumber; i++) {
             players.add(gamePlayers.get(i));
@@ -1424,14 +1425,14 @@ public class Action {
         addSkills(skills);
     }
 
-    public static Action getAction(ArrayList<Player> gamePlayers) {
+    public static Action getAction(List<Player> gamePlayers) {
         if (action == null) {
             action = new Action(gamePlayers);
         }
         return action;
     }
 
-    public void addSpells(ArrayList<Spell> spells) {
+    public void addSpells(List<Spell> spells) {
         spells.add(new Fireball());
         spells.add(new Freeze());
         spells.add(new Healing());
@@ -1442,7 +1443,7 @@ public class Action {
         spells.add(new Wrath());
     }
 
-    public static void addSkills(ArrayList<Spell> skills) {
+    public static void addSkills(List<Spell> skills) {
         skills.add(new Spell("Thorns",
                 new String[] { "When an enemy hits you with a BRU or QUI attack, they take 6 damage",
                         "When an enemy hits you with a BRU or QUI attack, they take 12 damage",

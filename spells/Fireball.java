@@ -7,6 +7,7 @@ import classes.Player;
 import util.Action;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Fireball extends Spell {
     public Fireball() {
@@ -24,7 +25,7 @@ public class Fireball extends Spell {
     }
 
     @Override
-    public int use(int current, ArrayList<Player> active) {
+    public int use(int current, List<Player> active) {
         int activeNumber = active.size();
         boolean selected = false;
         Player user = active.get(current);
