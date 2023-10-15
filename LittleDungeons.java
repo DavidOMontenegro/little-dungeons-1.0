@@ -1,4 +1,5 @@
 import classes.*;
+import classes.factory.PlayerFactory;
 import global.GlobalItems;
 import global.GlobalScanner;
 import util.Action;
@@ -16,7 +17,8 @@ import java.util.Scanner;
 
 public class LittleDungeons {
 
-    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current, RandomEncounter state) throws IOException {
+    private static void saveGame(File[] listOfFiles, ArrayList<Player> players, int current, RandomEncounter state)
+            throws IOException {
         boolean selected = false;
         boolean newFile = false;
         File saved = new File("saved/error.json");
@@ -121,6 +123,7 @@ public class LittleDungeons {
         Player user;
         boolean gameOver = false;
         RandomEncounter state = RandomEncounter.getRandomEncounter();
+        PlayerFactory playerFactory = new PlayerFactory();
 
         byte playerNumber = 3;
         boolean selected = false;
@@ -180,50 +183,7 @@ public class LittleDungeons {
                             JSONArray jsonPlayers = (JSONArray) load.get("players");
                             for (Object playerString : jsonPlayers) {
                                 JSONObject player = new JSONObject(playerString.toString());
-                                switch ((String) player.get("class")) {
-                                    case "Barbarian":
-                                        players.add(new Barbarian(player));
-                                        break;
-                                    case "Assassin":
-                                        players.add(new Assassin(player));
-                                        break;
-                                    case "Priest":
-                                        players.add(new Priest(player));
-                                        break;
-                                    case "Wizard":
-                                        players.add(new Wizard(player));
-                                        break;
-                                    case "Archer":
-                                        players.add(new Archer(player));
-                                        break;
-                                    case "Monk":
-                                        players.add(new Monk(player));
-                                        break;
-                                    case "Dark Knight":
-                                        players.add(new Knight(player));
-                                        break;
-                                    case "Paladin":
-                                        players.add(new Paladin(player));
-                                        break;
-                                    case "Warlock":
-                                        players.add(new Warlock(player));
-                                        break;
-                                    case "Captain":
-                                        players.add(new Captain(player));
-                                        break;
-                                    case "Inquisitor":
-                                        players.add(new Inquisitor(player));
-                                        break;
-                                    case "Ninja":
-                                        players.add(new Ninja(player));
-                                        break;
-                                    case "Pyromancer":
-                                        players.add(new Pyromancer(player));
-                                        break;
-                                    case "Thief":
-                                        players.add(new Thief(player));
-                                        break;
-                                }
+                                players.add(playerFactory.JSONPlayer(player));
                             }
                             selected = true;
                         } else if (saveFile == files) {
@@ -270,66 +230,12 @@ public class LittleDungeons {
                 System.out.println("And what is " + name
                         + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizard\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
                 while (!selected) {
-                    switch (GlobalScanner.nextLine()) {
-                        case "1":
-                            players.add(new Barbarian(name));
-                            selected = true;
-                            break;
-                        case "2":
-                            players.add(new Assassin(name));
-                            selected = true;
-                            break;
-                        case "3":
-                            players.add(new Priest(name));
-                            selected = true;
-                            break;
-                        case "4":
-                            players.add(new Wizard(name));
-                            selected = true;
-                            break;
-                        case "5":
-                            players.add(new Archer(name));
-                            selected = true;
-                            break;
-                        case "6":
-                            players.add(new Monk(name));
-                            selected = true;
-                            break;
-                        case "7":
-                            players.add(new Knight(name));
-                            selected = true;
-                            break;
-                        case "8":
-                            players.add(new Paladin(name));
-                            selected = true;
-                            break;
-                        case "9":
-                            players.add(new Warlock(name));
-                            selected = true;
-                            break;
-                        case "10":
-                            players.add(new Captain(name));
-                            selected = true;
-                            break;
-                        case "11":
-                            players.add(new Inquisitor(name));
-                            selected = true;
-                            break;
-                        case "12":
-                            players.add(new Ninja(name));
-                            selected = true;
-                            break;
-                        case "13":
-                            players.add(new Pyromancer(name));
-                            selected = true;
-                            break;
-                        case "14":
-                            players.add(new Thief(name));
-                            selected = true;
-                            break;
-                        default:
-                            System.out.println("Please type one of the classes numbers.");
-                            break;
+                    try {
+                        int classId = Integer.parseInt(GlobalScanner.nextLine());
+                        players.add(playerFactory.newPlayer(classId, name));
+                        selected = true;
+                    } catch (Exception igonred) {
+                        System.out.println("Please type one of the classes numbers.");
                     }
                 }
                 selected = false;
@@ -353,71 +259,17 @@ public class LittleDungeons {
                         byte id = Byte.parseByte(choice);
                         String name;
                         if (id > 0 && id <= playerNumber) {
-                            System.out.println("What is player " + id + "'s name?");
+                            System.out.println("What is player " + id-- + "'s name?");
                             name = GlobalScanner.nextLine();
-                            id--;
                             System.out.println("And what is " + name
                                     + "'s class?\n1- Barbarian\n2- Assassin\n3- Priest\n4- Wizardn\n5- Archer\n6- Monk\n7- Dark Knight\n8- Paladin\n9- Warlock\n10- Captain\n11- Inquisitor\n12- Ninja\n13- Pyromancer\n14- Thief");
                             while (!selected) {
-                                switch (GlobalScanner.nextLine()) {
-                                    case "1":
-                                        players.set(id, new Barbarian(name));
-                                        selected = true;
-                                        break;
-                                    case "2":
-                                        players.set(id, new Assassin(name));
-                                        selected = true;
-                                        break;
-                                    case "3":
-                                        players.set(id, new Priest(name));
-                                        selected = true;
-                                        break;
-                                    case "4":
-                                        players.set(id, new Wizard(name));
-                                        selected = true;
-                                        break;
-                                    case "5":
-                                        players.set(id, new Archer(name));
-                                        selected = true;
-                                        break;
-                                    case "6":
-                                        players.set(id, new Monk(name));
-                                        selected = true;
-                                        break;
-                                    case "7":
-                                        players.set(id, new Knight(name));
-                                        selected = true;
-                                        break;
-                                    case "8":
-                                        players.set(id, new Paladin(name));
-                                        selected = true;
-                                        break;
-                                    case "9":
-                                        players.set(id, new Warlock(name));
-                                        selected = true;
-                                        break;
-                                    case "10":
-                                        players.set(id, new Captain(name));
-                                        selected = true;
-                                        break;
-                                    case "11":
-                                        players.set(id, new Inquisitor(name));
-                                        selected = true;
-                                    case "12":
-                                        players.set(id, new Ninja(name));
-                                        selected = true;
-                                        break;
-                                    case "13":
-                                        players.set(id, new Pyromancer(name));
-                                        selected = true;
-                                        break;
-                                    case "14":
-                                        players.set(id, new Thief(name));
-                                        selected = true;
-                                        break;
-                                    default:
-                                        System.out.println("Please type one of the classes numbers.");
-                                        break;
+                                try {
+                                    int classId = Integer.parseInt(GlobalScanner.nextLine());
+                                    players.set(id, playerFactory.newPlayer(classId, name));
+                                    selected = true;
+                                } catch (Exception igonred) {
+                                    System.out.println("Please type one of the classes numbers.");
                                 }
                             }
                             selected = false;
@@ -565,5 +417,6 @@ public class LittleDungeons {
             current = Action.next(current, playerNumber);
         }
 
-    GlobalScanner.close();
-}}
+        GlobalScanner.close();
+    }
+}
