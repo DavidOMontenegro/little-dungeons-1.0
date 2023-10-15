@@ -3,7 +3,6 @@ package classes;
 import org.json.JSONObject;
 
 import global.GlobalStats;
-import util.Item;
 
 public class Monk extends Player {
     public Monk(String name) {

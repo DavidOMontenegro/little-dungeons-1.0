@@ -3,7 +3,6 @@ package classes;
 import org.json.JSONObject;
 
 import global.GlobalStats;
-import util.Item;
 
 public class Priest extends Player {
     public Priest(String name) {

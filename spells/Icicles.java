@@ -6,7 +6,6 @@ import global.GlobalScanner;
 import classes.Player;
 import util.Action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Icicles extends Spell {

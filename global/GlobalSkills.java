@@ -6,7 +6,7 @@ import java.util.List;
 import spells.Spell;
 
 public class GlobalSkills {
-    private static List<Spell> skills = new ArrayList<Spell>() {
+    private static final List<Spell> skills = new ArrayList<Spell>() {
         {
             add(new Spell("Thorns",
                     new String[] { "When an enemy hits you with a BRU or QUI attack, they take 6 damage",

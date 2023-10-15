@@ -5,7 +5,6 @@ import org.json.JSONObject;
 import classes.Player;
 import util.Action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Supernova extends Spell {

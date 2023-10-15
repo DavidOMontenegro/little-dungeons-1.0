@@ -6,7 +6,6 @@ import classes.Player;
 import global.GlobalScanner;
 import util.Action;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Healing extends Spell {
@@ -29,7 +28,7 @@ public class Healing extends Spell {
         boolean selected = false;
         Player user = active.get(current);
         Player healed;
-        String id = "1";
+        String id;
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
             return current;

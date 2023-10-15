@@ -14,7 +14,7 @@ import spells.Tackle;
 import spells.Wrath;
 
 public class GlobalSpells {
-        private static List<Spell> spells = new ArrayList<Spell>() {
+        private static final List<Spell> spells = new ArrayList<Spell>() {
                 {
                         add(new Fireball());
                         add(new Freeze());

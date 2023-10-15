@@ -3,9 +3,9 @@ package util.encounter;
 import util.tools.Plural;
 
 public class State {
-    private String name;
-    private String msg;
-    private String opt;
+    private final String name;
+    private final String msg;
+    private final String opt;
 
     State(String state, String message, String options) {
         name = state;

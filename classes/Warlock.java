@@ -3,7 +3,6 @@ package classes;
 import org.json.JSONObject;
 
 import global.GlobalStats;
-import util.Item;
 
 public class Warlock extends Player {
     public Warlock(String name) {
@@ -16,7 +15,7 @@ public class Warlock extends Player {
     @Override
     public boolean preAttack(int d20, String type, boolean basic) {
         if (basic) {
-            healHP((int) (d20 / 2));
+            healHP(d20 / 2);
         }
         return super.preAttack(d20, type, basic);
     }

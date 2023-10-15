@@ -3,7 +3,6 @@ package classes;
 import org.json.JSONObject;
 
 import global.GlobalStats;
-import util.Item;
 
 public class Ninja extends Player {
     public Ninja(String name) {

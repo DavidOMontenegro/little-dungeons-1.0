@@ -15,8 +15,8 @@ public class Action {
 
     List<Player> players = new ArrayList<>();
     List<Item> items;
-    List<Spell> spells = new ArrayList<>();
-    List<Spell> skills = new ArrayList<>();
+    List<Spell> spells;
+    List<Spell> skills;
 
     int playerNumber;
 
@@ -407,7 +407,7 @@ public class Action {
     private boolean useSpell(Player attacker, Player defender, boolean turn) {
         boolean selected = false;
 
-        List<Player> active = new ArrayList<Player>();
+        List<Player> active = new ArrayList<>();
         active.add(attacker);
         active.add(defender);
         while (!selected) {
@@ -419,7 +419,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[0];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -429,7 +429,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[1];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -439,7 +439,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[2];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -449,7 +449,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[3];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -459,7 +459,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[4];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -469,7 +469,7 @@ public class Action {
                     try {
                         Spell usedSpell = userSpells[5];
                         if (usedSpell.getType().contains("Active")) {
-                            turn = usedSpell.use(0, active) == 0 ? turn : !turn;
+                            turn = (usedSpell.use(0, active) == 0) == turn;
                             selected = true;
                         }
                     } catch (Exception ignored) {
@@ -1326,7 +1326,7 @@ public class Action {
     }
 
     public void duel(Player first, Player second) {
-        boolean gameOver = false;
+        boolean gameOver;
         boolean turn = true;
         List<Player> active = new ArrayList<>();
         Item prize = first.randomItem();
@@ -1420,7 +1420,6 @@ public class Action {
         }
         items = GlobalItems.addItems();
         spells = GlobalSpells.addSpells();
-        skills.clear();
         skills = GlobalSkills.addSkills();
     }
 

@@ -3,7 +3,6 @@ package classes;
 import org.json.JSONObject;
 
 import global.GlobalStats;
-import util.Item;
 
 public class Archer extends Player {
     public Archer(String name) {
@@ -15,7 +14,7 @@ public class Archer extends Player {
 
     @Override
     public boolean preAttack(int d20, String type, boolean basic) {
-        return super.preAttack(d20, type, basic) ? right == null ? true : !right.getType().contains("Bow") : false;
+        return super.preAttack(d20, type, basic) && (right == null || !right.getType().contains("Bow"));
     }
 
     public String getClassName() {

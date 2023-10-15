@@ -1,16 +1,13 @@
 import classes.*;
 import classes.factory.PlayerFactory;
-import global.GlobalItems;
 import global.GlobalScanner;
 import util.Action;
-import util.Item;
 import util.encounter.RandomEncounter;
 
 import java.io.File;
 import java.io.FileWriter;
 import org.json.JSONObject;
 import org.json.JSONArray;
-import org.json.JSONTokener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +90,7 @@ public class LittleDungeons {
 
     private static void gameOver(List<Player> players) {
         List<Player> winners = new ArrayList<>();
-        int win = 1;
+        int win;
         winners.add(players.get(0));
         for (Player player : players) {
             if (player.getTrophies() > winners.get(0).getTrophies()) {
@@ -119,7 +116,6 @@ public class LittleDungeons {
 
     public static void main(String[] args) throws IOException {
         List<Player> players = new ArrayList<>();
-        List<Item> items;
         int current = 0;
         Player user;
         boolean gameOver = false;
@@ -129,8 +125,6 @@ public class LittleDungeons {
         byte playerNumber = 3;
         boolean selected = false;
         boolean save = false;
-
-        items = GlobalItems.addItems();
 
         // Start "Screen"
         System.out.println("\n\nWelcome to Little Terminal!");

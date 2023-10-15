@@ -6,7 +6,7 @@ import java.util.List;
 import util.Item;
 
 public class GlobalItems {
-    private static List<Item> items = new ArrayList<Item>() {
+    private static final List<Item> items = new ArrayList<Item>() {
         {
             add(new Item("Leather Hood", 22,
                     new String[] { "Head" }, 15,

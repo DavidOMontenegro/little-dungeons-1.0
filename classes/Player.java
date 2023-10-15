@@ -18,10 +18,10 @@ import util.tools.Plural;
 public abstract class Player {
     List<Item> items = GlobalItems.addItems();
     String name;
-    int hp = 0;
-    int totalhp = 0;
-    int mp = 0;
-    int totalmp = 0;
+    int hp;
+    int totalhp;
+    int mp;
+    int totalmp;
     GlobalStats baseStats = new GlobalStats(0, 0, 0, 0);
     GlobalStats boostStats = new GlobalStats(0, 0, 0, 0);
     GlobalStats basicStats = new GlobalStats(0, 0, 0, 0);
@@ -137,7 +137,7 @@ public abstract class Player {
                 }
             }
         }
-        power = power < 0 ? 0 : power;
+        power = Math.max(power, 0);
         defender.hp -= power;
         if (defender.hp > 8000) {
             power = 0;
@@ -382,7 +382,7 @@ public abstract class Player {
 
     public void sellItem(Item item) {
         String priceText = item.getPrice();
-        int price = (int) ((Integer.parseInt(priceText.substring(3, priceText.length() - 6)) + 0.5) / 2);
+        int price = (int) (Integer.parseInt(priceText.substring(3, priceText.length() - 6)) + 0.5) / 2;
         money += price;
         backpack.remove(item);
         System.out.println("You sold a" + Plural.plural(item) + " for " + price + " gold.");
@@ -390,7 +390,7 @@ public abstract class Player {
 
     public Item randomItem() {
         int id = (int) (Math.random() * (double) (rank - minRank)) + minRank;
-        return (Item) items.get(id);
+        return items.get(id);
     }
 
     public int getItem() {
@@ -405,14 +405,14 @@ public abstract class Player {
 
     public void giveItem(int id, Player player) {
         id -= 1;
-        player.getItem((Item) backpack.get(id));
+        player.getItem(backpack.get(id));
         backpack.remove(id);
     }
 
     public boolean putOn(int id, int place) {
-        Item item = (Item) backpack.get(id);
+        Item item = backpack.get(id);
         List<String> itemType = item.getType();
-        String type = (String) itemType.get(0);
+        String type = itemType.get(0);
         String doubleMessage = "You cannot hold two " + type.substring(0, 1).toLowerCase() + type.substring(1) + "s.";
         boolean doubleAssassin = !getClassName().equals("Assassin") || !itemType.contains("Weapon");
         place = itemType.contains("Double-Handed") ? 5 : place;
@@ -570,7 +570,7 @@ public abstract class Player {
         System.out.println(inventory == 0 ? "You have no items in your inventory." : "");
 
         for (int i = 0; i < inventory; ++i) {
-            Item item = (Item) backpack.get(i);
+            Item item = backpack.get(i);
             System.out.println((i + 1) + "- " + item.getName() + " (" + String.join(", ", item.getType()) + ")");
         }
         return backpack.size();
@@ -595,7 +595,8 @@ public abstract class Player {
             atkStats.boostAll(8);
         }
 
-        // Looks scary but all it does is add spaces around the stats on the character menu
+        // Looks scary but all it does is add spaces around the stats on the character
+        // menu
         String s = baseStats.getSTR() > 9 || baseStats.getSTR() < 0
                 ? baseStats.getSTR() + (baseStats.getSTR() < -9 ? "" : " ")
                 : " " + baseStats.getSTR() + " ";
@@ -632,7 +633,6 @@ public abstract class Player {
         String md = defStats.getINT() > 9 || defStats.getINT() < 0
                 ? defStats.getINT() + (defStats.getINT() < -9 ? "" : " ")
                 : " " + defStats.getINT();
-
 
         System.out.printf(
                 "\n%s (%s) - %d/%dHP  %d/%dMP\nLVL: %d   Trophies: %d\n STR | DEX | WIS | INT  Base Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Attack Stats\n %s | %s | %s | %s\n\n BRU | QUI | SAC | MAG  Defense Stats\n %s | %s | %s | %s\n\nGold: %d\n",
@@ -687,7 +687,7 @@ public abstract class Player {
                 }
                 break;
             default:
-                ((Item) backpack.get(place - 6)).seeItem();
+                (backpack.get(place - 6)).seeItem();
         }
     }
 
@@ -699,9 +699,7 @@ public abstract class Player {
     }
 
     public String atkType(int basic) {
-        if (left == null) {
-            return "basic";
-        } else {
+        if (left != null) {
             List<String> itemType = left.getType();
             String type = "error";
             if (itemType.contains("Weapon")) {
@@ -729,9 +727,8 @@ public abstract class Player {
                     }
                 }
             }
-
-            return "basic";
         }
+        return "basic";
     }
 
     public void clover() {
@@ -912,7 +909,7 @@ public abstract class Player {
     }
 
     public Player(String playerName, int playerHP, int playerMP, GlobalStats playerStats) {
-        items  = GlobalItems.addItems();
+        items = GlobalItems.addItems();
         name = playerName;
         hp = totalhp = playerHP;
         mp = totalmp = playerMP;
@@ -929,15 +926,15 @@ public abstract class Player {
             atkStats.setDEX(5);
             atkStats.setWIS(5);
             atkStats.setINT(5);
-        
+
         }
 
     }
 
     public Player(JSONObject player) {
         List<Spell> allSpells = GlobalSpells.addSpells();
-        GlobalSkills.addSkills().forEach(allSpells::add);
-        items  = GlobalItems.addItems();
+        allSpells.addAll(GlobalSkills.addSkills());
+        items = GlobalItems.addItems();
 
         name = (String) player.get("name");
         hp = totalhp = (int) player.get("hp");
