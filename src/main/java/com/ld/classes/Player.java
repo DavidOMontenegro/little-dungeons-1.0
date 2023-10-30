@@ -917,7 +917,7 @@ public abstract class Player {
         baseStats.setSTR(boostStats.getSTR() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getSTR() * 5);
         baseStats.setDEX(boostStats.getDEX() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getDEX() * 5);
         baseStats.setWIS(boostStats.getWIS() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getWIS() * 5);
-        baseStats.setDEX(boostStats.getDEX() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getDEX() * 5);
+        baseStats.setDEX(boostStats.getINT() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getINT() * 5);
         if (getClassName().equals("Paladin")) {
             defStats.setWIS(8);
             defStats.setINT(8);
