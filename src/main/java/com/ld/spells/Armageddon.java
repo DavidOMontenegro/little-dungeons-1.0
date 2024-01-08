@@ -32,7 +32,7 @@ public class Armageddon extends Spell {
     public int use(int current, List<Player> active) {
         int activeNumber = active.size();
         Player user = active.get(current);
-        String type = "fire";
+        int power;
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
             return current;
@@ -42,11 +42,8 @@ public class Armageddon extends Spell {
             if (user == defender) {
                 continue;
             }
-            defender.preDefend(user, type);
-            user.preAttack(0, type, false);
-            user.damage(defender, (30 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
-            defender.postDefend(user, 3, type, false);
-            current = user.postAttack(defender, type, false, current);
+            power = (30 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i');
+            current = user.attack(0, defender, power, current, "fire");
         }
         current = Action.next(current, activeNumber);
         Action.wizard(active.get(current));

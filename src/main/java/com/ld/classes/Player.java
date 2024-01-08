@@ -13,7 +13,7 @@ import com.ld.global.GlobalSpells;
 import com.ld.global.GlobalStats;
 import com.ld.spells.*;
 import com.ld.util.*;
-import com.ld.util.tools.Plural;
+import com.ld.util.tools.Articles;
 
 public abstract class Player {
     List<Item> items = GlobalItems.addItems();
@@ -374,7 +374,7 @@ public abstract class Player {
         if (money >= price) {
             money -= price;
             getItem(item);
-            System.out.println("You bought a" + Plural.plural(item) + item.getName() + " for " + price + " gold.");
+            System.out.println("You bought a" + Articles.plural(item) + item.getName() + " for " + price + " gold.");
         } else {
             System.out.println("Too expensive.");
         }
@@ -385,7 +385,7 @@ public abstract class Player {
         int price = (int) (Integer.parseInt(priceText.substring(3, priceText.length() - 6)) + 0.5) / 2;
         money += price;
         backpack.remove(item);
-        System.out.println("You sold a" + Plural.plural(item) + " for " + price + " gold.");
+        System.out.println("You sold a" + Articles.plural(item) + " for " + price + " gold.");
     }
 
     public Item randomItem() {
@@ -698,22 +698,22 @@ public abstract class Player {
         }
     }
 
-    public String atkType(int basic) {
+    private String atkType(int basic) {
         if (left != null) {
             List<String> itemType = left.getType();
             String type = "error";
             if (itemType.contains("Weapon")) {
                 switch (basic) {
-                    case 0:
+                    case 1:
                         type = "Brute";
                         break;
-                    case 1:
+                    case 2:
                         type = "Quick";
                         break;
-                    case 2:
+                    case 3:
                         type = "Sacred";
                         break;
-                    case 3:
+                    case 4:
                         type = "Magic";
                         break;
                 }
@@ -751,29 +751,48 @@ public abstract class Player {
         }
     }
 
-    public void bruteAttack(Player defender, int power) {
-        damage(defender, baseStats.getSTR() + power + atkStats.getSTR() - defender.defStats.getSTR());
+    public int attack(int nature, Player defender, int current) {
+        return attack(nature, defender, (int) (Math.random() * 20) + 1, current, atkType(nature));
     }
 
-    public void quickAttack(Player defender, int power) {
-        if (isItem(left, 148) || isItem(right, 148)) {
-            healHP((int) (Math.random() * 6) + 1);
-        }
-        damage(defender, baseStats.getDEX() + power + atkStats.getDEX() - defender.defStats.getDEX());
-        if (isItem(feet, 111) && !defender.dead) {
-            damage(defender, (int) (Math.random() * 8) + 1);
-        }
-    }
+    public int attack(int nature, Player defender, int power, int current, String type) {
+        boolean basic = nature != 0;
+        defender.preDefend(this, type);
+        boolean counter = preAttack(basic ? power : 0, type, basic);
 
-    public void sacredAttack(Player defender, int power) {
-        damage(defender, baseStats.getWIS() + power + atkStats.getWIS() - defender.defStats.getWIS());
-    }
+        switch (nature) {
+            case 0:
+                damage(defender, power);
+                break;
 
-    public void magicAttack(Player defender, int power) {
-        damage(defender, baseStats.getINT() + power + atkStats.getINT() - defender.defStats.getINT());
-        if ((isItem(left, 147) || isItem(right, 147)) && !defender.isItem(body, 71) && !defender.dead) {
-            damage(defender, 6);
+            case 1:
+                damage(defender, baseStats.getSTR() + power + atkStats.getSTR() - defender.defStats.getSTR());
+                break;
+
+            case 2:
+                if (isItem(left, 148) || isItem(right, 148)) {
+                    healHP((int) (Math.random() * 6) + 1);
+                }
+                damage(defender, baseStats.getDEX() + power + atkStats.getDEX() - defender.defStats.getDEX());
+                if (isItem(feet, 111) && !defender.dead) {
+                    damage(defender, (int) (Math.random() * 8) + 1);
+                }
+                break;
+
+            case 3:
+                damage(defender, baseStats.getWIS() + power + atkStats.getWIS() - defender.defStats.getWIS());
+                break;
+
+            case 4:
+                damage(defender, baseStats.getINT() + power + atkStats.getINT() - defender.defStats.getINT());
+                if ((isItem(left, 147) || isItem(right, 147)) && !defender.isItem(body, 71) && !defender.dead) {
+                    damage(defender, 6);
+                }
+                break;
         }
+
+        defender.postDefend(this, nature, type, counter);
+        return postAttack(defender, type, basic, current);
     }
 
     public boolean preAttack(int d20, String type, boolean basic) {
@@ -891,16 +910,16 @@ public abstract class Player {
                 break;
         }
         for (Spell spell : spells) {
-            if (isSpell(spell, "Thorns") && (basic == 0 || basic == 1)) {
+            if (isSpell(spell, "Thorns") && (basic == 1 || basic == 2)) {
                 damage(attacker, spell.getLevel() * 6);
-            } else if (isSpell(spell, "Reflective Skin") && (basic == 2 || basic == 3)) {
+            } else if (isSpell(spell, "Reflective Skin") && (basic == 3 || basic == 4)) {
                 damage(attacker, spell.getLevel() * 6);
             }
             if (attacker.dead) {
                 return;
             }
         }
-        if ((isItem(left, 24) || isItem(right, 24)) && basic == 1 && counter) {
+        if ((isItem(left, 24) || isItem(right, 24)) && basic == 2 && counter) {
             damage(attacker, 2);
         }
         if (isItem(right, 104) && counter && !attacker.isItem(body, 71) && !attacker.dead) {
@@ -917,7 +936,7 @@ public abstract class Player {
         baseStats.setSTR(boostStats.getSTR() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getSTR() * 5);
         baseStats.setDEX(boostStats.getDEX() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getDEX() * 5);
         baseStats.setWIS(boostStats.getWIS() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getWIS() * 5);
-        baseStats.setDEX(boostStats.getINT() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getINT() * 5);
+        baseStats.setINT(boostStats.getINT() == 0 ? (int) (Math.random() * 4.0) + 1 : boostStats.getINT() * 5);
         if (getClassName().equals("Paladin")) {
             defStats.setWIS(8);
             defStats.setINT(8);

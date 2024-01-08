@@ -34,9 +34,9 @@ public class Icicles extends Spell {
         boolean selected = false;
         Player user = active.get(current);
         Player defender;
-        String type = "snow";
         String id = "1";
         int lvl = level;
+        int power;
         int freeze = user.getFreeze();
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
@@ -61,17 +61,12 @@ public class Icicles extends Spell {
                 if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
                     defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
+                    power = 15 + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i');
                     while (!user.isDead() && !defender.isDead() && lvl != 0) {
-                        defender.preDefend(user, type);
-                        user.preAttack(0, type, false);
-                        user.damage(defender, 15 + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
+                        current = user.attack(0, defender, power, current, "snow");
                         defender.freeze(3);
-                        defender.postDefend(user, 3, type, false);
-                        current = user.postAttack(defender, type, false, current);
-                        user.freeze(freeze);
                         lvl--;
                     }
-                    user.freeze(-freeze);
                     current = Action.next(current, activeNumber);
                     Action.wizard(active.get(current));
                     return current;

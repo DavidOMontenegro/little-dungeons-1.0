@@ -1,6 +1,6 @@
 package com.ld.util.encounter;
 
-import com.ld.util.tools.Plural;
+import com.ld.util.tools.Articles;
 
 public class State {
     private final String name;
@@ -18,7 +18,7 @@ public class State {
     }
 
     public void encounter(int item) {
-        System.out.println(item == 0 ? "You got a" + Plural.plural(item) + "!" : msg);
+        System.out.println(item != 0 ? "You got a" + Articles.generate(item) + "!" : msg);
     }
 
     public void startTurn() {

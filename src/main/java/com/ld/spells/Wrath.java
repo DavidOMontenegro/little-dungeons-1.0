@@ -29,7 +29,7 @@ public class Wrath extends Spell {
         boolean selected = false;
         Player user = active.get(current);
         Player defender;
-        String type = "spell";
+        int power;
         String id = "1";
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
@@ -54,11 +54,8 @@ public class Wrath extends Spell {
                 if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
                     defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, (20 * level) + user.getStat("basic", 'w') - defender.getStat("defense", 'w') + user.getStat("attack", 'w'));
-                    defender.postDefend(user, 2, type, false);
-                    current = user.postAttack(defender, type, false, current);
+                    power = (20 * level) + user.getStat("basic", 'w') - defender.getStat("defense", 'w') + user.getStat("attack", 'w');
+                    current = user.attack(0, defender, power, current, "spell");
                     current = Action.next(current, activeNumber);
                     Action.wizard(active.get(current));
                     return current;

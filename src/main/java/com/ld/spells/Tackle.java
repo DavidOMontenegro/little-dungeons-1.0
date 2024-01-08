@@ -30,7 +30,6 @@ public class Tackle extends Spell {
         boolean selected = false;
         Player user = active.get(current);
         Player defender;
-        String type = "spell";
         String id = "1";
         int power = 8;
 
@@ -63,24 +62,20 @@ public class Tackle extends Spell {
                                         + user.getStat("defense", 'w') + " DEF)\n3- Magic (" + user.getStat("defense", 'i') + " DEF)");
                         switch (GlobalScanner.nextLine()) {
                             case "1":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
+                                power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
                                 selected = true;
                                 break;
                             case "2":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
+                                power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
                                 selected = true;
                                 break;
                             case "3":
-                                power = (20 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
+                                power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
                                 selected = true;
                                 break;
                         }
                     }
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, power);
-                    defender.postDefend(user, 0, type, false);
-                    current = user.postAttack(defender, type, false, current);
+                    current = user.attack(0, defender, power, current, "spell");
                     current = Action.next(current, activeNumber);
                     Action.wizard(active.get(current));
                     return current;

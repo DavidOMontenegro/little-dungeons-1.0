@@ -103,156 +103,44 @@ public class Action {
         int activeNumber = active.size();
         Player user = active.get(current);
         Player defender;
-        boolean counter;
-        String type;
-        int d20;
         while (!selected1) {
             System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            switch (GlobalScanner.nextLine()) {
-                case "1":
-                    while (!selected2) {
-                        System.out.println("Which player will you attack?");
-                        for (int i = 0, j = 0; i < activeNumber; i++) {
-                            Player player = active.get(i);
-                            if (player == user) {
-                                continue;
+            String atkType = GlobalScanner.nextLine();
+            try {
+                int nature = Integer.parseInt(atkType);
+                if (nature > 0 && nature < 6) {
+                    if (nature < 5) {
+                        while (!selected2) {
+                            System.out.println("Which player will you attack?");
+                            for (int i = 0, j = 0; i < activeNumber; i++) {
+                                Player player = active.get(i);
+                                if (player == user) {
+                                    continue;
+                                }
+                                j++;
+                                System.out.println(j + "- " + player.getName());
                             }
-                            j++;
-                            System.out.println(j + "- " + player.getName());
-                        }
-                        System.out.println((activeNumber) + "- Exit");
-                        String id = GlobalScanner.nextLine();
-                        try {
-                            int playerId = Integer.parseInt(id);
-                            if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(0);
-                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.bruteAttack(defender, d20);
-                                defender.postDefend(user, 0, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = selected1 = true;
-                            } else if (playerId == activeNumber) {
-                                selected2 = true;
+                            System.out.println((activeNumber) + "- Exit");
+                            String id = GlobalScanner.nextLine();
+                            try {
+                                int playerId = Integer.parseInt(id);
+                                if (playerId < activeNumber && playerId > 0) {
+                                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
+                                    current = user.attack(nature, defender, current);
+                                    current = next(current, activeNumber);
+                                    wizard(active.get(current));
+                                    selected2 = true;
+                                } else if (playerId == activeNumber) {
+                                    selected2 = true;
+                                }
+                            } catch (Exception ignored) {
                             }
-                        } catch (Exception ignored) {
                         }
+                        selected2 = false;
                     }
-                    selected2 = false;
-                    break;
-                case "2":
-                    while (!selected2) {
-                        System.out.println("Which player will you attack?");
-                        for (int i = 0, j = 0; i < activeNumber; i++) {
-                            Player player = active.get(i);
-                            if (player == user) {
-                                continue;
-                            }
-                            j++;
-                            System.out.println(j + "- " + player.getName());
-                        }
-                        System.out.println((activeNumber) + "- Back");
-                        String id = GlobalScanner.nextLine();
-                        try {
-                            int playerId = Integer.parseInt(id);
-                            if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(1);
-                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.quickAttack(defender, d20);
-                                defender.postDefend(user, 1, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = selected1 = true;
-                            } else if (playerId == activeNumber) {
-                                selected2 = true;
-                            }
-                        } catch (Exception ignored) {
-                        }
-                    }
-                    selected2 = false;
-                    break;
-                case "3":
-                    while (!selected2) {
-                        System.out.println("Which player will you attack?");
-                        for (int i = 0, j = 0; i < activeNumber; i++) {
-                            Player player = active.get(i);
-                            if (player == user) {
-                                continue;
-                            }
-                            j++;
-                            System.out.println(j + "- " + player.getName());
-                        }
-                        System.out.println((activeNumber) + "- Back");
-                        String id = GlobalScanner.nextLine();
-                        try {
-                            int playerId = Integer.parseInt(id);
-                            if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(2);
-                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.sacredAttack(defender, d20);
-                                defender.postDefend(user, 2, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = selected1 = true;
-                            } else if (playerId == activeNumber) {
-                                selected2 = true;
-                            }
-                        } catch (Exception ignored) {
-                        }
-                    }
-                    selected2 = false;
-                    break;
-                case "4":
-                    while (!selected2) {
-                        System.out.println("Which player will you attack?");
-                        for (int i = 0, j = 0; i < activeNumber; i++) {
-                            Player player = active.get(i);
-                            if (player == user) {
-                                continue;
-                            }
-                            j++;
-                            System.out.println(j + "- " + player.getName());
-                        }
-                        System.out.println((activeNumber) + "- Back");
-                        String id = GlobalScanner.nextLine();
-                        try {
-                            int playerId = Integer.parseInt(id);
-                            if (playerId < activeNumber && playerId > 0) {
-                                type = user.atkType(3);
-                                defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                                d20 = ((int) (Math.random() * 20) + 1);
-                                defender.preDefend(user, type);
-                                counter = user.preAttack(d20, type, true);
-                                user.magicAttack(defender, d20);
-                                defender.postDefend(user, 3, type, counter);
-                                current = user.postAttack(defender, type, true, current);
-                                current = next(current, activeNumber);
-                                wizard(active.get(current));
-                                selected2 = selected1 = true;
-                            } else if (playerId == activeNumber) {
-                                selected2 = true;
-                            }
-                        } catch (Exception ignored) {
-                        }
-                    }
-                    selected2 = false;
-                    break;
-                case "5":
                     selected1 = true;
-                default:
-                    break;
+                }
+            } catch (Exception ignored) {
             }
         }
         return current;
@@ -261,66 +149,21 @@ public class Action {
     private boolean basicAttack(Player attacker, Player defender, boolean turn) {
         boolean selected = false;
 
-        String type;
-        int d20;
-        boolean counter;
         while (!selected) {
             System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            switch (GlobalScanner.nextLine()) {
-                case "1":
-                    d20 = ((int) (Math.random() * 20) + 1);
-                    type = attacker.atkType(0);
-                    defender.preDefend(attacker, type);
-                    counter = attacker.preAttack(d20, type, true);
-                    attacker.bruteAttack(defender, d20);
-                    defender.postDefend(attacker, 0, type, counter);
-                    if (attacker.postAttack(defender, type, true, 1) == 1) {
-                        turn = !turn;
-                        wizard(defender);
+            String atkType = GlobalScanner.nextLine();
+            try {
+                int nature = Integer.parseInt(atkType);
+                if (nature > 0 && nature < 6) {
+                    if (nature < 5) {
+                        if (attacker.attack(nature, defender, 1) == 1) {
+                            turn = !turn;
+                            wizard(defender);
+                        }
                     }
                     selected = true;
-                    break;
-                case "2":
-                    d20 = ((int) (Math.random() * 20) + 1);
-                    type = attacker.atkType(1);
-                    defender.preDefend(attacker, type);
-                    counter = attacker.preAttack(d20, type, true);
-                    attacker.quickAttack(defender, d20);
-                    defender.postDefend(attacker, 1, type, counter);
-                    if (attacker.postAttack(defender, type, true, 1) == 1) {
-                        turn = !turn;
-                        wizard(defender);
-                    }
-                    selected = true;
-                    break;
-                case "3":
-                    d20 = ((int) (Math.random() * 20) + 1);
-                    type = attacker.atkType(2);
-                    defender.preDefend(attacker, type);
-                    counter = attacker.preAttack(d20, type, true);
-                    attacker.sacredAttack(defender, d20);
-                    defender.postDefend(attacker, 2, type, counter);
-                    if (attacker.postAttack(defender, type, true, 1) == 1) {
-                        turn = !turn;
-                        wizard(defender);
-                    }
-                    selected = true;
-                    break;
-                case "4":
-                    d20 = ((int) (Math.random() * 20) + 1);
-                    type = attacker.atkType(3);
-                    defender.preDefend(attacker, type);
-                    counter = attacker.preAttack(d20, type, true);
-                    attacker.magicAttack(defender, d20);
-                    defender.postDefend(attacker, 3, type, counter);
-                    if (attacker.postAttack(defender, type, true, 1) == 1) {
-                        turn = !turn;
-                        wizard(defender);
-                    }
-                case "5":
-                    selected = true;
-                default:
-                    break;
+                }
+            } catch (Exception ignored) {
             }
         }
         return turn;

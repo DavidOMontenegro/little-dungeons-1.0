@@ -31,7 +31,7 @@ public class Supernova extends Spell {
     public int use(int current, List<Player> active) {
         int activeNumber = active.size();
         Player user = active.get(current);
-        String type = "snow";
+        int power;
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
             return current;
@@ -41,12 +41,8 @@ public class Supernova extends Spell {
             if (user == defender) {
                 continue;
             }
-            defender.preDefend(user, type);
-            user.preAttack(0, type, false);
-            user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
-            defender.freeze(level * 2);
-            defender.postDefend(user, 3, type, false);
-            current = user.postAttack(defender, type, false, current);
+            power = (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i');
+            current = user.attack(0, defender, power, current, "snow");
         }
         current = Action.next(current, activeNumber);
         Action.wizard(active.get(current));

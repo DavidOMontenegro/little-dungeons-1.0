@@ -31,7 +31,7 @@ public class Freeze extends Spell {
         boolean selected = false;
         Player user = active.get(current);
         Player defender;
-        String type = "snow";
+        int power;
         String id = "1";
         if (user.getMP() < mpCost) {
             System.out.println("You don't have enough MP.");
@@ -56,12 +56,9 @@ public class Freeze extends Spell {
                 if (playerId < activeNumber && playerId > 0) {
                     super.use(current, active);
                     defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                    defender.preDefend(user, type);
-                    user.preAttack(0, type, false);
-                    user.damage(defender, (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i'));
+                    power = (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i');
+                    current = user.attack(0, defender, power, current, "snow");
                     defender.freeze(level * 4);
-                    defender.postDefend(user, 3, type, false);
-                    current = user.postAttack(defender, type, false, current);
                     current = Action.next(current, activeNumber);
                     Action.wizard(active.get(current));
                     return current;
