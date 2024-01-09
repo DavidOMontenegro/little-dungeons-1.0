@@ -1018,6 +1018,7 @@ public class Action {
 
         if (gameOver) {
             winner(playerHandler.getPlayers(), user, prize);
+            playerHandler.close();
             return;
         }
 
@@ -1025,6 +1026,7 @@ public class Action {
             if (playerHandler.getActive() == 1) {
                 winner(players, user, user.randomItem());
                 user.winTrophy();
+                playerHandler.close();
                 return;
             }
 
