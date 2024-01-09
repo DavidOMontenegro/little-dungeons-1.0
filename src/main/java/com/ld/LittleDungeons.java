@@ -4,6 +4,7 @@ import com.ld.classes.Player;
 import com.ld.classes.factory.PlayerFactory;
 import com.ld.global.GlobalScanner;
 import com.ld.util.Action;
+import com.ld.util.PlayerHandler;
 import com.ld.util.encounter.RandomEncounter;
 
 import java.io.File;
@@ -17,7 +18,7 @@ import java.util.Scanner;
 
 public class LittleDungeons {
 
-    private static void saveGame(File[] listOfFiles, List<Player> players, int current, RandomEncounter state)
+    private static void saveGame(File[] listOfFiles, PlayerHandler playerHandler, RandomEncounter state)
             throws IOException {
         boolean selected = false;
         boolean newFile = false;
@@ -76,10 +77,10 @@ public class LittleDungeons {
         saved.createNewFile();
         JSONObject game = new JSONObject();
         JSONArray pcs = new JSONArray();
-        for (Player player : players) {
+        for (Player player : playerHandler.getPlayers()) {
             pcs.put(player.save());
         }
-        game.put("current", current);
+        game.put("current", playerHandler.indexOf(playerHandler.current()));
         game.put("state", state.saveState());
         game.put("item", state.saveItem());
         game.put("players", pcs);
@@ -118,7 +119,6 @@ public class LittleDungeons {
 
     public static void main(String[] args) throws IOException {
         List<Player> players = new ArrayList<>();
-        int current = 0;
         Player user;
         boolean gameOver = false;
         RandomEncounter state = RandomEncounter.getRandomEncounter();
@@ -173,7 +173,7 @@ public class LittleDungeons {
                             JSONObject load = new JSONObject(loader.nextLine());
                             loader.close();
 
-                            current = (int) load.get("current");
+                            PlayerHandler.load((int) load.get("current"));
                             state.setState((byte) load.get("state"));
                             state.setItem((int) load.get("item"));
 
@@ -265,7 +265,7 @@ public class LittleDungeons {
                                     int classId = Integer.parseInt(GlobalScanner.nextLine());
                                     players.set(id, playerFactory.newPlayer(classId, name));
                                     selected = true;
-                                } catch (Exception igonred) {
+                                } catch (Exception ignored) {
                                     System.out.println("Please type one of the classes numbers.");
                                 }
                             }
@@ -277,7 +277,8 @@ public class LittleDungeons {
             }
             selected = false;
         }
-        Action action = Action.getAction(players);
+        Action action = Action.getAction();
+        PlayerHandler playerHandler = PlayerHandler.startHandler(players);
 
         if (save) {
             for (Player player : players) {
@@ -308,7 +309,7 @@ public class LittleDungeons {
         }
 
         while (!gameOver) {
-            user = players.get(current);
+            user = playerHandler.current();
             System.out.println("\n\n" + user.getName() + "'s turn");
             if (save) {
                 state.random(user);
@@ -361,7 +362,7 @@ public class LittleDungeons {
                                 }
                                 break;
                             case "arena":
-                                action.arena(players, current);
+                                action.arena(players);
                                 selected = true;
                                 break;
                             default:
@@ -373,14 +374,14 @@ public class LittleDungeons {
                         if (state.getState().equals("shop")) {
                             selected = true;
                         } else {
-                            saveGame(listOfFiles, players, current, state);
+                            saveGame(listOfFiles, playerHandler, state);
                             listOfFiles = folder.listFiles();
                             state.startTurn();
                         }
                         break;
                     case "4":
                         if (state.getState().equals("shop")) {
-                            saveGame(listOfFiles, players, current, state);
+                            saveGame(listOfFiles, playerHandler, state);
                             listOfFiles = folder.listFiles();
                             state.startTurn();
                         } else {
@@ -411,7 +412,7 @@ public class LittleDungeons {
             }
             selected = false;
 
-            current = Action.next(current, playerNumber);
+            playerHandler.next();
         }
 
         GlobalScanner.close();

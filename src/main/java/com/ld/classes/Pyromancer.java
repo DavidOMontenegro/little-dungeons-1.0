@@ -22,12 +22,12 @@ public class Pyromancer extends Player {
     }
 
     @Override
-    public int postAttack(Player defender, String type, boolean basic, int current) {
+    public void postAttack(Player defender, String type, boolean basic) {
         if (type.equals("fire")) {
             atkStats.boostAll(-6);
         }
 
-        return super.postAttack(defender, type, basic, current);
+        super.postAttack(defender, type, basic);
     }
 
     @Override

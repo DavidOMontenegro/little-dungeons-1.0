@@ -1,5 +1,6 @@
 package com.ld.spells;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.global.GlobalScanner;
@@ -25,23 +26,22 @@ public class Tackle extends Spell {
     }
 
     @Override
-    public int use(int current, List<Player> active) {
-        int activeNumber = active.size();
-        boolean selected = false;
-        Player user = active.get(current);
+    public void use() {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        int activeNumber = playerHandler.getActive();
+        Player user = playerHandler.current();
         Player defender;
         String id = "1";
-        int power = 8;
+        int power = 0;
 
-        if (user.getMP() < mpCost) {
-            System.out.println("You don't have enough MP.");
-            return current;
+        if (!mpCheck(user)) {
+            return;
         }
-        while (!selected) {
+        while (true) {
             if (activeNumber != 2) {
                 System.out.println("Which player will you attack?");
                 for (int i = 0, j = 0; i < activeNumber; i++) {
-                    Player player = active.get(i);
+                    Player player = playerHandler.getPlayer(i);
                     if (player == user) {
                         continue;
                     }
@@ -54,37 +54,33 @@ public class Tackle extends Spell {
             try {
                 int playerId = Integer.parseInt(id);
                 if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                    while (!selected) {
+                    super.use();
+                    defender = playerId <= playerHandler.indexOf(user) ? playerHandler.getPlayer(playerId - 1) : playerHandler.getPlayer(playerId);
+                    while (true) {
                         System.out.println(
                                 "Which armour type will you use?\n1- Brute (" + user.getStat("defense", 's') + " DEF)\n2- Sacred ("
                                         + user.getStat("defense", 'w') + " DEF)\n3- Magic (" + user.getStat("defense", 'i') + " DEF)");
                         switch (GlobalScanner.nextLine()) {
                             case "1":
                                 power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 's');
-                                selected = true;
                                 break;
                             case "2":
                                 power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'w');
-                                selected = true;
                                 break;
                             case "3":
                                 power = (8 * level) - defender.getStat("defense", 's') + user.getStat("defense", 'i');
-                                selected = true;
                                 break;
                         }
+                        if (power != 0) break;
                     }
-                    current = user.attack(0, defender, power, current, "spell");
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
+                    user.attack(0, defender, power, "spell");
+                    playerHandler.next();
+                    return;
                 } else if (playerId == activeNumber) {
-                    selected = true;
+                    return;
                 }
             } catch (Exception ignored) {
             }
         }
-        return current;
     }
 }

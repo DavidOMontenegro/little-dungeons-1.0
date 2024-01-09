@@ -1,5 +1,6 @@
 package com.ld.spells;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.classes.Player;
@@ -127,9 +128,17 @@ public class Spell {
         return true;
     }
 
-    public int use(int current, List<Player> active) {
-        active.get(current).useMP(mpCost);
-        return current;
+    public void use() {
+        Player user = PlayerHandler.getHandler().current();
+        user.useMP(mpCost);
+    }
+
+    public boolean mpCheck(Player user) {
+        if (user.getMP() < mpCost) {
+            System.out.println("You don't have enough MP.");
+            return false;
+        }
+        return true;
     }
 
     public JSONObject save() {

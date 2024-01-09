@@ -38,7 +38,7 @@ public class GlobalItems {
                     new int[] { 0, 0, 2, 2, 0, 0, 0, 0, 0, 1, 0, 0 }, new String[] {
                             "Never feel cold again wrapped in these sheets" }));
 
-            add(new Item("Not-So-Maculine Cuirass", 20,
+            add(new Item("Not-So-Masculine Cuirass", 20,
                     new String[] { "Body" }, 15,
                     new int[] { 0, 2, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 }, new String[] {
                             "If you don't mind the look, it's actually pretty decent armour" }));
@@ -136,7 +136,7 @@ public class GlobalItems {
             add(new Item("Silver Shield", 19,
                     new String[] { "Shield" }, 25,
                     new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4 }, new String[] {
-                            "Strong, resistent, durable; the best shield in the market" }));
+                            "Strong, resistant, durable; the best shield in the market" }));
 
             add(new Item("Kite Shield", 33,
                     new String[] { "Shield" }, 10,
@@ -161,7 +161,7 @@ public class GlobalItems {
             add(new Item("Potato", 10,
                     new String[] { "Amulet" }, 20,
                     new int[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, new String[] {
-                            "Holding this potato that gives 20 HP, you'll be unstoppble" }));
+                            "Holding this potato that gives 20 HP, you'll be unstoppable" }));
 
             add(new Item("Shiny Rock", 2,
                     new String[] { "Amulet" }, 50,
@@ -188,7 +188,7 @@ public class GlobalItems {
                     new int[] { 6, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, new String[] {
                             "You don't have to be a samurai to wear one of these" }));
 
-            add(new Item("Monacle", 69,
+            add(new Item("Monocle", 69,
                     new String[] { "Head" }, 45,
                     new int[] { 0, 0, 0, 3, 0, 2, 0, 0, 0, 1, 0, 0 }, new String[] {
                             "Typically worn by physicians when doing surgery" }));
@@ -501,7 +501,7 @@ public class GlobalItems {
             add(new Item("Pointy Hat", 128,
                     new String[] { "Head" }, 80,
                     new int[] { 0, 0, 0, 9, 0, 0, 0, 0, 2, 0, 0, 1 }, new String[] {
-                            "For witches and wizards who whish to look the part" }));
+                            "For witches and wizards who wish to look the part" }));
 
             add(new Item("Royal Crown", 142,
                     new String[] { "Head" }, 250,

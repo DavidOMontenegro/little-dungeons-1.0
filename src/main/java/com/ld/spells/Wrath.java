@@ -1,5 +1,6 @@
 package com.ld.spells;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.global.GlobalScanner;
@@ -24,47 +25,46 @@ public class Wrath extends Spell {
     }
 
     @Override
-    public int use(int current, List<Player> active) {
-        int activeNumber = active.size();
-        boolean selected = false;
-        Player user = active.get(current);
+    public void use() {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        int active = playerHandler.getActive();
+        Player user = playerHandler.current();
         Player defender;
         int power;
         String id = "1";
-        if (user.getMP() < mpCost) {
-            System.out.println("You don't have enough MP.");
-            return current;
+
+        if (!mpCheck(user)) {
+            return;
         }
-        while (!selected) {
-            if (activeNumber != 2) {
+
+        while (true) {
+            if (active != 2) {
                 System.out.println("Which player will you attack?");
-                for (int i = 0, j = 0; i < activeNumber; i++) {
-                    Player player = active.get(i);
+                for (int i = 0, j = 0; i < active; i++) {
+                    Player player = playerHandler.getPlayer(i);
                     if (player == user) {
                         continue;
                     }
                     j++;
                     System.out.println(j + "- " + player.getName());
                 }
-                System.out.println((activeNumber) + "- Exit");
+                System.out.println((active) + "- Exit");
                 id = GlobalScanner.nextLine();
             }
             try {
                 int playerId = Integer.parseInt(id);
-                if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
+                if (playerId < active && playerId > 0) {
+                    super.use();
+                    defender = playerId <= playerHandler.indexOf(user) ? playerHandler.getPlayer(playerId - 1) : playerHandler.getPlayer(playerId);
                     power = (20 * level) + user.getStat("basic", 'w') - defender.getStat("defense", 'w') + user.getStat("attack", 'w');
-                    current = user.attack(0, defender, power, current, "spell");
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
-                } else if (playerId == activeNumber) {
-                    selected = true;
+                    user.attack(0, defender, power, "spell");
+                    playerHandler.next();
+                    return;
+                } else if (playerId == active) {
+                    return;
                 }
             } catch (Exception ignored) {
             }
         }
-        return current;
     }
 }

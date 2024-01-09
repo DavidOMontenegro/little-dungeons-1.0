@@ -1,5 +1,6 @@
 package com.ld.spells;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.classes.Player;
@@ -28,24 +29,21 @@ public class Supernova extends Spell {
     }
 
     @Override
-    public int use(int current, List<Player> active) {
-        int activeNumber = active.size();
-        Player user = active.get(current);
+    public void use() {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        Player user = playerHandler.current();
         int power;
-        if (user.getMP() < mpCost) {
-            System.out.println("You don't have enough MP.");
-            return current;
+        if (!mpCheck(user)) {
+            return;
         }
-        super.use(current, active);
-        for (Player defender : active) {
+        super.use();
+        for (Player defender : playerHandler.getPlayers()) {
             if (user == defender) {
                 continue;
             }
             power = (15 * level) + user.getStat("basic", 'i') - defender.getStat("defense", 'i') + user.getStat("attack", 'i');
-            current = user.attack(0, defender, power, current, "snow");
+            user.attack(0, defender, power, "snow");
         }
-        current = Action.next(current, activeNumber);
-        Action.wizard(active.get(current));
-        return current;
+        playerHandler.next();
     }
 }

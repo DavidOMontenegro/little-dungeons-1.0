@@ -1,5 +1,6 @@
 package com.ld.spells;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.classes.Player;
@@ -23,20 +24,19 @@ public class Healing extends Spell {
     }
 
     @Override
-    public int use(int current, List<Player> active) {
-        int activeNumber = active.size();
-        boolean selected = false;
-        Player user = active.get(current);
+    public void use() {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        int activeNumber = playerHandler.getActive();
+        Player user = playerHandler.current();
         Player healed;
         String id;
-        if (user.getMP() < mpCost) {
-            System.out.println("You don't have enough MP.");
-            return current;
+        if (!mpCheck(user)) {
+            return;
         }
-        while (!selected) {
+        while (true) {
             System.out.println("Which player will you heal?");
             for (int i = 0; i < activeNumber; i++) {
-                Player player = active.get(i);
+                Player player = playerHandler.getPlayer(i);
                 System.out.println((i + 1) + "- " + player.getName());
             }
             System.out.println((activeNumber) + "- Exit");
@@ -44,18 +44,16 @@ public class Healing extends Spell {
             try {
                 int playerId = Integer.parseInt(id);
                 if (playerId < activeNumber && playerId > 0) {
-                    super.use(current, active);
-                    healed = active.get(playerId - 1);
+                    super.use();
+                    healed = playerHandler.getPlayer(playerId - 1);
                     user.healHP(healed, (level * 15) + user.getStat("basic", 'w'));
-                    current = Action.next(current, activeNumber);
-                    Action.wizard(active.get(current));
-                    return current;
+                    playerHandler.next();
+                    return;
                 } else if (playerId == activeNumber) {
-                    selected = true;
+                    return;
                 }
             } catch (Exception ignored) {
             }
         }
-        return current;
     }
 }

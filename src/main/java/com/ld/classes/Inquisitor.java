@@ -1,5 +1,6 @@
 package com.ld.classes;
 
+import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.global.GlobalStats;
@@ -13,9 +14,12 @@ public class Inquisitor extends Player {
     }
 
     @Override
-    public int postAttack(Player defender, String type, boolean basic, int current) {
-        super.postAttack(defender, type, basic, current);
-        return defender.isDead() ? --current : current;
+    public void postAttack(Player defender, String type, boolean basic) {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        super.postAttack(defender, type, basic);
+        if (defender.isDead()) {
+            playerHandler.halt();
+        }
     }
 
     public String getClassName() {

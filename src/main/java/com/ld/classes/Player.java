@@ -751,11 +751,11 @@ public abstract class Player {
         }
     }
 
-    public int attack(int nature, Player defender, int current) {
-        return attack(nature, defender, (int) (Math.random() * 20) + 1, current, atkType(nature));
+    public void attack(int nature, Player defender) {
+        attack(nature, defender, (int) (Math.random() * 20) + 1, atkType(nature));
     }
 
-    public int attack(int nature, Player defender, int power, int current, String type) {
+    public void attack(int nature, Player defender, int power, String type) {
         boolean basic = nature != 0;
         defender.preDefend(this, type);
         boolean counter = preAttack(basic ? power : 0, type, basic);
@@ -792,7 +792,7 @@ public abstract class Player {
         }
 
         defender.postDefend(this, nature, type, counter);
-        return postAttack(defender, type, basic, current);
+        postAttack(defender, type, basic);
     }
 
     public boolean preAttack(int d20, String type, boolean basic) {
@@ -828,7 +828,7 @@ public abstract class Player {
         return true;
     }
 
-    public int postAttack(Player defender, String type, boolean basic, int current) {
+    public void postAttack(Player defender, String type, boolean basic) {
         switch (type) {
             case "snow":
                 if (isItem(feet, 29)) {
@@ -865,7 +865,6 @@ public abstract class Player {
         }
         atkStats.boostAll(freeze);
         freeze = 0;
-        return current;
     }
 
     public void preDefend(Player attacker, String type) {

@@ -22,12 +22,12 @@ public class Barbarian extends Player {
     }
 
     @Override
-    public int postAttack(Player defender, String type, boolean basic, int current) {
+    public void postAttack(Player defender, String type, boolean basic) {
         if (hp < totalhp / 2 && basic) {
             atkStats.boostAll(-8);
         }
 
-        return super.postAttack(defender, type, basic, current);
+        super.postAttack(defender, type, basic);
     }
 
     public String getClassName() {

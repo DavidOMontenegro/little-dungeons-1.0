@@ -13,7 +13,6 @@ import java.util.List;
 public class Action {
     private static Action action = null;
 
-    List<Player> players = new ArrayList<>();
     List<Item> items;
     List<Spell> spells;
     List<Spell> skills;
@@ -24,22 +23,14 @@ public class Action {
         return current == active - 1 ? 0 : ++current;
     }
 
-    public static void wizard(Player player) {
-        if (player.getClassName().equals("Wizard")) {
-            player.healMP(25);
-        }
-
-        player.clover();
-    }
-
-    private boolean getReady(List<Player> fighters, boolean isDuel) {
+    private boolean getReady(List<Player> players, boolean arena) {
         boolean quit = false;
 
         System.out.println("Final Preparations");
-        for (Player player : fighters) {
+        for (Player player : players) {
             for (Spell spell : player.getSpells()) {
                 if (player.isSpell(spell, "Intimidating Presence")) {
-                    for (Player enemy : fighters) {
+                    for (Player enemy : players) {
                         if (enemy != player) {
                             enemy.effect("bruATK", -5 * spell.getLevel());
                             enemy.effect("quiATK", -5 * spell.getLevel());
@@ -49,12 +40,10 @@ public class Action {
                     }
                 }
             }
-            player.alchemist(fighters, true);
+            player.alchemist(players, true);
         }
-        for (int i = 0; i < fighters.size(); i++) {
-            if (menu(fighters.get(i), i != 0 && isDuel)) {
-                quit = true;
-            }
+        for (int i = 0; i < players.size(); i++) {
+            quit = menu(players.get(i), i != 0 && !arena);
         }
         return quit;
     }
@@ -82,26 +71,11 @@ public class Action {
         }
     }
 
-    private int endTurn(List<Player> active, int current) {
-        List<Player> begin = new ArrayList<>(active);
-        for (Player player : begin) {
-            if (player.isDead()) {
-                player.revive();
-                active.remove(player);
-                if (current > begin.indexOf(player)) {
-                    current--;
-                }
-            }
-        }
-
-        return current == active.size() ? 0 : current;
-    }
-
-    private int basicAttack(List<Player> active, int current) {
+    private void basicAttack() {
         boolean selected1 = false;
         boolean selected2 = false;
-        int activeNumber = active.size();
-        Player user = active.get(current);
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
+        Player user = playerHandler.current();
         Player defender;
         while (!selected1) {
             System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
@@ -111,26 +85,30 @@ public class Action {
                 if (nature > 0 && nature < 6) {
                     if (nature < 5) {
                         while (!selected2) {
-                            System.out.println("Which player will you attack?");
-                            for (int i = 0, j = 0; i < activeNumber; i++) {
-                                Player player = active.get(i);
-                                if (player == user) {
-                                    continue;
+                            String id;
+                            if (playerHandler.getActive() > 2) {
+                                System.out.println("Which player will you attack?");
+                                for (int i = 0, j = 0; i < playerHandler.getActive(); i++) {
+                                    Player player = playerHandler.getPlayer(i);
+                                    if (player == user) {
+                                        continue;
+                                    }
+                                    j++;
+                                    System.out.println(j + "- " + player.getName());
                                 }
-                                j++;
-                                System.out.println(j + "- " + player.getName());
+                                System.out.println((playerHandler.getActive()) + "- Exit");
+                                id = GlobalScanner.nextLine();
+                            } else {
+                                id = "1";
                             }
-                            System.out.println((activeNumber) + "- Exit");
-                            String id = GlobalScanner.nextLine();
                             try {
                                 int playerId = Integer.parseInt(id);
-                                if (playerId < activeNumber && playerId > 0) {
-                                    defender = playerId <= active.indexOf(user) ? active.get(playerId - 1) : active.get(playerId);
-                                    current = user.attack(nature, defender, current);
-                                    current = next(current, activeNumber);
-                                    wizard(active.get(current));
+                                if (playerId < playerHandler.getActive() && playerId > 0) {
+                                    defender = playerId <= playerHandler.indexOf(user) ? playerHandler.getPlayer(playerId - 1) : playerHandler.getPlayer(playerId);
+                                    user.attack(nature, defender);
+                                    playerHandler.next();
                                     selected2 = true;
-                                } else if (playerId == activeNumber) {
+                                } else if (playerId == playerHandler.getActive()) {
                                     selected2 = true;
                                 }
                             } catch (Exception ignored) {
@@ -143,22 +121,28 @@ public class Action {
             } catch (Exception ignored) {
             }
         }
-        return current;
     }
 
-    private boolean basicAttack(Player attacker, Player defender, boolean turn) {
+    private void useSpell() {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
         boolean selected = false;
+        Player user = playerHandler.current();
 
         while (!selected) {
-            System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            String atkType = GlobalScanner.nextLine();
+            Spell[] userSpells = user.getSpells();
+            user.seeSpells();
+            System.out.println("7- Back");
+            String spellId = GlobalScanner.nextLine();
             try {
-                int nature = Integer.parseInt(atkType);
-                if (nature > 0 && nature < 6) {
-                    if (nature < 5) {
-                        if (attacker.attack(nature, defender, 1) == 1) {
-                            turn = !turn;
-                            wizard(defender);
+                int id = Integer.parseInt(spellId);
+                if (id > 0 && id < 8) {
+                    if (id < 7) {
+                        try {
+                            Spell usedSpell = userSpells[--id];
+                            if (usedSpell.getType().contains("Active")) {
+                                usedSpell.use();
+                            }
+                        } catch (Exception ignored) {
                         }
                     }
                     selected = true;
@@ -166,170 +150,13 @@ public class Action {
             } catch (Exception ignored) {
             }
         }
-        return turn;
-    }
-
-    private int useSpell(List<Player> active, int current) {
-        boolean selected = false;
-        Player user = active.get(current);
-
-        while (!selected) {
-            Spell[] userSpells = user.getSpells();
-            user.seeSpells();
-            System.out.println("7- Back");
-            switch (GlobalScanner.nextLine()) {
-                case "1":
-                    try {
-                        Spell usedSpell = userSpells[0];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "2":
-                    try {
-                        Spell usedSpell = userSpells[1];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "3":
-                    try {
-                        Spell usedSpell = userSpells[2];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "4":
-                    try {
-                        Spell usedSpell = userSpells[3];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "5":
-                    try {
-                        Spell usedSpell = userSpells[4];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "6":
-                    try {
-                        Spell usedSpell = userSpells[5];
-                        if (usedSpell.getType().contains("Active")) {
-                            current = usedSpell.use(current, active);
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "7":
-                    selected = true;
-                default:
-                    break;
-            }
-        }
-        return current;
-    }
-
-    private boolean useSpell(Player attacker, Player defender, boolean turn) {
-        boolean selected = false;
-
-        List<Player> active = new ArrayList<>();
-        active.add(attacker);
-        active.add(defender);
-        while (!selected) {
-            Spell[] userSpells = attacker.getSpells();
-            attacker.seeSpells();
-            System.out.println("7- Back");
-            switch (GlobalScanner.nextLine()) {
-                case "1":
-                    try {
-                        Spell usedSpell = userSpells[0];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "2":
-                    try {
-                        Spell usedSpell = userSpells[1];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "3":
-                    try {
-                        Spell usedSpell = userSpells[2];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "4":
-                    try {
-                        Spell usedSpell = userSpells[3];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "5":
-                    try {
-                        Spell usedSpell = userSpells[4];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "6":
-                    try {
-                        Spell usedSpell = userSpells[5];
-                        if (usedSpell.getType().contains("Active")) {
-                            turn = (usedSpell.use(0, active) == 0) == turn;
-                            selected = true;
-                        }
-                    } catch (Exception ignored) {
-                    }
-                    break;
-                case "7":
-                    selected = true;
-                default:
-                    break;
-            }
-        }
-        return turn;
     }
 
     public boolean menu(Player user, boolean isDuel) {
+        PlayerHandler playerHandler = PlayerHandler.getHandler();
         boolean selected = false;
         String id;
+        isDuel = isDuel && user != playerHandler.getPlayer(0);
 
         user.seeStats();
         while (!selected) {
@@ -345,7 +172,7 @@ public class Action {
                     while (!selected) {
                         System.out.println("You have " + user.seeGold() + " gold.\nWho will you give gold to?");
                         for (int i = 0, j = 0; i < playerNumber; i++) {
-                            Player player = players.get(i);
+                            Player player = playerHandler.getPlayer(i);
                             if (player == user) {
                                 continue;
                             }
@@ -356,14 +183,14 @@ public class Action {
                         id = GlobalScanner.nextLine();
                         try {
                             int playerId = Integer.parseInt(id);
-                            if (playerId <= players.indexOf(user) && playerId > 0) {
+                            if (playerId <= playerHandler.indexOf(user) && playerId > 0) {
                                 while (!selected) {
                                     System.out.println("How much gold will you give?");
                                     id = GlobalScanner.nextLine();
                                     try {
                                         int gold = Integer.parseInt(id);
                                         if (gold > 0) {
-                                            user.giveMoney(gold, players.get(playerId - 1));
+                                            user.giveMoney(gold, playerHandler.getPlayer(playerId - 1));
                                             selected = true;
                                         } else if (gold == 0) {
                                             selected = true;
@@ -379,7 +206,7 @@ public class Action {
                                     try {
                                         int gold = Integer.parseInt(id);
                                         if (gold > 0) {
-                                            user.giveMoney(gold, players.get(playerId));
+                                            user.giveMoney(gold, playerHandler.getPlayer(playerId));
                                             selected = true;
                                         } else if (gold == 0) {
                                             selected = true;
@@ -610,7 +437,7 @@ public class Action {
                                         case "1":
                                             while (!selected) {
                                                 for (int i = 0, j = 0; i < playerNumber; i++) {
-                                                    Player player = players.get(i);
+                                                    Player player = playerHandler.getPlayer(i);
                                                     if (player == user) {
                                                         continue;
                                                     }
@@ -621,13 +448,13 @@ public class Action {
                                                 id = GlobalScanner.nextLine();
                                                 try {
                                                     int playerId = Integer.parseInt(id);
-                                                    if (playerId <= players.indexOf(user) && playerId > 0) {
-                                                        user.giveItem(itemId, players.get(playerId - 1));
+                                                    if (playerId <= playerHandler.indexOf(user) && playerId > 0) {
+                                                        user.giveItem(itemId, playerHandler.getPlayer(playerId - 1));
                                                         selected = true;
                                                         number = user.seeBackpack() + 1;
                                                         System.out.println(number + "- Back");
                                                     } else if (playerId < playerNumber && playerId > 0) {
-                                                        user.giveItem(itemId, players.get(playerId));
+                                                        user.giveItem(itemId, playerHandler.getPlayer(playerId));
                                                         selected = true;
                                                         number = user.seeBackpack() + 1;
                                                         System.out.println(number + "- Back");
@@ -1168,69 +995,37 @@ public class Action {
         }
     }
 
-    public void duel(Player first, Player second) {
-        boolean gameOver;
-        boolean turn = true;
-        List<Player> active = new ArrayList<>();
-        Item prize = first.randomItem();
-        active.add(first);
-        active.add(second);
+    public void duel (Player attacker, Player defender) {
+        List<Player> players = new ArrayList<Player>() {{
+                add(attacker);
+                add(defender);
+        }};
+        combat(players, false);
+    }
+
+    public void arena(List<Player> players) {
+        combat(players, true);
+    }
+
+    public void combat(List<Player> players, boolean arena) {
+        PlayerHandler playerHandler = PlayerHandler.startHandler(players);
+        boolean gameOver = false;
+        Player user = playerHandler.current();
+        Item prize = user.randomItem();
 
         System.out.println("\n\n! The prize is a " + prize.getName() + " !\n\n");
-        gameOver = getReady(active, true);
+        gameOver = getReady(players, !arena);
 
         if (gameOver) {
-            winner(active, first, prize);
+            winner(playerHandler.getPlayers(), user, prize);
             return;
         }
 
         while (!gameOver) {
-            System.out.println("\n\n" + (turn ? first.getName() : second.getName()) + "'s turn");
-            System.out.println("1- Character Menu\n2- Basic Attack\n3- Use Spell");
-            switch (GlobalScanner.nextLine()) {
-                case "1":
-                    menu(turn ? first : second, false);
-                    break;
-                case "2":
-                    turn = basicAttack(turn ? first : second, turn ? second : first, turn);
-                    break;
-                case "3":
-                    turn = useSpell(turn ? first : second, turn ? second : first, turn);
-                    break;
-                default:
-                    System.out.println("Please select an action.");
-                    break;
-            }
-
-            if (first.isDead()) {
-                winner(active, second, prize);
-                second.winTrophy();
-                gameOver = true;
-            }
-            if (second.isDead()) {
-                winner(active, first, prize);
-                first.winTrophy();
-                gameOver = true;
-            }
-        }
-    }
-
-    public void arena(List<Player> players, int current) {
-        boolean gameOver = false;
-        Player user = players.get(current);
-        int activeNumber;
-
-        List<Player> active = new ArrayList<>(players);
-        activeNumber = active.size();
-
-        getReady(active, false);
-
-        while (!gameOver) {
-            if (activeNumber == 1) {
+            if (playerHandler.getActive() == 1) {
                 winner(players, user, user.randomItem());
                 user.winTrophy();
-                gameOver = true;
-                break;
+                return;
             }
 
             System.out.println("\n\n" + user.getName() + "'s turn");
@@ -1240,35 +1035,30 @@ public class Action {
                     menu(user, false);
                     break;
                 case "2":
-                    current = basicAttack(active, current);
-                    current = endTurn(active, current);
+                    basicAttack();
+                    playerHandler.removeDeadPlayers();
                     break;
                 case "3":
-                    current = useSpell(active, current);
-                    current = endTurn(active, current);
+                    useSpell();
+                    playerHandler.removeDeadPlayers();
                     break;
                 default:
                     System.out.println("Please select an action.");
                     break;
             }
-            activeNumber = active.size();
-            user = active.get(current);
+            user = playerHandler.current();
         }
     }
 
-    private Action(List<Player> gamePlayers) {
-        playerNumber = gamePlayers.size();
-        for (int i = 0; i < playerNumber; i++) {
-            players.add(gamePlayers.get(i));
-        }
+    private Action() {
         items = GlobalItems.addItems();
         spells = GlobalSpells.addSpells();
         skills = GlobalSkills.addSkills();
     }
 
-    public static Action getAction(List<Player> gamePlayers) {
+    public static Action getAction() {
         if (action == null) {
-            action = new Action(gamePlayers);
+            action = new Action();
         }
         return action;
     }

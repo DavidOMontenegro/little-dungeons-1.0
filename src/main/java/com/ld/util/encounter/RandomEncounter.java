@@ -7,10 +7,10 @@ public class RandomEncounter {
     private byte state;
     private int item;
     private final State[] encounters = new State[] {
-        new State("item", "You got an item!", "2- Enter Shop\n3- Next Player\n4- Save Game\n5- End Game"),
-        new State("shop", "You have found a small shop.", "2- Fight Player\n3- Save Game\n4- End Game"),
-        new State("duel", "You must challenge another player to a duel.", "2- Enter Arena\n3- Save Game\n4- End Game"),
-        new State("arena", "You have found an arena.", "2- Next Player\n3- Save Game\n4- End Game")
+        new State("item", "You got an item!", "2- Next Player\n3- Save Game\n4- End Game"),
+        new State("shop", "You have found a small shop.", "2- Enter Shop\n3- Next Player\n4- Save Game\n5- End Game"),
+        new State("duel", "You must challenge another player to a duel.", "2- Fight Player\n3- Save Game\n4- End Game"),
+        new State("arena", "You have found an arena.", "2- Enter Arena\n3- Save Game\n4- End Game")
     };
 
     private RandomEncounter() {}
