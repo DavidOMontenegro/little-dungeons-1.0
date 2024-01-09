@@ -3,9 +3,11 @@ package com.ld;
 import com.ld.classes.Player;
 import com.ld.classes.factory.PlayerFactory;
 import com.ld.global.GlobalScanner;
-import com.ld.util.Action;
 import com.ld.util.PlayerHandler;
-import com.ld.util.encounter.RandomEncounter;
+import com.ld.util.encounter.Combat;
+import com.ld.util.encounter.Menu;
+import com.ld.util.encounter.Shop;
+import com.ld.util.encounter.util.RandomEncounter;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -277,7 +279,6 @@ public class LittleDungeons {
             }
             selected = false;
         }
-        Action action = Action.getAction();
         PlayerHandler playerHandler = PlayerHandler.startHandler(players);
 
         if (save) {
@@ -287,12 +288,12 @@ public class LittleDungeons {
                 while (!selected) {
                     switch (GlobalScanner.nextLine()) {
                         case "1":
-                            action.menu(player, false);
+                            Menu.open(player, false);
                             System.out.println(
                                     "What would you like to do?\n1- Character Menu\n2- Enter Shop\n3- Next Player");
                             break;
                         case "2":
-                            action.shop(player);
+                            Shop.enter(player);
                             System.out.println(
                                     "What would you like to do?\n1- Character Menu\n2- Enter Shop\n3- Next Player");
                             break;
@@ -321,13 +322,13 @@ public class LittleDungeons {
             while (!selected) {
                 switch (GlobalScanner.nextLine()) {
                     case "1":
-                        action.menu(user, false);
+                        Menu.open(user, false);
                         state.startTurn();
                         break;
                     case "2":
                         switch (state.getState()) {
                             case "shop":
-                                action.shop(user);
+                                Shop.enter(user);
                                 state.startTurn();
                                 break;
                             case "duel":
@@ -347,11 +348,11 @@ public class LittleDungeons {
                                         int playerId = Integer.parseInt(id);
                                         if (playerId <= players.indexOf(user) && playerId > 0) {
                                             second = players.get(playerId - 1);
-                                            action.duel(user, second);
+                                            Combat.duel(user, second);
                                             selected = true;
                                         } else if (playerId < playerNumber && playerId > 0) {
                                             second = players.get(playerId);
-                                            action.duel(user, second);
+                                            Combat.duel(user, second);
                                             selected = true;
                                         } else if (playerId == playerNumber) {
                                             selected = true;
@@ -362,7 +363,7 @@ public class LittleDungeons {
                                 }
                                 break;
                             case "arena":
-                                action.arena(players);
+                                Combat.arena(players);
                                 selected = true;
                                 break;
                             default:

@@ -4,9 +4,6 @@ import com.ld.util.PlayerHandler;
 import org.json.JSONObject;
 
 import com.ld.classes.Player;
-import com.ld.util.Action;
-
-import java.util.List;
 
 public class Armageddon extends Spell {
     public Armageddon() {

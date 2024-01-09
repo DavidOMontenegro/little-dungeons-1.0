@@ -5,9 +5,6 @@ import org.json.JSONObject;
 
 import com.ld.global.GlobalScanner;
 import com.ld.classes.Player;
-import com.ld.util.Action;
-
-import java.util.List;
 
 public class Fireball extends Spell {
     public Fireball() {

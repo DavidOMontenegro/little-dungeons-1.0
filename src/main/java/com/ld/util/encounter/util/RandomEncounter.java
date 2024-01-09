@@ -1,4 +1,4 @@
-package com.ld.util.encounter;
+package com.ld.util.encounter.util;
 
 import com.ld.classes.Player;
 
