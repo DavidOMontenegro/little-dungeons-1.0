@@ -117,12 +117,13 @@ public class LittleDungeons {
             }
         }
         System.out.println("\n\nGame over.");
+
+        GlobalScanner.close();
     }
 
     public static void main(String[] args) throws IOException {
         List<Player> players = new ArrayList<>();
         Player user;
-        boolean gameOver = false;
         RandomEncounter state = RandomEncounter.getRandomEncounter();
         PlayerFactory playerFactory = new PlayerFactory();
 
@@ -135,6 +136,7 @@ public class LittleDungeons {
         File folder = new File("src/main/resources/persistence/save");
         File[] listOfFiles = folder.listFiles();
 
+        assert listOfFiles != null;
         if (listOfFiles.length > 0) {
             int files = listOfFiles.length + 1;
             System.out.println(
@@ -309,7 +311,7 @@ public class LittleDungeons {
             }
         }
 
-        while (!gameOver) {
+        while (true) {
             user = playerHandler.current();
             System.out.println("\n\n" + user.getName() + "'s turn");
             if (save) {
@@ -415,7 +417,5 @@ public class LittleDungeons {
 
             playerHandler.next();
         }
-
-        GlobalScanner.close();
     }
 }

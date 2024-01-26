@@ -118,10 +118,6 @@ public abstract class Player {
         player.healHP(newhp + healBoost);
     }
 
-    public int getFreeze() {
-        return freeze;
-    }
-
     public void freeze(int frozen) {
         if (!getClassName().equals("Inquisitor")) {
             freeze += frozen;
