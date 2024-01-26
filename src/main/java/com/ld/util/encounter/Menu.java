@@ -2,6 +2,7 @@ package com.ld.util.encounter;
 
 import com.ld.classes.Player;
 import com.ld.global.GlobalScanner;
+import com.ld.util.PlayerChooser;
 import com.ld.util.PlayerHandler;
 
 public class Menu {
@@ -9,9 +10,9 @@ public class Menu {
 
     public static boolean open(Player user, boolean isDuel) {
         PlayerHandler playerHandler = PlayerHandler.getHandler();
-        int playerNumber = playerHandler.getActive();
         boolean selected = false;
         String id;
+        Player player;
         isDuel = isDuel && user != playerHandler.getPlayer(0);
 
         user.seeStats();
@@ -25,60 +26,25 @@ public class Menu {
                         return true;
                     }
                 case "g":
-                    while (!selected) {
-                        System.out.println("You have " + user.seeGold() + " gold.\nWho will you give gold to?");
-                        for (int i = 0, j = 0; i < playerNumber; i++) {
-                            Player player = playerHandler.getPlayer(i);
-                            if (player == user) {
-                                continue;
-                            }
-                            j++;
-                            System.out.println(j + "- " + player.getName());
-                        }
-                        System.out.println(playerNumber + "- Exit");
-                        id = GlobalScanner.nextLine();
-                        try {
-                            int playerId = Integer.parseInt(id);
-                            if (playerId <= playerHandler.indexOf(user) && playerId > 0) {
-                                while (!selected) {
-                                    System.out.println("How much gold will you give?");
-                                    id = GlobalScanner.nextLine();
-                                    try {
-                                        int gold = Integer.parseInt(id);
-                                        if (gold > 0) {
-                                            user.giveMoney(gold, playerHandler.getPlayer(playerId - 1));
-                                            selected = true;
-                                        } else if (gold == 0) {
-                                            selected = true;
-                                        }
-                                    } catch (Exception ignored) {
-                                    }
+                    player = PlayerChooser.choosePlayer("You have " + user.seeGold() + " gold.\nWho will you give gold to?");
+                    if (!player.equals(null)) {
+                        while (!selected) {
+                            System.out.println("How much gold will you give?");
+                            id = GlobalScanner.nextLine();
+                            try {
+                                int gold = Integer.parseInt(id);
+                                if (gold > 0) {
+                                    user.giveMoney(gold, player);
+                                    selected = true;
+                                } else if (gold == 0) {
+                                    selected = true;
                                 }
-                                user.seeStats();
-                            } else if (playerId < playerNumber && playerId > 0) {
-                                while (!selected) {
-                                    System.out.println("How much gold will you give?");
-                                    id = GlobalScanner.nextLine();
-                                    try {
-                                        int gold = Integer.parseInt(id);
-                                        if (gold > 0) {
-                                            user.giveMoney(gold, playerHandler.getPlayer(playerId));
-                                            selected = true;
-                                        } else if (gold == 0) {
-                                            selected = true;
-                                        }
-                                    } catch (Exception ignored) {
-                                    }
-                                }
-                                user.seeStats();
-                            } else if (playerId == playerNumber) {
-                                user.seeStats();
-                                selected = true;
+                            } catch (Exception ignored) {
                             }
-                        } catch (Exception ignored) {
                         }
+                        selected = false;
                     }
-                    selected = false;
+                    user.seeStats();
                     break;
                 case "y":
                     selected = true;
@@ -291,36 +257,12 @@ public class Menu {
                                     System.out.println("1- Give Item to Another Player\n2- Deselect item");
                                     switch (GlobalScanner.nextLine()) {
                                         case "1":
-                                            while (!selected) {
-                                                for (int i = 0, j = 0; i < playerNumber; i++) {
-                                                    Player player = playerHandler.getPlayer(i);
-                                                    if (player == user) {
-                                                        continue;
-                                                    }
-                                                    j++;
-                                                    System.out.println(j + "- " + player.getName());
-                                                }
-                                                System.out.println(playerNumber + "- Exit");
-                                                id = GlobalScanner.nextLine();
-                                                try {
-                                                    int playerId = Integer.parseInt(id);
-                                                    if (playerId <= playerHandler.indexOf(user) && playerId > 0) {
-                                                        user.giveItem(itemId, playerHandler.getPlayer(playerId - 1));
-                                                        selected = true;
-                                                        number = user.seeBackpack() + 1;
-                                                        System.out.println(number + "- Back");
-                                                    } else if (playerId < playerNumber && playerId > 0) {
-                                                        user.giveItem(itemId, playerHandler.getPlayer(playerId));
-                                                        selected = true;
-                                                        number = user.seeBackpack() + 1;
-                                                        System.out.println(number + "- Back");
-                                                    } else if (playerId == playerNumber) {
-                                                        selected = true;
-                                                    }
-                                                } catch (Exception ignored) {
-                                                }
+                                            player = PlayerChooser.choosePlayer();
+                                            if (!player.equals(null)) {
+                                                user.giveItem(itemId, player);
+                                                number = user.seeBackpack() + 1;
+                                                System.out.println(number + "- Back");
                                             }
-                                            selected = false;
                                             break;
                                         case "2":
                                             selected = true;

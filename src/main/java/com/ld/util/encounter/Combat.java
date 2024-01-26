@@ -4,6 +4,7 @@ import com.ld.classes.Player;
 import com.ld.global.GlobalScanner;
 import com.ld.spells.Spell;
 import com.ld.util.Item;
+import com.ld.util.PlayerChooser;
 import com.ld.util.PlayerHandler;
 
 import java.util.ArrayList;
@@ -69,54 +70,33 @@ public class Combat {
     }
 
     private static void basicAttack() {
-        boolean selected1 = false;
-        boolean selected2 = false;
+        boolean selected = false;
         PlayerHandler playerHandler = PlayerHandler.getHandler();
         Player user = playerHandler.current();
         Player defender;
-        while (!selected1) {
-            System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
-            String atkType = GlobalScanner.nextLine();
-            try {
-                int nature = Integer.parseInt(atkType);
-                if (nature > 0 && nature < 6) {
-                    if (nature < 5) {
-                        while (!selected2) {
-                            String id;
-                            if (playerHandler.getActive() > 2) {
-                                System.out.println("Which player will you attack?");
-                                for (int i = 0, j = 0; i < playerHandler.getActive(); i++) {
-                                    Player player = playerHandler.getPlayer(i);
-                                    if (player == user) {
-                                        continue;
-                                    }
-                                    j++;
-                                    System.out.println(j + "- " + player.getName());
-                                }
-                                System.out.println((playerHandler.getActive()) + "- Exit");
-                                id = GlobalScanner.nextLine();
-                            } else {
-                                id = "1";
-                            }
-                            try {
-                                int playerId = Integer.parseInt(id);
-                                if (playerId < playerHandler.getActive() && playerId > 0) {
-                                    defender = playerId <= playerHandler.indexOf(user) ? playerHandler.getPlayer(playerId - 1) : playerHandler.getPlayer(playerId);
-                                    user.attack(nature, defender);
-                                    playerHandler.next();
-                                    selected2 = true;
-                                } else if (playerId == playerHandler.getActive()) {
-                                    selected2 = true;
-                                }
-                            } catch (Exception ignored) {
-                            }
-                        }
-                        selected2 = false;
-                    }
-                    selected1 = true;
-                }
-            } catch (Exception ignored) {
+
+        while (true) {
+            defender = PlayerChooser.choosePlayer("Which player will you attack?");
+            if (defender.equals(null)) {
+                return;
             }
+            while (!selected) {
+                System.out.println("1- Brute Attack\n2- Quick Attack\n3- Sacred Attack\n4- Magic Attack\n5- Exit");
+                String atkType = GlobalScanner.nextLine();
+                try {
+                    int nature = Integer.parseInt(atkType);
+                    if (nature > 0 && nature < 6) {
+                        if (nature < 5) {
+                            user.attack(nature, defender);
+                            playerHandler.next();
+                            return;
+                        }
+                        selected = true;
+                    }
+                } catch (Exception ignored) {
+                }
+            }
+            selected = false;
         }
     }
 

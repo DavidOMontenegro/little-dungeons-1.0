@@ -82,6 +82,14 @@ public class PlayerHandler {
         return players.get(i);
     }
 
+    public Player getOnlyOption() {
+        if (players.size() != 2) {
+            return players.get(current);
+        }
+        int i = current == 0 ? 1 : 0;
+        return players.get(i);
+    }
+
     public int indexOf(Player player) {
         return players.indexOf(player);
     }
