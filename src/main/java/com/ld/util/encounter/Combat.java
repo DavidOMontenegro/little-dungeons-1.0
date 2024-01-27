@@ -26,7 +26,7 @@ public class Combat {
 
     private static void combat(List<Player> players, boolean arena) {
         PlayerHandler playerHandler = PlayerHandler.startHandler(players);
-        boolean gameOver = false;
+        boolean gameOver;
         Player user = playerHandler.current();
         Item prize = user.randomItem();
 
