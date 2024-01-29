@@ -1,2 +1,0 @@
-javac -cp .:json-java.jar */*.java *.java
-java -cp .:json-java.jar LittleDungeons
